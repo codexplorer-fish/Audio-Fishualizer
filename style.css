@@ -1,0 +1,139 @@
+* {
+    margin:0;
+    box-sizing: border-box;
+
+}
+
+#background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: black;
+    width: 100%;
+    height: 100%;
+}
+
+.dynamicTextContainer {
+    max-width: 150px;
+    word-break: break-word;
+
+}
+
+.sidebar {
+    padding: 15px;
+    border-radius: 20px;
+
+    box-sizing: border-box;
+    border: 2px solid rgb(100, 100, 100);
+
+    opacity: 80%;
+    display: inline-grid;
+    grid-auto-flow: row;
+    align-content: space-around;
+    text-align: center;
+}
+
+.hidingVis {
+    visibility: hidden;
+}
+
+.hidingDis {
+    display: none;
+}
+
+.sidebarImg {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background-image:url('images/sidebarIndicator.png');
+    background-size: 100% 100%;
+    mix-blend-mode: lighten;
+}
+
+.collapsingSidebar {
+    background: rgb(50, 50, 50);
+    grid-template-columns: auto;
+
+    position: relative;
+    transform: translateX(calc(-100%));
+}
+
+.sidebarImgHoverExtension {
+    padding-bottom: 100px;
+    padding-right: 50px;
+    position: absolute;
+}
+
+#uiContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#mainSidebar {
+    padding-left: 0;
+    padding-right: 0;
+
+    background: rgb(31, 31, 31);
+
+    grid-template-columns: 50px auto;
+    z-index: 200;
+    position: absolute;
+    font-family: Lucida Console;
+    color: white;
+    top: 15%;
+    right: 0px;
+    height: 70%;
+}
+
+
+#audioElement {
+    position: absolute;
+    width: 50%;
+    left: 25%;
+    bottom: 3%;
+
+    z-index: 200;
+}
+
+header {
+    font-size: large;
+}
+
+
+#oldContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: black;
+    width: 100%;
+    height: 100%;
+}
+
+
+button {
+    z-index: 200;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: lightblue;
+}
+
+button:active {
+    color: lightblue;
+    background-color: darkblue;
+}
+
+#animationSliderContainer {
+    font-size: small;
+    text-align: center;
+    font-family: Lucida Console;
+    color: white;
+    position: absolute;
+    z-index: 200;
+    top: 200px;
+    left: 200px;
+}

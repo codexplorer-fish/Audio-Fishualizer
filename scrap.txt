@@ -1,0 +1,314 @@
+// color control (bad hue values)
+
+const colorSqueeze = bufferLength/2 // (I think) this variable squeezes the colors to the left, letting the extreme right colors show more. 
+const xIncrement = 255/(bufferLength - colorSqueeze)
+var transparency = fttValue/255
+
+var red = 0
+var green = 0
+const blue = (255 - fttValue) * transparency * 1.5
+
+if ((i > (bufferLength - colorSqueeze)/2)) {
+    green = (255 - (2 * (i - ((bufferLength - colorSqueeze)/2)) * xIncrement)) * transparency
+    red = 255 * transparency
+} else {
+    green = 255 * transparency
+    red = ((2 * i * xIncrement)) * transparency
+}
+ctx.fillStyle = 'rgb(' + red + ',' + green + ',' + blue + ')'
+
+// barWidth = own volume / total volumes 
+const fttTotal = dataArray.reduce((partialSum, num) => partialSum + num)
+const barWidth = canvas.width*(fttValue/fttTotal)
+// barWidth = own volume^2 / every volume^2 summed
+const fttTotalPow2 = dataArray.reduce((partialSum, num) => partialSum + Math.pow(num, 2))
+const barWidth = canvas.width*( Math.pow(fttValue, 2) / fttTotalPow2)
+
+
+
+
+
+// html animation transformations
+X Position
+<br>
+<input type="range" min="0" max="200" value="0" class="slider" id="animationXSlider">
+<br>
+Y Position
+<br>
+<input type="range" min="0" max="200" value="0" class="slider" id="animationYSlider">
+<br>
+Height
+<br>
+<input type="range" min="1" max="20" value="20" class="slider" id="animationHeightSlider">
+<br>
+Width
+<br>
+<input type="range" min="1" max="20" value="20" class="slider" id="animationWidthSlider">
+
+
+
+
+
+
+function initPopunderHandler(){
+    let popunderWindow = null
+    let pipSustainWindow = null
+
+    function handlePopunderWindowClose() {
+        popunderWindow.removeEventListener("resize", handlePopunderResize)
+        popunderWindow = null
+        pipSustainWindow.close()
+        pipSustainWindow = null
+
+        document.body.append(canvas)
+        canvasEscapeContainer.style.display = 'none'
+        sustainAnimationPipStyle.style.display = "none"
+        document.body.append(canvasEscapeContainer)
+        document.body.append(sustainAnimationPipStyle)
+
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+    }
+
+    function handlePopunderResize() {
+        canvas.width = popunderWindow.innerWidth
+        canvas.height = popunderWindow.innerHeight
+
+        /* trying to detect fulscreen and unfocus, trouble unfocusing, blur() unreliable
+        if (!popunderWindow.screenTop && !popunderWindow.screenY) {
+            popunderWindow.blur()
+        }
+            */
+    }
+
+    popunderButton.addEventListener("click", async () => {
+        if (popunderWindow) {
+            popunderWindow.close()
+        } else {
+            pipSustainWindow = await documentPictureInPicture.requestWindow() // popup window for sustaining animation
+            pipSustainWindow.document.body.append(sustainAnimationPipStyle)
+            sustainAnimationPipStyle.style.display = "inline"
+
+            popunderWindow = document.open("","","width=300,height=300")
+            popunderWindow.name = "popunderWindow"
+
+            canvasEscapeContainer.append(canvas)
+            popunderWindow.document.body.append(canvasEscapeContainer)
+            canvasEscapeContainer.style.display = "inline"
+
+            popunderWindow.addEventListener('resize', handlePopunderResize)
+            popunderWindow.onbeforeunload = handlePopunderWindowClose
+        }
+    })
+
+    window.onbeforeunload = () => {
+        if (popunderWindow){
+            popunderWindow.close()
+        }
+    }
+}
+initPopunderHandler()
+
+
+
+
+
+// HIDE UI ON TIMEOUT
+let hideTimeout
+function hideScreen() {
+    uiContainer.style.visibility = "hidden"
+}
+document.addEventListener("mousemove", () => {
+    uiContainer.style.visibility = "visible"
+    clearTimeout(hideTimeout)
+    hideTimeout = setTimeout(hideScreen, 2000);
+})
+
+
+
+
+// INDIVIDUAL SETTINGS SLIDER SAVING
+staticValueElements.forEach((element) => {
+    const storageValue = localStorage.getItem(getElementNameAsString(element))
+
+    if (storageValue != null) {
+        element.value = storageValue
+    } else {
+        localStorage.setItem(getElementNameAsString(element), element.value)
+    }
+})
+
+staticValueElements.forEach((element) => {
+    element.addEventListener('change', () => {
+        localStorage.setItem(getElementNameAsString(element), element.value)
+    })
+})
+
+function setupDynamicSliderSaving(){
+    for (const i in dynamicSliders) {
+        const slider = dynamicSliders[i][0]
+
+        localStorage.setItem(getElementNameAsString(slider.id), slider.value)
+    }
+}
+
+
+// remove spaces in the id string
+customVals[slider.id.replace(/\s+/g, '')] = slider.value
+
+
+
+// HTML FOR STATIC COLOR SLIDERS
+                    <div class="dynamicTextContainer">
+                        <div class="dynamicText">Color Scaling Speed</div>
+                        <input type="range" min="0" max="15" value="6" class="slider" id="animationColorScaleSlider" data-dynamicTextLabel="Color Scaling Speed">
+                    </div>
+                    <br>
+                    <div class="dynamicTextContainer">
+                        <div class="dynamicText">Color Base Speed</div>
+                        <input type="range" min="-10" max="10" value="3" class="slider" id="animationColorBaseSlider" data-dynamicTextLabel="Color Base Speed">
+                    </div>
+                    <br>
+                    <div class="dynamicTextContainer">
+                        <div class="dynamicText">Color Range</div>
+                        <input type="range" min="-10" max="10" value="-5" class="slider" id="animationColorCompressionSlider" data-dynamicTextLabel="Color Range">
+                    </div>
+                    <br>
+                    <div class="dynamicTextContainer">
+                        <div class="dynamicText">Color Shift</div>
+                        <input type="range" min="0" max="360" value="0" class="slider" id="animationColorShiftSlider" data-dynamicTextLabel="Color Shift" data-dynamicTextFlags="0=Auto">
+                    </div>
+                    <br>
+                    <div class="dynamicTextContainer">
+                        <div class="dynamicText">Color Fade</div>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="animationColorFadeSlider" data-dynamicTextLabel="Color Fade">
+                    </div>
+                    <br>
+                    <div class="dynamicTextContainer">
+                        <div class="dynamicText">Color Light</div>
+                        <input type="range" min="0" max="100" value="100" class="slider" id="animationColorLightSlider" data-dynamicTextLabel="Color Light">
+                    </div>
+                    <br>
+// IN-ANIMATE COLOR FUNCTION
+                                function calculateColor() {
+                const percentVolume = fttValue/255
+                const percentBars = i/bufferLength
+    
+                let hue = 0 // 0 -> 360
+                let sat = 100 // 0 -> 100
+                let lit = 50 // 0 -> 100
+                
+                // change lit with a square function
+                lit = Math.pow(Math.sqrt(100 * (animationColorLightSlider.value/100)) * percentVolume, 2)
+    
+                sat = 100 - animationColorFadeSlider.value
+    
+                // distribute hue across each bar, multiplied by a compressing factor
+                hue = Math.abs((360 * percentBars * (Math.pow(animationColorCompressionSlider.value, 2)/20))) // square function to smooth out the slider input's potency
+                if (animationColorCompressionSlider.value < 0) {
+                    hue *= -1
+                }
+                // color shift hue
+                if (Number(animationColorShiftSlider.value) == 0) {
+                    hue += colorOffset * 360
+                } else {
+                    hue += Number(animationColorShiftSlider.value)
+                }
+                
+    
+                return 'hsl(' + hue + ',' + sat + '%,' + lit + '%)'
+            }
+            canvasCtx.fillStyle = calculateColor()
+
+
+// LOW HZ FOCUS SLIDER
+<div class="dynamicTextContainer">
+    <div class="dynamicText">Low Hz Focus</div>
+    <input type="range" min="-1" max="10" value="3" class="slider" id="animationFftScaleSlider" data-dynamicTextLabel="Low Hz Focus">
+</div>
+
+// SIMPLIFIED INTO ONE FUNCTION AND THREE FUNCTION CALLS, SETS UP DYNAMIC TEXT FLAGS FOR STYLE SLIDERS
+function initAnimationStyleSliderFlags(){
+    let flags = ""
+    const animationStyles = getAnimationStyles()
+    animationStyles.forEach((style, index) => {
+        flags += index + "=" + style[0] + ","
+    })
+    flags = flags.slice(0, -1) // remove trailing semicolon
+    animationStyleSlider.setAttribute("data-dynamicTextFlags", flags)
+}
+initAnimationStyleSliderFlags()
+
+function initColorStyleSliderFlags(){
+    let flags = ""
+    const colorStyles = getColorStyles()
+    colorStyles.forEach((style, index) => {
+        flags += index + "=" + style[0] + ","
+    })
+    flags = flags.slice(0, -1) // remove trailing semicolon
+    colorStyleSlider.setAttribute("data-dynamicTextFlags", flags)
+}
+initColorStyleSliderFlags()
+
+function initAnalyserStyleSliderFlags(){
+    let flags = ""
+    const analyserStyles = getAnalyserStyles()
+    analyserStyles.forEach((style, index) => {
+        flags += index + "=" + style[0] + ","
+    })
+    flags = flags.slice(0, -1) // remove trailing semicolon
+    analyserStyleSlider.setAttribute("data-dynamicTextFlags", flags)
+}
+initAnalyserStyleSliderFlags()
+
+
+
+// transform fft byte frequency data so that high frequencies are compressed.
+function compressUpperIndexes(fftArray, factor, sampleRate) {
+
+    // set upper and lower limits to make the scaling easier
+    const minHz = 30
+    const maxHz = 5000
+
+    let newArray = []
+
+    let fftIndex = Math.round(fftArray.length * (minHz/(sampleRate/2))) // something something sampling rate needs to be halfed to properly correlate with hertz values
+
+    arrayloop:
+    while (fftIndex < fftArray.length) {
+        // calculate number of indexes to compress into one index
+        let compressNum = Math.pow(1 + (factor/10), newArray.length)
+
+        compressNum = Math.ceil(compressNum) // compressNum should never be 0 or less, or an infinite loop will happen
+
+        // get x number of indexes, find highest, and append
+        let hiValue = 0
+        while (compressNum > 0) {
+            if (fftArray[fftIndex] > hiValue) {
+                hiValue = fftArray[fftIndex]
+            }
+            fftIndex++
+            compressNum--
+
+            if (fftIndex >= fftArray.length){ // escape if all array indexes are exhausted while still in loop
+                break arrayloop
+            }
+            if (fftIndex/fftArray.length >= maxHz/(sampleRate/2)){ // escape if array index reaches equivilant max hz
+                break arrayloop
+            }
+        }
+        newArray.push(hiValue)
+    }
+
+    // add the rest of the fftArray Indexes, compressed into a single data point
+    let hiValue = 0
+    while (fftIndex < fftArray.length) { // escape when all array indexes are exhausted
+        if (fftArray[fftIndex] > hiValue) {
+            hiValue = fftArray[fftIndex]
+        }
+        fftIndex++
+    }
+    newArray.push(hiValue)
+
+    return Uint8Array.from(newArray)
+}

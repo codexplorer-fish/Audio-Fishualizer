@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Audio to Visual</title>
+    <link rel="stylesheet" href="style.css">
+
+    
+</head>
+<body>
+    <canvas id="canvas1" style="z-index:100; position:absolute; width:100%; height:100%"></canvas>
+    <div id="background"></div>
+    <div id="uiContainer">
+        <div id="mainSidebar" class="sidebar">
+
+            <div id="mainPreset" class="dynamicTextContainer" style="grid-column: span 2; margin: auto;">
+                <!--- ^^^margin auto for center align--->
+                <header class="dynamicText">Preset</header>
+                <input type="range" min="0" max="0" class="slider" id="presetSlider" data-dynamicTextLabel="Preset" data-dynamicTextFlags="0=None">
+            </div>
+
+            <div id="animationSidebarImg" class="sidebarImg">
+                <div class="sidebarImgHoverExtension"></div>
+                <div id="animationSidebar" class="sidebar collapsingSidebar hidingVis">
+                    <div id="dynamicAnimationSlidersContainer"></div>
+                </div>
+            </div>
+
+            <div id="mainAnimation" class="dynamicTextContainer">
+                <div class="dynamicText" >Animation</div>
+                <input type="range" min="0" max="2" value="0" class="slider" id="animationStyleSlider" data-dynamicTextLabel="Animation">
+            </div>
+
+            <div id="colorSidebarImg" class="sidebarImg">
+                <div class="sidebarImgHoverExtension"></div>
+                <div id="colorSidebar" class="sidebar collapsingSidebar hidingVis">
+                    <div id="dynamicColorSlidersContainer"></div>
+                </div>
+            </div>
+
+            <div id="mainColor" class="dynamicTextContainer">
+                <div class="dynamicText" >Color</div>
+                <input type="range" min="0" max="1" value="0" class="slider" id="colorStyleSlider" data-dynamicTextLabel="Color">
+            </div>
+
+            <div id="analyserSidebarImg" class="sidebarImg">
+                <div class="sidebarImgHoverExtension"></div>
+                <div id="analyserSidebar" class="sidebar collapsingSidebar hidingVis">
+                    <div id="dynamicAnalyserSlidersContainer"></div>
+                    <div class="dynamicTextContainer">
+                        <div class="dynamicText">Data Values</div>
+                        <input type="range" min="5" max="15" value="12" class="slider" id="analyserFftValueSlider" data-dynamicTextLabel="Data Values">
+                    </div>
+                    <div class="dynamicTextContainer">
+                        <div class="dynamicText">Db Range Min</div>
+                        <input type="range" min="-130" max="0" value="-100" class="slider" id="analyserDbMinSlider" data-dynamicTextLabel="Db Range Min">
+                    </div>
+                    <div class="dynamicTextContainer">
+                        <div class="dynamicText">Db Range Max</div>
+                        <input type="range" min="-100" max="30" value="-30" class="slider" id="analyserDbMaxSlider" data-dynamicTextLabel="Db Range Max">
+                    </div>
+                    <div class="dynamicTextContainer">
+                        <div class="dynamicText">Animation Smoothness</div>
+                        <input type="range" min="0" max="100" value="64" class="slider" id="analyserSmoothnessSlider" data-dynamicTextLabel="Animation Smoothness">
+                    </div>
+                </div>
+            </div>
+
+            <div id="mainAnalyser" class="dynamicTextContainer">
+                <div class="dynamicText" >Analyser</div>
+                <input type="range" min="0" max="0" value="0" class="slider" id="analyserStyleSlider" data-dynamicTextLabel="Analyser">
+            </div>
+
+            <div style="grid-column: span 2">
+                <input type="text" id="presetNameInput" size="12" placeholder="new preset name">
+                <br>
+                <button id="presetSaver">Save New</button>
+                <button id="presetDeleter">Delete</button>
+                <br>
+                <button id="presetReplacer">Replace</button>
+            </div>
+
+            <div style="grid-column: span 2"></div>
+
+            <div id="mainSource" style="grid-column: span 2; margin: auto;">
+                <div id="sourceSelector" class="dynamicTextContainer">
+                    <div class="dynamicText" >Source</div>
+                    <input type="range" min="0" max="2" value="0" class="slider" id="sourceSlider" data-dynamicTextLabel="Source Type" data-dynamicTextFlags="0=File,1=Microphone,2=Window Share">
+                </div>
+                <button id="mute" value="false">Mute</button>
+                <br>
+                <input type="file" id="audioUpload" accept="audio/*" style="width: 150px;">
+            </div>
+
+            <div style="grid-column: span 2">
+                <button id="popup">picture-in-picture</button>
+            </div>
+
+            <div style="grid-column: span 2">
+                about
+                <br>
+                bmac
+            </div>
+
+        </div>
+
+        <audio id="audioElement" controls></audio>
+        <div id="focusElements" class="sidebar"></div>
+    </div>
+
+    <!-- style must be assigned in-line to not disappear when transferring to pip window -->
+    <div 
+    id="canvasEscapeContainer" 
+    style="
+        display: none;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: black;
+        width: 100%;
+        height: 100%;">
+    </div>
+
+    <div id="sustainAnimationPip"
+    style="display:none;">
+    Move me under your taskbar to hide me! <br>
+    I sustain your background rgb animation :D <br>
+    Tip: fullscreen the rgb background tab and narrow all your windows to see the rgb on the sides of your computer screen
+    </div>
+
+    <script src="elements-init.js"></script>
+    <script src="independent-elements.js"></script>
+    <script src="styles.js"></script>
+    <script src="dynamic-text.js"></script>
+    <script src="analyse-animate.js"></script>
+    <script src="settings-saving-loading-and-presets.js"></script>
+</body>
+</html>
