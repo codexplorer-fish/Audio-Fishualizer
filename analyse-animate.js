@@ -66,20 +66,22 @@ function initAnalyseAnimate(){
 
     // AUDIO SOURCE HANDLERS
     function useMuteValue(){ // reads mute value and updates based on it
-        if (muteButton.value == 'true' && muteButton.innerText == "Mute"){ // check innertext to know if already muted or not. attempting to disconnect analyser when already disconnected will generate error
-            muteButton.innerText = "Muted"
+        console.log("using mute value", muteButton.value, muteButton.textContent)
+        if (muteButton.value == 'true' && muteButton.textContent == "Mute"){ // check innertext to know if already muted or not. attempting to disconnect analyser when already disconnected will generate error
+            muteButton.textContent = "Muted"
             analyser.disconnect(audioCtx.destination)
-        } else if (muteButton.value == 'false' && muteButton.innerText == "Muted") {
-            muteButton.innerText = "Mute"
+        } else if (muteButton.value == 'false' && muteButton.textContent == "Muted") {
+            muteButton.textContent = "Mute"
             analyser.connect(audioCtx.destination)
         }
+        console.log("after use", muteButton.value, muteButton.textContent)
     }    
 
     muteButton.addEventListener('click', function(){
         if (muteButton.value == 'true'){
-            muteButton.value = false
+            muteButton.value = 'false'
         } else {
-            muteButton.value = true
+            muteButton.value = 'true'
         }
         useMuteValue()
     })
@@ -135,21 +137,21 @@ function initAnalyseAnimate(){
             analyserSource = audioFileSource
             audioElement.style.display = "block"
             audioFileInput.style.display = "inline"
-            muteButton.value = false
+            muteButton.value = 'false'
         } else if (sourceSlider.value == 1){ // MIC
             await setupRecStream()
             audioRecSource.connect(analyser)
             analyserSource = audioRecSource
             audioElement.style.display = "none"
             audioFileInput.style.display = "none"
-            muteButton.value = true
+            muteButton.value = 'true'
         } else if (sourceSlider.value == 2){ // WINDOW
             await setupShareStream()
             audioShareSource.connect(analyser)
             analyserSource = audioShareSource
             audioElement.style.display = "none"
             audioFileInput.style.display = "none"
-            muteButton.value = true
+            muteButton.value = 'true'
         } else {
             throw new Error('invalid sourceSlider value: ' + sourceSlider.value)
         }
