@@ -6,9 +6,10 @@ SCRAPPING DB ADJUST FOR MANUAL ADJUST
 mic select?
 ... apparently you can also share browser tab audio
 don't demand mic as soon as page loads
+ITS LIVE!
 
 
-
+fade in/out ui
 about me and bmac page
 exporting presets page
 "are you sure you want to delete?" page
@@ -66,7 +67,6 @@ function initAnalyseAnimate(){
 
     // AUDIO SOURCE HANDLERS
     function useMuteValue(){ // reads mute value and updates based on it
-        console.log("using mute value", muteButton.value, muteButton.textContent)
         if (muteButton.value == 'true' && muteButton.textContent == "Mute"){ // check innertext to know if already muted or not. attempting to disconnect analyser when already disconnected will generate error
             muteButton.textContent = "Muted"
             analyser.disconnect(audioCtx.destination)
@@ -74,7 +74,6 @@ function initAnalyseAnimate(){
             muteButton.textContent = "Mute"
             analyser.connect(audioCtx.destination)
         }
-        console.log("after use", muteButton.value, muteButton.textContent)
     }    
 
     muteButton.addEventListener('click', function(){
