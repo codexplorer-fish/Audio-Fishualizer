@@ -1,4 +1,4 @@
-A simple audio visualizer hosted on GitHub Pages
+A simple yet powerful audio visualizer hosted on GitHub Pages
 
 This is a little project I am working on for learning purposes.
 
