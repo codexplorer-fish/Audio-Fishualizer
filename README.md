@@ -8,6 +8,8 @@ Features:
 
 - File, mic, and tab inputs
 
+- Animation in popup
+
 Limitations:
 - Completely untested on mobile
 - Audio from tab sharing is unsupported on non-chromium browsers
