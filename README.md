@@ -1,4 +1,4 @@
-![](https://github.com/codexplorer-fish/Audio-Fishualizer/blob/main/Audio_Fishualizer_Banner.jpg?raw=true)
+![](https://github.com/codexplorer-fish/Audio-Fishualizer/blob/main/Audio-Fishualizer-Banner.jpg?raw=true)
 
 A powerful little audio visualizer hosted on GitHub Pages
 
