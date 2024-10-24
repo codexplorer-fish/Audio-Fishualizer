@@ -1,3 +1,5 @@
+![](https://github.com/codexplorer-fish/Audio-Fishualizer/blob/main/Audio_Fishualizer_Banner.jpg?raw=true)
+
 A powerful little audio visualizer hosted on GitHub Pages
 
 This is a little project I am working on for learning purposes.
