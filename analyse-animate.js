@@ -14,6 +14,7 @@ prevent screen sleep checkbox
 info popup per preset
 
 exporting presets page, preset version attached! this will be complicated
+increase max potency of spin scale, for when db range creates generally low values
 way more sliders per style
 style for analysing (20-20k, log style)
 
