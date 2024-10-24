@@ -8,7 +8,7 @@ Features:
 
 - File, mic, and tab inputs
 
-- Animation in popup
+- Option to animate in popup
 
 Limitations:
 - Completely untested on mobile
