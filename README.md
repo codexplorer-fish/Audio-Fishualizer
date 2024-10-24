@@ -1,4 +1,4 @@
-A simple online audio visualiser
+A simple online audio visualizer
 
 This is a little project I am working on for learning purposes.
 
