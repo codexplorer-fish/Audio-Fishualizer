@@ -1,23 +1,21 @@
 /*
 
 Done!:
-SCRAPPING DB ADJUST FOR MANUAL ADJUST
-"edit" button
-mic select?
-... apparently you can also share browser tab audio
-don't demand mic as soon as page loads
 ITS LIVE!
 
 
+fix denied permissions handling, possibly even unsupported error handling
+
 fade in/out ui
 about me and bmac page
-exporting presets page
 "are you sure you want to delete?" page
+prevent screen sleep checkbox
 
+info popup per preset
+
+exporting presets page, preset version attached! this will be complicated
 way more sliders per style
 style for analysing (20-20k, log style)
-
-prevent screen sleep checkbox
 
 
 DONE!
