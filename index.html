@@ -98,15 +98,44 @@
             </div>
 
             <div style="grid-column: span 2">
-                about
-                <br>
+                <button id="aboutMeButton">about</button>
+            </div>
+            
+            <div style="grid-column: span 2">
                 bmac
             </div>
 
         </div>
 
         <audio id="audioElement" controls></audio>
-        <div id="focusElements" class="sidebar"></div>
+    </div>
+
+    <div id="focusAboutMe" class="focusDiv hidingVis">
+        <button id="focusAboutMeCloser">x</button>
+        <div style="margin: 20px 100px; white-space: pre-line; font-family: Lucida Console; line-height: 1.5;">
+            <h1>About</h1>
+            This is a small audio visualizer program developed in my own spare time.
+            
+            
+            <h2>Presets</h2>
+            Presets are a combination of animation style, color, and analyser style. Each makes up an important part of the fishualizing process.
+        
+            First, the analyser style modifies the analysed data, specifying parameters such as minimum and maximum frequency range.
+
+            Next, the color style selects a color for each data point recieved from the analyser.
+
+            Finally, the animation style draws something for each data point recieved from the analyser, inheriting the colors from the color style.
+
+
+            <h2>Sources</h2>
+            This program supports three methods of providing the analyser with audio:
+
+            File - A sample file is loaded by default, but a local audio file can also be loaded.
+
+            Mic - The default microphone is used. It is possible to listen to system audio via a virtual audio cable, but that requires setup on the user's end. However, if your audio driver supports a stereo mix, you are in luck! Simply set it as the default microphone and it should start fishualizing any audio your system plays. To hear a playback of the mic audio, simply unmute with the unmute button located below it. Be warned that this can cause a feedback loop if the microphone is hooked up to the system audio.
+
+            Window Share - This provides a simple way for the user the share system audio with the analyser. Share a tab, or share the entire screen. Ensure that "Also share system audio" is checked. While doing so provides the website with a video stream, <b style="font-style: italic;">THE VIDEO STREAM IS NEVER USED IN ANY WAY</b>. Because this is a static website, all data stays on your system.
+        </div>
     </div>
 
     <!-- style must be assigned in-line to not disappear when transferring to pip window -->

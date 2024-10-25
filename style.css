@@ -19,6 +19,35 @@
 
 }
 
+.focusDiv {
+    opacity: 90%;
+
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    top: 10%;
+    bottom: 10%;
+    z-index: 500;
+
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    overflow-y: scroll;
+
+    border: 2px solid rgb(189, 189, 189);
+    background-color: rgb(32, 32, 32);
+    color: rgb(255, 255, 255);
+}
+
+#focusAboutMeCloser{
+    position: fixed;
+    top: 10%;
+    right: 10%;
+    transform: translateX(calc(-100%)) translateY(2px);
+    border-radius: 0;
+    border-bottom-left-radius: 5px;
+    border: none;
+}
+
 .sidebar {
     padding: 15px;
     border-radius: 20px;
@@ -35,10 +64,6 @@
 
 .hidingVis {
     visibility: hidden;
-}
-
-.hidingDis {
-    display: none;
 }
 
 .sidebarImg {

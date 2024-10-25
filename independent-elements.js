@@ -59,6 +59,17 @@ function initAnalyserSidebarHandler(){
 }
 initAnalyserSidebarHandler()
 
+function initAboutMeHandler(){
+    aboutMeButton.addEventListener('click', () => {
+        focusAboutMe.style.visibility = "visible"
+    })
+
+    focusAboutMeCloser.addEventListener('click', () => {
+        focusAboutMe.style.visibility = "hidden"
+    })
+}
+initAboutMeHandler()
+
 function initPopupHandler(){
     let pipWindow = null
 

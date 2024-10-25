@@ -20,6 +20,10 @@ const channelButton = 0
 const audioElement = document.getElementById('audioElement')
 const audioFileInput = document.getElementById('audioUpload')
 const popupButton = document.getElementById('popup')
+const aboutMeButton = document.getElementById('aboutMeButton')
+
+const focusAboutMeCloser = document.getElementById('focusAboutMeCloser')
+const focusAboutMe = document.getElementById('focusAboutMe')
 
 const animationStyleSlider = document.getElementById('animationStyleSlider')
 const colorStyleSlider = document.getElementById('colorStyleSlider')
