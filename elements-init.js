@@ -15,7 +15,7 @@ const dynamicColorSlidersContainer = document.getElementById('dynamicColorSlider
 const dynamicAnalyserSlidersContainer = document.getElementById('dynamicAnalyserSlidersContainer')
 
 const muteButton = document.getElementById('mute')
-const sourceSlider = document.getElementById('sourceSlider')
+const sourceSelect = document.getElementById('sourceSelect')
 const channelButton = 0
 const audioElement = document.getElementById('audioElement')
 const audioFileInput = document.getElementById('audioUpload')

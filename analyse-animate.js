@@ -9,10 +9,12 @@ increase max potency of spin scale, for when db range creates generally low valu
 about me and bmac page <- pages open on click, pages close on clicking out, scrollable
 
 
+switch to <select>
+
 exporting presets page, preset version attached! this will be complicated
+info popup per preset <- something in dynamic text, somewhat complicated
 
 fix denied permissions handling, possibly even unsupported error handling
-info popup per preset <- something in dynamic text, somewhat complicated
 
 way more sliders per style
 style for analysing (20-20k, log style)
@@ -90,7 +92,7 @@ function initAnalyseAnimate(){
         useMuteValue()
     })
 
-    async function useSourceSliderValue(){
+    async function useSourceSelectValue(){
         async function setupRecStream() {
             const constraints = { audio: {
                 autoGainControl: false,
@@ -119,9 +121,9 @@ function initAnalyseAnimate(){
 
         }
 
-        // don't listen to sourceSlider while processing the source change
-        sourceSlider.removeEventListener('change', useSourceSliderValue)
-        const previousSourceSliderValue = sourceSlider.value
+        // don't listen to sourceSelect while processing the source change
+        sourceSelect.removeEventListener('change', useSourceSelectValue)
+        const previousSourceValue = sourceSelect.value
 
         // disconnect all tracks to end any existing streams 
         if (stream !== null) {
@@ -136,20 +138,20 @@ function initAnalyseAnimate(){
         }
 
         // connect new analyser source
-        if (sourceSlider.value == 0){ // FILE
+        if (sourceSelect.value == 0){ // FILE
             audioFileSource.connect(analyser)
             analyserSource = audioFileSource
             audioElement.style.display = "block"
             audioFileInput.style.display = "inline"
             muteButton.value = 'false'
-        } else if (sourceSlider.value == 1){ // MIC
+        } else if (sourceSelect.value == 1){ // MIC
             await setupRecStream()
             audioRecSource.connect(analyser)
             analyserSource = audioRecSource
             audioElement.style.display = "none"
             audioFileInput.style.display = "none"
             muteButton.value = 'true'
-        } else if (sourceSlider.value == 2){ // WINDOW
+        } else if (sourceSelect.value == 2){ // WINDOW
             await setupShareStream()
             audioShareSource.connect(analyser)
             analyserSource = audioShareSource
@@ -157,16 +159,16 @@ function initAnalyseAnimate(){
             audioFileInput.style.display = "none"
             muteButton.value = 'true'
         } else {
-            throw new Error('invalid sourceSlider value: ' + sourceSlider.value)
+            throw new Error('invalid sourceSelect value: ' + sourceSelect.value)
         }
         useMuteValue()
 
-        sourceSlider.value = previousSourceSliderValue
+        sourceSelect.value = previousSourceValue
         updateDynamicText()
-        sourceSlider.addEventListener('change', useSourceSliderValue)
+        sourceSelect.addEventListener('change', useSourceSelectValue)
     }
 
-    sourceSlider.addEventListener('change', useSourceSliderValue)
+    sourceSelect.addEventListener('change', useSourceSelectValue)
 
     audioFileInput.addEventListener('change', function(){
         // "this" refers to audioFileInput in this function
@@ -212,7 +214,7 @@ function initAnalyseAnimate(){
 
 
     // set up initial source for analyser
-    useSourceSliderValue()
+    useSourceSelectValue()
 
     // default source for file, preloaded sample mp3. RESTRICTED CROSS ORIGIN, MUST HOST ON SERVER TO WORK
     audioElement.src = "lazy-day-stylish-futuristic-chill-by-penguinmusic-pixabay.mp3"

@@ -68,7 +68,7 @@
             </div>
 
             <div id="mainAnalyser" class="dynamicTextContainer">
-                <div class="dynamicText" >Analyser</div>
+                <div class="dynamicText">Analyser</div>
                 <input type="range" min="0" max="0" value="0" class="slider" id="analyserStyleSlider" data-dynamicTextLabel="Analyser">
             </div>
 
@@ -84,10 +84,12 @@
             <div style="grid-column: span 2"></div>
 
             <div id="mainSource" style="grid-column: span 2; margin: auto;">
-                <div id="sourceSelector" class="dynamicTextContainer">
-                    <div class="dynamicText" >Source</div>
-                    <input type="range" min="0" max="2" value="0" class="slider" id="sourceSlider" data-dynamicTextLabel="Source Type" data-dynamicTextFlags="0=File,1=Microphone,2=Window Share">
-                </div>
+                <header>Source:</header>
+                <select id="sourceSelect">
+                    <option value=0>File</option>
+                    <option value=1>Mic</option>
+                    <option value=2>Window Share</option>
+                </select>
                 <button id="mute" value="false">Mute</button>
                 <br>
                 <input type="file" id="audioUpload" accept="audio/*" style="width: 150px;">
@@ -134,7 +136,7 @@
 
             Mic - The default microphone is used. It is possible to listen to system audio via a virtual audio cable, but that requires setup on the user's end. However, if your audio driver supports a stereo mix, you are in luck! Simply set it as the default microphone and it should start fishualizing any audio your system plays. To hear a playback of the mic audio, simply unmute with the unmute button located below it. Be warned that this can cause a feedback loop if the microphone is hooked up to the system audio.
 
-            Window Share - This provides a simple way for the user the share system audio with the analyser. Share a tab, or share the entire screen. Ensure that "Also share system audio" is checked. While doing so provides the website with a video stream, <b style="font-style: italic;">THE VIDEO STREAM IS NEVER USED IN ANY WAY</b>. Because this is a static website, all data stays on your system.
+            Window Share - This provides a simple way for the user the share system audio with the analyser. Share a tab, or share the entire screen. Ensure that "Also share system audio" is checked. While doing so provides the website with a video stream, <b style="font-style: italic;">THE VIDEO STREAM IS NEVER USED IN ANY WAY</b>. Moreover, ecause this is a static website, all data stays on your system.
         </div>
     </div>
 
