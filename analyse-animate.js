@@ -3,27 +3,34 @@
 Done!:
 ITS LIVE!
 
+New:
+hide dynamic sliders after 2s too (use same functions)
+increase max potency of spin scale, for when db range creates generally low values <- ez, just watch out for backwards compatability: just decrease min db lol
+
+
 
 fix denied permissions handling, possibly even unsupported error handling
 
-fade in/out ui
-about me and bmac page
-"are you sure you want to delete?" page
-prevent screen sleep checkbox
+about me and bmac page <- pages open on click, pages close on clicking out, scrollable
+"are you sure you want to delete?" page <- delete btn should call a function in indie elements and wait for response
 
-info popup per preset
-
+info popup per preset <- something in dynamic text, somewhat complicated
 exporting presets page, preset version attached! this will be complicated
-increase max potency of spin scale, for when db range creates generally low values
+
 way more sliders per style
 style for analysing (20-20k, log style)
 
+maybe:
+label tag for accessibility purposes
 
 DONE!
 
 ... unlikely:
 drop audio files?
 playlist feature?
+fade in/out ui: issues implementing, seems like a low priority issue
+prevent screen sleep checkbox <- ez if know how: only relavent for mic & no feedback audio, other souces already suppress sleep because audio will be playing on the system anyway.
+
 
 ...
 upload as extension?

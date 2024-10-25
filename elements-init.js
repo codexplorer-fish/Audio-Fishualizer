@@ -1,6 +1,5 @@
 const uiContainer = document.getElementById('uiContainer')
 const canvasEscapeContainer = document.getElementById('canvasEscapeContainer')
-const sustainAnimationPipStyle = document.getElementById('sustainAnimationPip')
 const canvas = document.getElementById('canvas1')
 
 const animationSidebarImg = document.getElementById('animationSidebarImg')

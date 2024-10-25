@@ -212,7 +212,7 @@ function getAnimationStyles() {
             }
             return [permObject, frameObject]
         }, 
-        "lineWidth.Line Width.1.200.100;spinBaseSpeed.Spin Base Speed.-10.10.2;spinScaleSpeed.Spin Scale Speed.0.15.6"]
+        "lineWidth.Line Width.1.200.100;spinBaseSpeed.Spin Base Speed.-15.15.2;spinScaleSpeed.Spin Jumpiness.0.15.6"]
 
 
     return animationStyles
@@ -350,7 +350,7 @@ function getColorStyles() {
             }
             canvasContext.fillStyle = 'hsl(' + hue + ',' + sat + '%,' + lit + '%)'
             return [permObject, frameObject]
-        }, "colorLightness.Lightness.0.100.70;colorDimSettings.Dim Settings.0.2.1.0=No Dim,1=Dim Low,2=Dim High;colorFade.Fade.0.100.0;colorRange.Color Range.-50.50.-25;colorBaseSpeed.Auto Shift Speed.-10.10.4;colorScaleSpeed.Auto Shift Scalling.0.15.6"]
+        }, "colorLightness.Lightness.0.100.70;colorDimSettings.Dim Settings.0.2.1.0=No Dim,1=Dim Low,2=Dim High;colorFade.Fade.0.100.0;colorRange.Color Range.-50.50.-25;colorBaseSpeed.Auto Shift Speed.-15.15.4;colorScaleSpeed.Auto Shift Jumpiness.0.15.6"]
 
 
     return colorStyles

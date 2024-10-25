@@ -1,3 +1,20 @@
+function initSidebarTimedVisibilityHandler(){
+    let hideTimeout
+    function hideScreen() {
+        if (!presetNameInput.matches(':focus')){ // only hide if text input is not selected (don't want to hide the ui while user is typing)
+            uiContainer.style.visibility = "hidden"
+            animationSidebar.style.visibility = "hidden"
+            colorSidebar.style.visibility = "hidden"
+            analyserSidebar.style.visibility = "hidden"
+        }
+    }
+    document.addEventListener("mousemove", () => {
+        uiContainer.style.visibility = "visible"
+        clearTimeout(hideTimeout)
+        hideTimeout = setTimeout(hideScreen, 2000);
+    })
+}
+initSidebarTimedVisibilityHandler()
 
 function initWindowHandler(){
     document.addEventListener("mouseleave", () => {
@@ -8,18 +25,6 @@ function initWindowHandler(){
     document.addEventListener("mouseenter", () => {
         
         uiContainer.style.visibility = "visible"
-    })
-
-    let hideTimeout
-    function hideScreen() {
-        if (!presetNameInput.matches(':focus')){ // only hide if text input is not selected (don't want to hide the ui while user is typing)
-            uiContainer.style.visibility = "hidden"
-        }
-    }
-    document.addEventListener("mousemove", () => {
-        uiContainer.style.visibility = "visible"
-        clearTimeout(hideTimeout)
-        hideTimeout = setTimeout(hideScreen, 2000);
     })
 }
 initWindowHandler()
