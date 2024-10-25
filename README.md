@@ -19,7 +19,5 @@ Limitations:
 To Do:
 - Fix denied permissions handling
 - Export and import presets
-- About page for the site
-- Prevent sleep checkbox
-- Confirmation while deleting presets
+- Confirmation while deleting presets, or an undo function
 - And last but not least: WAY MORE STYLES!
