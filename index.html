@@ -116,27 +116,40 @@
         <button id="focusAboutMeCloser">x</button>
         <div style="margin: 20px 100px; white-space: pre-line; font-family: Lucida Console; line-height: 1.5;">
             <h1>About</h1>
-            This is a small audio visualizer program developed in my own spare time.
+            This is a powerful little audio visualizer program developed in my own spare time.
             
             
             <h2>Presets</h2>
             Presets are a combination of animation style, color, and analyser style. Each makes up an important part of the fishualizing process.
-        
-            First, the analyser style modifies the analysed data, specifying parameters such as minimum and maximum frequency range.
+            <ul>
+                <li>First, the analyser style modifies the analysed data, specifying parameters such as minimum and maximum frequency range.</li>
 
-            Next, the color style selects a color for each data point recieved from the analyser.
+                <li>Next, the color style selects a color for each data point recieved from the analyser.</li>
 
-            Finally, the animation style draws something for each data point recieved from the analyser, inheriting the colors from the color style.
-
+                <li>Finally, the animation style draws something for each data point recieved from the analyser, inheriting the colors from the color style.</li>
+            </ul>
 
             <h2>Sources</h2>
             This program supports three methods of providing the analyser with audio:
+            <ul>
+                <li>File - A sample file is loaded by default, but a local audio file can also be loaded.</li>
 
-            File - A sample file is loaded by default, but a local audio file can also be loaded.
+                <li>Mic - The default microphone is used. It is possible to listen to system audio via a virtual audio cable, but that requires setup on the user's end. However, if your audio driver supports a stereo mix, you are in luck! Simply set it as the default microphone and it should start fishualizing any audio your system plays. To hear a playback of the mic audio, simply unmute with the unmute button located below it. <span style="font-style: italic;">Be warned: unmuting can create a feedback loop if the microphone is hooked up to the system audio.</span></li>
 
-            Mic - The default microphone is used. It is possible to listen to system audio via a virtual audio cable, but that requires setup on the user's end. However, if your audio driver supports a stereo mix, you are in luck! Simply set it as the default microphone and it should start fishualizing any audio your system plays. To hear a playback of the mic audio, simply unmute with the unmute button located below it. Be warned that this can cause a feedback loop if the microphone is hooked up to the system audio.
+                <li>Window Share - This provides a simple way for the user the share system audio with the analyser. Share a tab, or share the entire screen. Ensure that "Also share system audio" is checked. While doing so provides the website with a video stream, the data cannot leave your system because this is a static website. Moreover, within the program, <b style="font-size: larger;">THE VIDEO STREAM IS NEVER ACCESSED OR USED IN ANY WAY.</b></li>
+            </ul>
+            
+            <h2>Credits</h2>
+            All programming is done by me, <a style="color:aqua" href="https://github.com/codexplorer-fish" target="_blank" rel="noopener noreferrer">codexplorer-fish</a>.
 
-            Window Share - This provides a simple way for the user the share system audio with the analyser. Share a tab, or share the entire screen. Ensure that "Also share system audio" is checked. While doing so provides the website with a video stream, <b style="font-style: italic;">THE VIDEO STREAM IS NEVER USED IN ANY WAY</b>. Moreover, ecause this is a static website, all data stays on your system.
+            Sample audio file: <span style="font-style: italic;">Lazy Day</span> by <a style="color:aqua" href="https://pixabay.com/users/penguinmusic-24940186/" target="_blank" rel="noopener noreferrer">penguinmusic</a> at pixbay
+
+            This project would not be have been possible without the following resources:
+            <ul>
+                <li><a style="color:aqua" href="https://stackoverflow.com/" target="_blank" rel="noopener noreferrer">Stack Overflow</a></li>
+                <li><a style="color:aqua" href="https://developer.mozilla.org/en-US/docs/Web" target="_blank" rel="noopener noreferrer">MDN Web Docs</a></li>
+                <li><a style="color:aqua" href="https://www.youtube.com/watch?v=VXWvfrmpapI" target="_blank" rel="noopener noreferrer">JavaScript Audio CRASH COURSE For Beginners</a></li>
+            </ul>
         </div>
     </div>
 

@@ -7,12 +7,11 @@ New:
 hide dynamic sliders after 2s too (use same functions)
 increase max potency of spin scale, for when db range creates generally low values <- ez, just watch out for backwards compatability: just decrease min db lol
 about me and bmac page <- pages open on click, pages close on clicking out, scrollable
-
-
 switch to <select>
 
+
 exporting presets page, preset version attached! this will be complicated
-info popup per preset <- something in dynamic text, somewhat complicated
+info popup per preset <- something in dynamic text, somewhat complicated... use <title> ?
 
 fix denied permissions handling, possibly even unsupported error handling
 
