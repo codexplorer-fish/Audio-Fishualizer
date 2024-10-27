@@ -59,6 +59,20 @@ function applyPreset(presetStr) {
     }
 }
 
+function reconstructFlagsString(flagsArr){
+    let newFlagsStr = null
+    flagsArr.forEach((flag, index) => {
+        flagValue = flag.split("=")[1]
+        newFlag = index + "=" + flagValue
+        if (newFlagsStr === null) {
+            newFlagsStr = newFlag
+        } else {
+            newFlagsStr += "," + newFlag
+        }
+    })
+    return newFlagsStr
+}
+
 /* DOESN'T WORK + NOT USED  
 function applySave(presetsStr) {
     let presets = presetsStr.split("`")
@@ -137,31 +151,38 @@ if (presets === null || presets === ""){
 presetSaver.addEventListener('click', () => {
     const dynamicSliders = dynamicAnimationSliders.concat(dynamicColorSliders).concat(dynamicAnalyserSliders)
     const pendingPresetStr = stringifyPreset(staticValueElements, dynamicSliders)
-    if (presets) {
-        presets += "`"
-    }
-    presets += pendingPresetStr
+
+    // insert preset at index above slider value
+    const addPresetAt = presetSlider.value + 1
+    const presetsArr = presets.split("`")
+    presetsArr.splice(addPresetAt, 0, pendingPresetStr)
+    presets = stringifySave(presetsArr)
 
     // update on preset change
     localStorage.setItem("presets", presets)
-    presetSlider.max = presets.split("`").length - 1 // -1 so at length 1, selects index 0
-    presetSlider.value = presetSlider.max
+    presetSlider.max = presets.split("`").length - 1 // -1 so at length 1, selects max 0
+    presetSlider.value++
 
-    // append to dynamic text flags
+    // insert new dynamic text flag
     const currentFlags = presetSlider.getAttribute("data-dynamicTextFlags")
-    const nextIndex = currentFlags.split(",").length
+    const addFlagAt = presetSlider.value // already adjusted up by 1
     let updatedFlags
-    if (currentFlags != "0=None" && currentFlags != "") {
-        updatedFlags = currentFlags + "," + nextIndex + "=" + presetNameInput.value
-    } else {
+    if (currentFlags == "0=None" || currentFlags == "") {
         updatedFlags = "0=" + presetNameInput.value
+    } else {
+        const currentFlagsArr = currentFlags.split(",")
+        currentFlagsArr.splice(addFlagAt, 0, addFlagAt + "=" + presetNameInput.value)
+        updatedFlags = reconstructFlagsString(currentFlagsArr)
     }
     presetSlider.setAttribute("data-dynamicTextFlags", updatedFlags)
     localStorage.setItem("presetLabels", updatedFlags)
 
+    // save name for alert before clearing
+    newFlagName = presetNameInput.value
     presetNameInput.value = ""
     
     handlePresetChange()
+    customAlert("\u2713 Added: " + newFlagName)
 })
 
 presetReplacer.addEventListener('click', () => {
@@ -176,6 +197,10 @@ presetReplacer.addEventListener('click', () => {
         presetsArr[replaceAt] = pendingPresetStr
         presets = stringifySave(presetsArr)
 
+        // for the alert
+        const previousFlag = presetSlider.getAttribute("data-dynamicTextFlags").split(",")[replaceAt]
+        let newFlag = null
+
         // save to local storage
         localStorage.setItem("presets", presets)
 
@@ -184,21 +209,10 @@ presetReplacer.addEventListener('click', () => {
             const currentFlags = presetSlider.getAttribute("data-dynamicTextFlags")
             const flagsArr = currentFlags.split(",")
             
-            if (replaceAt == 0) {
-                flagsArr[replaceAt] = replaceAt + "=" + presetNameInput.value
-            } else {
-                flagsArr[replaceAt] = "," + replaceAt + "=" + presetNameInput.value
-            }
+            newFlag = replaceAt + "=" + presetNameInput.value
+            flagsArr[replaceAt] = replaceAt + "=" + presetNameInput.value
 
-            // reconstruct flags string
-            let newFlagsStr = null
-            flagsArr.forEach((flag) => {
-                if (newFlagsStr === null) {
-                    newFlagsStr = flag
-                } else {
-                    newFlagsStr += "," + flag
-                }
-            })
+            newFlagsStr = reconstructFlagsString(flagsArr)
 
             // save new flags
             presetSlider.setAttribute("data-dynamicTextFlags", newFlagsStr)
@@ -208,6 +222,12 @@ presetReplacer.addEventListener('click', () => {
         }
 
         handlePresetChange()
+
+        if (newFlag === null) {
+            customAlert("\u2713 Updated: " + String(previousFlag).split("=")[1])
+        } else {
+            customAlert("\u2713 Replaced: " + String(newFlag).split("=")[1])
+        }
     }
 })
 
@@ -222,12 +242,12 @@ presetDeleter.addEventListener('click', () => {
 
         // update on preset change
         localStorage.setItem("presets", presets)
-        presetSlider.max = presets.split("`").length - 1 // -1 so at length 1, selects index 0
+        presetSlider.max = presets.split("`").length - 1 // -1 so at length 1, selects max 0
 
         // splice corresponding index in preset slider's label flags
         const currentFlags = presetSlider.getAttribute("data-dynamicTextFlags")
         const flagsArr = currentFlags.split(",")
-        flagsArr.splice(affectedSince, 1)
+        const deletedFlag = flagsArr.splice(affectedSince, 1)
 
         // move down the indexes of all above data-dynamicTextFlags
         flagsArr.forEach((flag, index) => {
@@ -238,16 +258,8 @@ presetDeleter.addEventListener('click', () => {
                 flagsArr[index] = newFlag
             }
         })
-        // reconstruct flags string
-        let newFlagsStr = null
-        flagsArr.forEach((flag) => {
-            if (newFlagsStr === null) {
-                newFlagsStr = flag
-            } else {
-                newFlagsStr += "," + flag
-            }
-        })
-
+        
+        newFlagsStr = reconstructFlagsString(flagsArr)
 
         // if no presets set a flag for 0="no presets"
         if (presets === "") {
@@ -259,5 +271,6 @@ presetDeleter.addEventListener('click', () => {
         localStorage.setItem("presetLabels", newFlagsStr)
 
         handlePresetChange()
+        customAlert("\u2713 Deleted: " + String(deletedFlag).split("=")[1])
     }
 })

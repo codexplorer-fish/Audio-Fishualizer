@@ -2,6 +2,8 @@ const uiContainer = document.getElementById('uiContainer')
 const canvasEscapeContainer = document.getElementById('canvasEscapeContainer')
 const canvas = document.getElementById('canvas1')
 
+const alertDiv = document.getElementById('alertDiv')
+
 const animationSidebarImg = document.getElementById('animationSidebarImg')
 const colorSidebarImg = document.getElementById('colorSidebarImg')
 const analyserSidebarImg = document.getElementById('analyserSidebarImg')

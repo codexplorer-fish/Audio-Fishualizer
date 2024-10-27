@@ -8,19 +8,21 @@ hide dynamic sliders after 2s too (use same functions)
 increase max potency of spin scale, for when db range creates generally low values <- ez, just watch out for backwards compatability: just decrease min db lol
 about me and bmac page <- pages open on click, pages close on clicking out, scrollable
 switch to <select>
+"are you sure you want to delete?" page, shift to bypass, with undo functionality
 
+
+popup/alert for saving and replacing too. say: ctrl-z to undo
 
 exporting presets page, preset version attached! this will be complicated
-info popup per preset <- something in dynamic text, somewhat complicated... use <title> ?
 
 fix denied permissions handling, possibly even unsupported error handling
 
 way more sliders per style
 style for analysing (20-20k, log style)
 
+
 maybe:
 label tag for accessibility purposes
-"are you sure you want to delete?" page, shift to bypass, <- delete btn should call a function in indie elements and wait for response, or just have an undo button
 
 
 DONE!
@@ -30,7 +32,7 @@ drop audio files?
 playlist feature?
 fade in/out ui: issues implementing, seems like a low priority issue
 prevent screen sleep checkbox <- ez if know how: only relavent for mic & no feedback audio, other souces already suppress sleep because audio will be playing on the system anyway.
-
+info popup per preset <- something in dynamic text, somewhat complicated... use <title>: if important enough, should convey in label.
 
 ...
 upload as extension?
@@ -73,7 +75,7 @@ function initAnalyseAnimate(){
 
     // AUDIO SOURCE HANDLERS
     function useMuteValue(){ // reads mute value and updates based on it
-        if (muteButton.value == 'true' && muteButton.textContent == "Mute"){ // check innertext to know if already muted or not. attempting to disconnect analyser when already disconnected will generate error
+        if (muteButton.value == 'true' && muteButton.textContent == "Mute"){ // check textContent to know if already muted or not. attempting to disconnect analyser when already disconnected will generate error
             muteButton.textContent = "Muted"
             analyser.disconnect(audioCtx.destination)
         } else if (muteButton.value == 'false' && muteButton.textContent == "Muted") {

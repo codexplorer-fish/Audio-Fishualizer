@@ -102,17 +102,12 @@
             <div style="grid-column: span 2">
                 <button id="aboutMeButton">about</button>
             </div>
-            
-            <div style="grid-column: span 2">
-                bmac
-            </div>
-
         </div>
 
         <audio id="audioElement" controls></audio>
     </div>
 
-    <div id="focusAboutMe" class="focusDiv hidingVis">
+    <div id="focusAboutMe" class="hidingVis">
         <button id="focusAboutMeCloser">x</button>
         <div style="margin: 20px 100px; white-space: pre-line; font-family: Lucida Console; line-height: 1.5;">
             <h1>About</h1>
@@ -153,6 +148,8 @@
         </div>
     </div>
 
+    <div id="alertDiv" class="hidingVis"></div>
+
     <!-- style must be assigned in-line to not disappear when transferring to pip window -->
     <div 
     id="canvasEscapeContainer" 
@@ -171,6 +168,7 @@
 
     <script src="elements-init.js"></script>
     <script src="independent-elements.js"></script>
+    <script src="customAlert.js"></script>
     <script src="styles.js"></script>
     <script src="dynamic-text.js"></script>
     <script src="analyse-animate.js"></script>
