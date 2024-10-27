@@ -11,7 +11,7 @@ function initSidebarTimedVisibilityHandler(){
     document.addEventListener("mousemove", () => {
         uiContainer.style.visibility = "visible"
         clearTimeout(hideTimeout)
-        hideTimeout = setTimeout(hideScreen, 2000);
+        hideTimeout = setTimeout(hideScreen, 3000);
     })
 }
 initSidebarTimedVisibilityHandler()
