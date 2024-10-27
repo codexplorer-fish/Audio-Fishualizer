@@ -19,10 +19,14 @@ fix denied permissions handling, possibly even unsupported error handling
 
 way more sliders per style
 style for analysing (20-20k, log style)
+circle cone, long triangles in a circle, no or constant gap throughout
 
+add/remove from background, basically lets you stack styles
++ opacity setting, blend setting
 
 maybe:
 label tag for accessibility purposes
+"you have unsaved changes"
 
 
 DONE!
