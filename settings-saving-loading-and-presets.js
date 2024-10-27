@@ -121,6 +121,9 @@ function handlePresetChange() {
 }
 presetSlider.addEventListener('input', handlePresetChange)
 
+
+
+
 function init(){
     presetSlider.max = presets.split("`").length - 1
     presetSlider.value = localStorage.getItem("presetIndex")
@@ -146,6 +149,14 @@ if (presets === null || presets === ""){
     init()
 }
 
+let savesHistory = [presets]
+let flagsHistory = [presetSlider.getAttribute("data-dynamicTextFlags")]
+let saveIndexHistory = [presetSlider.value]
+let savesHistoryIndex = 0
+// adding - append to when: saving, replacing, deleting
+// rolling back - 0 check, decrease index, apply  !set save index
+// rolling forwards - max check, increase index, apply !set save index
+// truncating - delete all in front when: saving, replacing, deleting
 
 
 presetSaver.addEventListener('click', () => {

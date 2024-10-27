@@ -14,6 +14,9 @@ switch to <select>
 popup/alert for saving and replacing too. say: ctrl-z to undo
 
 exporting presets page, preset version attached! this will be complicated
+- scrollable focus div, text inputs: copy save, load save, copy preset, load preset. Use same functions already used.
+- change format, v1 as last value. append to copy inputs, and splice out and read when loading. then modify save as necessary.
+
 
 fix denied permissions handling, possibly even unsupported error handling
 
@@ -23,10 +26,14 @@ circle cone, long triangles in a circle, no or constant gap throughout
 
 add/remove from background, basically lets you stack styles
 + opacity setting, blend setting
+- same as presets slider, but all are applied at the same time.
+- background image, video?, or color.
+- outline for styles? OR JUST MAKE SLIGHTLY BIGGER OUTLINE
+... then BACKGROUND PRESET SAVE/LOAD :,)
 
 maybe:
 label tag for accessibility purposes
-"you have unsaved changes"
+save last unset preset for refresh
 
 
 DONE!

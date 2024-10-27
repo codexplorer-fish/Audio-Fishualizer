@@ -75,10 +75,10 @@
             <div style="grid-column: span 2">
                 <input type="text" id="presetNameInput" size="12" placeholder="new preset name">
                 <br>
-                <button id="presetSaver">Save New</button>
-                <button id="presetDeleter">Delete</button>
+                <button id="presetSaver" class="defaultButton">Save New</button>
+                <button id="presetDeleter" class="defaultButton">Delete</button>
                 <br>
-                <button id="presetReplacer">Replace</button>
+                <button id="presetReplacer" class="defaultButton">Replace</button>
             </div>
 
             <div style="grid-column: span 2"></div>
@@ -90,17 +90,17 @@
                     <option value=1>Mic</option>
                     <option value=2>Window Share</option>
                 </select>
-                <button id="mute" value="false">Mute</button>
+                <button id="mute" value="false" class="defaultButton">Mute</button>
                 <br>
                 <input type="file" id="audioUpload" accept="audio/*" style="width: 150px;">
             </div>
 
             <div style="grid-column: span 2">
-                <button id="popup">picture-in-picture</button>
+                <button id="popup" class="defaultButton">picture-in-picture</button>
             </div>
 
             <div style="grid-column: span 2">
-                <button id="aboutMeButton">about</button>
+                <button id="aboutMeButton" class="hyperlikeButton">about</button>
             </div>
         </div>
 
@@ -108,7 +108,7 @@
     </div>
 
     <div id="focusAboutMe" class="hidingVis">
-        <button id="focusAboutMeCloser">x</button>
+        <button id="focusAboutMeCloser" class="hyperlikeButton"><h1>x</h1></button>
         <div style="margin: 20px 100px; white-space: pre-line; font-family: Lucida Console; line-height: 1.5;">
             <h1>About</h1>
             This is a powerful little audio visualizer program developed in my own spare time.

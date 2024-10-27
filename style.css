@@ -56,9 +56,10 @@
     position: fixed;
     top: 10%;
     right: 10%;
-    transform: translateX(calc(-100%)) translateY(2px);
+    transform: translateX(calc(-120%)) translateY(2px);
     border-radius: 0;
     border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     border: none;
 }
 
@@ -152,18 +153,34 @@ header {
 }
 
 
-button {
+.defaultButton {
     z-index: 200;
     border-radius: 5px;
 }
 
-button:hover {
+.defaultButton:hover {
     background-color: lightblue;
 }
 
-button:active {
+.defaultButton:active {
     color: lightblue;
     background-color: darkblue;
+}
+
+.hyperlikeButton {
+    z-index: 200;
+    background: none;
+    border: none;
+    color:lightgray;
+}
+
+.hyperlikeButton:hover {
+    text-decoration-line: underline;
+    color:lightblue;
+}
+
+.hyperlikeButton:active {
+    color: darkblue;
 }
 
 #animationSliderContainer {
