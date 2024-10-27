@@ -175,7 +175,6 @@ header {
 }
 
 .hyperlikeButton:hover {
-    text-decoration-line: underline;
     color:lightblue;
 }
 
