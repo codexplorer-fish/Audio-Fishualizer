@@ -4,7 +4,7 @@ Done!:
 ITS LIVE!
 
 New:
-hide dynamic sliders after 2s too (use same functions)
+hide dynamic sliders after 2s too (use same functions) < reverted. now only hides if ui container is not hovered
 increase max potency of spin scale, for when db range creates generally low values <- ez, just watch out for backwards compatability: just decrease min db lol
 about me and bmac page <- pages open on click, pages close on clicking out, scrollable
 switch to <select>

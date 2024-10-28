@@ -119,70 +119,102 @@ function handlePresetChange() {
     }
     updateDynamicText()
 }
-presetSlider.addEventListener('input', handlePresetChange)
 
 
+function saveToHistory(save, flags, index) {
+    savesHistory.push(save)
+    flagsHistory.push(flags)
+    presetIndexHistory.push(index)
+    historyIndex++
+}
 
+function truncateHistory() {
+    console.log(flagsHistory)
+    const index = historyIndex + 1 // second argument of slice is exclusive
+    savesHistory = savesHistory.slice(0, index)
+    flagsHistory = flagsHistory.slice(0, index)
+    presetIndexHistory = presetIndexHistory.slice(0, index)
+}
 
-function init(){
-    presetSlider.max = presets.split("`").length - 1
-    presetSlider.value = localStorage.getItem("presetIndex")
+function useHistory(savesHistory, flagsHistory, presetIndexHistory, index){
+    presets = savesHistory[index]
+    presetSlider.setAttribute('data-dynamicTextFlags', flagsHistory[index])
+
+    // update on preset and flag change
+    localStorage.setItem("presets", presets)
+    presetSlider.max = presets.split("`").length - 1 // -1 so at length 1, selects max 0
+    presetSlider.value = presetIndexHistory[index] // value has to be set after max is adjusted
+    localStorage.setItem("presetLabels", presetSlider.getAttribute('data-dynamicTextFlags'))
 
     handlePresetChange()
+
+    customAlert("\u2713 rolled to capture #" + index)
 }
 
-let presets = localStorage.getItem("presets")
-
-if (presets === null || presets === ""){
-    if (defaultPresets && defaultPresetLabels){
-        localStorage.setItem("presets", defaultPresets)
-        localStorage.setItem("presetLabels", defaultPresetLabels)
-        presets = localStorage.getItem("presets")
-        presetSlider.setAttribute("data-dynamicTextFlags", localStorage.getItem("presetLabels"))
-    } else {
-        presets = ""
-        presetSlider.setAttribute("data-dynamicTextFlags", "0=None")
+document.addEventListener('keydown', (event) => {
+    if (event.code == 'KeyZ' && event.ctrlKey && !event.shiftKey) { // rollback from history
+        if (savesHistory.length == flagsHistory.length && flagsHistory.length == presetIndexHistory.length) {
+            if (historyIndex != 0) {
+                historyIndex--
+                useHistory(savesHistory, flagsHistory, presetIndexHistory, historyIndex)
+                presetNameInput.value == "" // preset input auto focuses and rolls back on its own. undo this.
+            }
+        } else {
+            throw new Error("history array lengths are not synced: " + savesHistory.length + ", " + flagsHistory.length + ", " + presetIndexHistory.length)
+        }
+    } else if ((event.code == 'KeyY' && event.ctrlKey) || (event.code == 'KeyZ' && event.ctrlKey && event.shiftKey)) { // redo from history
+        if (savesHistory.length == flagsHistory.length && flagsHistory.length == presetIndexHistory.length) {
+            if (savesHistory.length - 1 != historyIndex) {
+                historyIndex++
+                useHistory(savesHistory, flagsHistory, presetIndexHistory, historyIndex)
+                presetNameInput.value == "" // preset input auto focuses and rolls back on its own. undo this.
+            }
+        } else {
+            throw new Error("history array lengths are not synced: " + savesHistory.length + ", " + flagsHistory.length + ", " + presetIndexHistory.length)
+        }
     }
-    init()
-} else {
-    presetSlider.setAttribute("data-dynamicTextFlags", localStorage.getItem("presetLabels"))
-    init()
-}
-
-let savesHistory = [presets]
-let flagsHistory = [presetSlider.getAttribute("data-dynamicTextFlags")]
-let saveIndexHistory = [presetSlider.value]
-let savesHistoryIndex = 0
-// adding - append to when: saving, replacing, deleting
-// rolling back - 0 check, decrease index, apply  !set save index
-// rolling forwards - max check, increase index, apply !set save index
-// truncating - delete all in front when: saving, replacing, deleting
+})
 
 
 presetSaver.addEventListener('click', () => {
     const dynamicSliders = dynamicAnimationSliders.concat(dynamicColorSliders).concat(dynamicAnalyserSliders)
     const pendingPresetStr = stringifyPreset(staticValueElements, dynamicSliders)
 
-    // insert preset at index above slider value
-    const addPresetAt = presetSlider.value + 1
-    const presetsArr = presets.split("`")
-    presetsArr.splice(addPresetAt, 0, pendingPresetStr)
-    presets = stringifySave(presetsArr)
+    // insert preset at index above slider value. if no presets exist, insert at index 0 instead
+    function calcAddAt(){
+        if (presets === "") {
+            return 0
+        } else {
+            return Number(presetSlider.value) + 1
+        }
+    }
+    const addAt = calcAddAt()
+
+    function calcNewPresets(){
+        if (presets === "") {
+            return pendingPresetStr
+        } else { // splice and split breaks if presets is '', or similar, as it will assume that it is a valid preset
+            const presetsArr = presets.split("`")
+            presetsArr.splice(addAt, 0, pendingPresetStr)
+            return stringifySave(presetsArr)
+        }
+    }
+    presets = calcNewPresets()
+    
 
     // update on preset change
     localStorage.setItem("presets", presets)
     presetSlider.max = presets.split("`").length - 1 // -1 so at length 1, selects max 0
-    presetSlider.value++
+    presetSlider.value ++
 
     // insert new dynamic text flag
     const currentFlags = presetSlider.getAttribute("data-dynamicTextFlags")
-    const addFlagAt = presetSlider.value // already adjusted up by 1
     let updatedFlags
     if (currentFlags == "0=None" || currentFlags == "") {
         updatedFlags = "0=" + presetNameInput.value
     } else {
         const currentFlagsArr = currentFlags.split(",")
-        currentFlagsArr.splice(addFlagAt, 0, addFlagAt + "=" + presetNameInput.value)
+        currentFlagsArr.splice(addAt, 0, addAt + "=" + presetNameInput.value)
         updatedFlags = reconstructFlagsString(currentFlagsArr)
     }
     presetSlider.setAttribute("data-dynamicTextFlags", updatedFlags)
@@ -194,6 +226,9 @@ presetSaver.addEventListener('click', () => {
     
     handlePresetChange()
     customAlert("\u2713 Added: " + newFlagName)
+
+    truncateHistory()
+    saveToHistory(presets, presetSlider.getAttribute("data-dynamicTextFlags"), presetSlider.value)
 })
 
 presetReplacer.addEventListener('click', () => {
@@ -239,6 +274,9 @@ presetReplacer.addEventListener('click', () => {
         } else {
             customAlert("\u2713 Replaced: " + String(newFlag).split("=")[1])
         }
+
+        truncateHistory()
+        saveToHistory(presets, presetSlider.getAttribute("data-dynamicTextFlags"), presetSlider.value)
     }
 })
 
@@ -283,5 +321,45 @@ presetDeleter.addEventListener('click', () => {
 
         handlePresetChange()
         customAlert("\u2713 Deleted: " + String(deletedFlag).split("=")[1])
+
+        truncateHistory()
+        saveToHistory(presets, presetSlider.getAttribute("data-dynamicTextFlags"), presetSlider.value)
     }
 })
+
+
+presetSlider.addEventListener('input', handlePresetChange)
+
+function init(){
+    presetSlider.max = presets.split("`").length - 1
+    presetSlider.value = localStorage.getItem("presetIndex")
+
+    handlePresetChange()
+}
+
+let presets = localStorage.getItem("presets")
+
+if (presets === null || presets === ""){
+    if (defaultPresets && defaultPresetLabels){
+        localStorage.setItem("presets", defaultPresets)
+        localStorage.setItem("presetLabels", defaultPresetLabels)
+        presets = localStorage.getItem("presets")
+        presetSlider.setAttribute("data-dynamicTextFlags", localStorage.getItem("presetLabels"))
+    } else {
+        presets = ""
+        presetSlider.setAttribute("data-dynamicTextFlags", "0=None")
+    }
+    init()
+} else {
+    presetSlider.setAttribute("data-dynamicTextFlags", localStorage.getItem("presetLabels"))
+    init()
+}
+
+let savesHistory = [presets]
+let flagsHistory = [presetSlider.getAttribute("data-dynamicTextFlags")]
+let presetIndexHistory = [presetSlider.value]
+let historyIndex = 0
+// adding - append to when: saving, replacing, deleting
+// rolling back - 0 check, decrease index, apply  !set save index
+// rolling forwards - max check, increase index, apply !set save index
+// truncating - delete all in front when: saving, replacing, deleting
