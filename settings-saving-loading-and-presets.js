@@ -320,7 +320,7 @@ presetDeleter.addEventListener('click', () => {
         localStorage.setItem("presetLabels", newFlagsStr)
 
         handlePresetChange()
-        customAlert("\u2713 Deleted: " + String(deletedFlag).split("=")[1])
+        customAlert("\u2713 Deleted: " + String(deletedFlag).split("=")[1] + " (ctrl + z to undo)")
 
         truncateHistory()
         saveToHistory(presets, presetSlider.getAttribute("data-dynamicTextFlags"), presetSlider.value)
