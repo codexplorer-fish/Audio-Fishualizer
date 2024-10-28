@@ -119,7 +119,7 @@
     background: rgb(31, 31, 31);
 
     grid-template-columns: 50px auto;
-    z-index: 200;
+    z-index: 300;
     position: absolute;
     font-family: Lucida Console;
     color: white;
@@ -154,7 +154,7 @@ header {
 
 
 .defaultButton {
-    z-index: 200;
+    z-index: 300;
     border-radius: 5px;
 }
 
@@ -168,7 +168,7 @@ header {
 }
 
 .hyperlikeButton {
-    z-index: 200;
+    z-index: 300;
     background: none;
     border: none;
     color:lightgray;
@@ -180,15 +180,4 @@ header {
 
 .hyperlikeButton:active {
     color: darkblue;
-}
-
-#animationSliderContainer {
-    font-size: small;
-    text-align: center;
-    font-family: Lucida Console;
-    color: white;
-    position: absolute;
-    z-index: 200;
-    top: 200px;
-    left: 200px;
 }

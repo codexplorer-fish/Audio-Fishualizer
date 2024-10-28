@@ -9,9 +9,9 @@ increase max potency of spin scale, for when db range creates generally low valu
 about me and bmac page <- pages open on click, pages close on clicking out, scrollable
 switch to <select>
 "are you sure you want to delete?" page, shift to bypass, with undo functionality
-
-
 popup/alert for saving and replacing too. say: ctrl-z to undo
+
+
 
 exporting presets page, preset version attached! this will be complicated
 - scrollable focus div, text inputs: copy save, load save, copy preset, load preset. Use same functions already used.
@@ -24,12 +24,18 @@ way more sliders per style
 style for analysing (20-20k, log style)
 circle cone, long triangles in a circle, no or constant gap throughout
 
+time offset function for files
+scroll when overflow
+
 add/remove from background, basically lets you stack styles
 + opacity setting, blend setting
 - same as presets slider, but all are applied at the same time.
 - background image, video?, or color.
 - outline for styles? OR JUST MAKE SLIGHTLY BIGGER OUTLINE
 ... then BACKGROUND PRESET SAVE/LOAD :,)
+
+keyboard mode
+mobile mode
 
 maybe:
 label tag for accessibility purposes
