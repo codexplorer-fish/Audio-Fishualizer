@@ -19,5 +19,4 @@ Limitations:
 To Do:
 - Fix denied permissions handling
 - Export and import presets
-- Confirmation while deleting presets, or an undo function
 - And last but not least: WAY MORE STYLES!
