@@ -24,7 +24,7 @@ function getSliderRequestsReader() {
                 flags = requestsArray[i].split(".")
                 const slider = document.createElement("input")
                 slider.type = "range"
-                slider.class = "dynamicSlider"
+                slider.class = "dynamicSlider sidebarSliderLabel"
                 slider.id = flags[0]
                 slider.setAttribute("data-dynamicTextLabel", flags[1])
                 slider.min = flags[2]

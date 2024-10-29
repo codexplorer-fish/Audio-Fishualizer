@@ -27,6 +27,7 @@ circle cone, long triangles in a circle, no or constant gap throughout
 time offset function for files
 scroll when overflow
 
+move local storage handlers to own file
 add/remove from background, basically lets you stack styles
 + opacity setting, blend setting
 - same as presets slider, but all are applied at the same time.

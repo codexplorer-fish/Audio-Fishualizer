@@ -9,12 +9,12 @@
     
 </head>
 <body>
-    <canvas id="canvas1" style="z-index:100; position:absolute; width:100%; height:100%"></canvas>
+    <canvas id="canvas1" style="z-index:100; position:absolute; width:100%; height:100%; top:0"></canvas> <!-- top:0 or canvas can be physically placed lower when appended to the dom (from picture-in-picture)-->
     <div id="background"></div>
     <div id="uiContainer">
         <div id="mainSidebar" class="sidebar">
 
-            <div id="mainPreset" class="dynamicTextContainer" style="grid-column: span 2; margin: auto;">
+            <div id="mainPreset" class="dynamicTextContainer sidebarSliderLabel" style="grid-column: span 2; margin: auto;">
                 <!--- ^^^margin auto for center align--->
                 <header class="dynamicText">Preset</header>
                 <input type="range" min="0" max="0" class="slider" id="presetSlider" data-dynamicTextLabel="Preset" data-dynamicTextFlags="0=None">
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <div id="mainAnimation" class="dynamicTextContainer">
+            <div id="mainAnimation" class="dynamicTextContainer sidebarSliderLabel">
                 <div class="dynamicText" >Animation</div>
                 <input type="range" min="0" max="2" value="0" class="slider" id="animationStyleSlider" data-dynamicTextLabel="Animation">
             </div>
@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div id="mainColor" class="dynamicTextContainer">
+            <div id="mainColor" class="dynamicTextContainer sidebarSliderLabel">
                 <div class="dynamicText" >Color</div>
                 <input type="range" min="0" max="1" value="0" class="slider" id="colorStyleSlider" data-dynamicTextLabel="Color">
             </div>
@@ -48,26 +48,26 @@
                 <div class="sidebarImgHoverExtension"></div>
                 <div id="analyserSidebar" class="sidebar collapsingSidebar hidingVis">
                     <div id="dynamicAnalyserSlidersContainer"></div>
-                    <div class="dynamicTextContainer">
+                    <div class="dynamicTextContainer sidebarSliderLabel">
                         <div class="dynamicText">Data Values</div>
                         <input type="range" min="5" max="15" value="12" class="slider" id="analyserFftValueSlider" data-dynamicTextLabel="Data Values">
                     </div>
-                    <div class="dynamicTextContainer">
+                    <div class="dynamicTextContainer sidebarSliderLabel">
                         <div class="dynamicText">Db Range Min</div>
                         <input type="range" min="-130" max="0" value="-100" class="slider" id="analyserDbMinSlider" data-dynamicTextLabel="Db Range Min">
                     </div>
-                    <div class="dynamicTextContainer">
+                    <div class="dynamicTextContainer sidebarSliderLabel">
                         <div class="dynamicText">Db Range Max</div>
                         <input type="range" min="-100" max="30" value="-30" class="slider" id="analyserDbMaxSlider" data-dynamicTextLabel="Db Range Max">
                     </div>
-                    <div class="dynamicTextContainer">
+                    <div class="dynamicTextContainer sidebarSliderLabel">
                         <div class="dynamicText">Animation Smoothness</div>
                         <input type="range" min="0" max="100" value="64" class="slider" id="analyserSmoothnessSlider" data-dynamicTextLabel="Animation Smoothness">
                     </div>
                 </div>
             </div>
 
-            <div id="mainAnalyser" class="dynamicTextContainer">
+            <div id="mainAnalyser" class="dynamicTextContainer sidebarSliderLabel">
                 <div class="dynamicText">Analyser</div>
                 <input type="range" min="0" max="0" value="0" class="slider" id="analyserStyleSlider" data-dynamicTextLabel="Analyser">
             </div>
@@ -81,7 +81,9 @@
                 <button id="presetReplacer" class="defaultButton">Replace</button>
             </div>
 
-            <div style="grid-column: span 2"></div>
+            <div style="grid-column: span 2">
+                <button id="importExportButton" class="defaultButton">import/export</button>
+            </div>
 
             <div id="mainSource" style="grid-column: span 2; margin: auto;">
                 <header>Source:</header>
@@ -107,11 +109,48 @@
         <audio id="audioElement" controls></audio>
     </div>
 
-    <div id="focusAboutMe" class="hidingVis">
-        <button id="focusAboutMeCloser" class="hyperlikeButton"><h1>x</h1></button>
+    <div id="focusImportExport" class="focusDiv hidingVis">
+        <button id="focusImportExportCloser" class="focusCloser hyperlikeButton"><h1>x</h1></button>
+        <div style="margin: 20px 100px; white-space: pre-line; font-family: Lucida Console; line-height: 1;">
+            
+            <div style="white-space: normal;">
+                <h1>Presets</h1>
+                <br>
+                <div id="importExportPreset" class="dynamicTextContainer">
+                    <header class="dynamicText">Select Preset</header>
+                    <input type="range" min="0" max="0" class="slider" id="importExportPresetSlider" data-dynamicTextLabel="Select Preset" data-dynamicTextFlags="0=None">
+                </div>
+            </div>
+
+            <div style="font-size: larger;">Export Preset</div>
+            <div id="exportPresetDiv" style="font-size: smaller; overflow-x: scroll;"></div>
+            <button id="exportPresetButton" class="defaultButton">Copy Text</button>
+
+
+
+            <div style="font-size: larger;">Import Preset</div>
+            <div style="font-size: small;">Emulates the Save button.</div>
+            <textarea id="importPresetTextarea" size="12" placeholder="preset code"></textarea>
+            <button id="importPresetButton" class="defaultButton">Apply</button>
+
+            <br><br><br>
+
+            <h1>Save !under construction!</h1>
+            <div style="font-size: larger;">Import/Export Save</div>
+            <div style="font-size: small;">Current Save. Replace and click Apply to save:</div>
+            <textarea id="importExportSave" size="12" placeholder="save code">!under construction!</textarea>
+            <button id="exportSaveButton" class="defaultButton">Copy Text</button>
+            <button id="importSaveButton" class="defaultButton">Apply</button>
+
+            <br><br><br>
+        </div>
+    </div>
+
+    <div id="focusAboutMe" class="focusDiv hidingVis">
+        <button id="focusAboutMeCloser" class="focusCloser hyperlikeButton"><h1>x</h1></button>
         <div style="margin: 20px 100px; white-space: pre-line; font-family: Lucida Console; line-height: 1.5;">
             <h1>About</h1>
-            This is a powerful little audio visualizer program developed in my own spare time.
+            This is a powerful little audio visualizer program developed in my spare time.
             
             
             <h2>Presets</h2>
@@ -172,6 +211,7 @@
     <script src="styles.js"></script>
     <script src="dynamic-text.js"></script>
     <script src="analyse-animate.js"></script>
-    <script src="settings-saving-loading-and-presets.js"></script>
+    <script src="presets-saves-and-local-storage.js"></script>
+    <script src="import-export.js"></script>
 </body>
 </html>

@@ -13,10 +13,9 @@
     height: 100%;
 }
 
-.dynamicTextContainer {
+.sidebarSliderLabel {
     max-width: 150px;
     word-break: break-word;
-
 }
 
 #alertDiv {
@@ -33,7 +32,7 @@
     color: rgb(255, 255, 255);
 }
 
-#focusAboutMe {
+.focusDiv {
     opacity: 80%;
 
     position: absolute;
@@ -52,7 +51,7 @@
     color: rgb(255, 255, 255);
 }
 
-#focusAboutMeCloser{
+.focusCloser{
     position: fixed;
     top: 10%;
     right: 10%;
