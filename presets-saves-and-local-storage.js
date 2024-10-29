@@ -17,6 +17,19 @@ function getCurrentPreset(){
     return stringifyPreset(staticValueElements, dynamicSliders)
 }
 
+function getPresets(){
+    return presets
+}
+
+function changeSave(presetsStr, sliderFlags){
+    localStorage.setItem("presets", presetsStr)
+    localStorage.setItem("presetLabels", sliderFlags)
+    presets = presetsStr
+    presetSlider.setAttribute("data-dynamicTextFlags", sliderFlags)
+    presetSlider.max = presets.split("`").length - 1
+    handlePresetChange()
+}
+
 function stringifySetting(valueElement) {
     return valueElement.id + "," + valueElement.value
 }
@@ -123,12 +136,14 @@ function handlePresetChange() {
         // without preset, can't set other variables
     }
     
-    function updateImportExportPresetSlider(){
+    function updateImportExportElements(){
         importExportPresetSlider.max = presetSlider.max
         importExportPresetSlider.value = presetSlider.value
         importExportPresetSlider.setAttribute("data-dynamicTextFlags", presetSlider.getAttribute("data-dynamicTextFlags"))
+
+        importExportSaveTextarea.value = addSaveMetadata(getPresets())
     }
-    updateImportExportPresetSlider()
+    updateImportExportElements()
 
     updateDynamicText()
 }

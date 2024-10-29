@@ -130,16 +130,20 @@
 
             <div style="font-size: larger;">Import Preset</div>
             <textarea id="importPresetTextarea" size="12" placeholder="preset code"></textarea>
-            <button id="importPresetButton" class="defaultButton">Apply</button>
+            <button id="importPresetButton" class="defaultButton">Save New</button>
 
             <br><br><br>
 
-            <h1>Save !under construction!</h1>
+            <h1>Save</h1>
             <div style="font-size: larger;">Import/Export Save</div>
             <div style="font-size: small;">Current Save. Replace and click Apply to save:</div>
-            <textarea id="importExportSave" size="12" placeholder="save code">!under construction!</textarea>
-            <button id="exportSaveButton" class="defaultButton">Copy Text</button>
-            <button id="importSaveButton" class="defaultButton">Apply</button>
+            <div style="white-space: normal;">
+                <textarea id="importExportSaveTextarea" size="12" placeholder="save code" style="width: 100%; height: 200px;"></textarea>
+                <br>
+                <button id="exportSaveButton" class="defaultButton">Copy Text</button>
+                <button id="importSaveButton" class="defaultButton">Apply</button>
+                <button id="exportClearTextarea" class="defaultButton">Clear</button>
+            </div>
 
             <br><br><br>
         </div>
@@ -210,6 +214,7 @@
     <script src="styles.js"></script>
     <script src="dynamic-text.js"></script>
     <script src="analyse-animate.js"></script>
+    <script src="import-export-metadata-wrappers.js"></script>
     <script src="presets-saves-and-local-storage.js"></script>
     <script src="import-export.js"></script>
 </body>
