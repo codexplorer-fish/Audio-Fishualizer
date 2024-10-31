@@ -7,6 +7,8 @@ Features:
 
 - Highly customizable presets
 
+- Import and export presets
+
 - File, mic, and tab inputs
 
 - Option to animate in popup
@@ -18,6 +20,5 @@ Limitations:
 
 To Do:
 - Fix denied permissions handling
-- Export and import presets
 - Run multiple presets on top of each other
 - And last but not least: WAY MORE STYLES!
