@@ -30,7 +30,7 @@ function initImportExport(){
                 customAlert("Error: Clipboard-write permissions denied")
             } else {
                 navigator.clipboard.writeText(text).then(() => {
-                    customAlert("Copied: " + name)
+                    customAlert("\u2713 Copied to clipboard: " + name)
                 })
             }
         })
@@ -38,32 +38,61 @@ function initImportExport(){
 
     importPresetButton.addEventListener('click', () => {
         const [preset, presetName, version] = extractPresetMetadata(importPresetTextarea.value)
-        importPresetTextarea.value = ""
-        savePreset(preset, presetName)
-        customAlert("Added: " + presetName)
+
+        if (!presetFormatCheck(preset)) {
+            customAlert("Error: Invalid preset format")
+        } else if (flagsCharCheck(presetName)) {
+            customAlert("Error: Invalid preset name")
+        } else {
+            // >version control here<. check if valid version syntax, convert outdated versions
+
+            importPresetTextarea.value = ""
+            savePreset(preset, presetName)
+            customAlert("\u2713 Added: " + presetName)
+        }
     })
     
     // save controls
     exportSaveButton.addEventListener('click', () => {
-        const presetsStr = getPresets()
-        const saveStr = addSaveMetadata(presetsStr)
-
-        navigator.permissions.query({name:'clipboard-write'}).then((result) => {
-            if (result.state == 'denied'){
-                customAlert("Error: Clipboard-write permissions denied")
-            } else {
-                navigator.clipboard.writeText(saveStr).then(() => {
-                    customAlert("Save Copied")
+        function writeToClipboard(string) {
+            return new Promise((resolve, reject) => {
+                navigator.permissions.query({name:'clipboard-write'}).then((result) => {
+                    if (result.state == 'denied'){
+                        reject()
+                    } else {
+                        navigator.clipboard.writeText(string)
+                        resolve()
+                    }
                 })
-            }
-        })
+            })
+        }
+
+        const saveStr = importExportSaveTextarea.value
+        const [presetsStr, sliderFlags] = extractSaveMetadata(saveStr)
+
+        if (!saveFormatCheck(presetsStr)){
+            writeToClipboard(saveStr).then(
+                () => {customAlert("Warning: Exported save is invalid")},
+                () => {customAlert("Error: Clipboard-write permission denied")}
+            )
+        } else {
+            writeToClipboard(saveStr).then(
+                () => {customAlert("\u2713 Save copied to clipboard")},
+                () => {customAlert("Error: Clipboard-write permission denied")}
+            )
+        }
     })
     
     importSaveButton.addEventListener('click', () => {
         const saveStr = importExportSaveTextarea.value
         const [presetsStr, sliderFlags] = extractSaveMetadata(saveStr)
-        changeSave(presetsStr, sliderFlags)
-        customAlert("Save Applied")
+
+        if (saveFormatCheck(presetsStr)){
+            changeSave(presetsStr, sliderFlags)
+            customAlert("\u2713 Save Applied")
+        } else {
+            customAlert("Error: Invalid save format")
+        }
     })
 
     exportClearTextarea.addEventListener('click', () => {

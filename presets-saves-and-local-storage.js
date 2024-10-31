@@ -1,12 +1,3 @@
-const staticValueElements = [ // all static elements with a .value attribute that want their value to be saved
-    animationStyleSlider, 
-    colorStyleSlider, 
-    analyserStyleSlider,
-    analyserFftValueSlider,
-    analyserDbMinSlider,
-    analyserDbMaxSlider,
-    analyserSmoothnessSlider
-]
 
 
 const defaultPresets = "animationStyleSlider,0;colorStyleSlider,0;analyserStyleSlider,0;analyserFftValueSlider,12;colorLightness,80;colorDimSettings,1;colorFade,0;colorRange,-10;colorShift,322;minHz,5;maxHz,1;compressFactor,3`animationStyleSlider,2;colorStyleSlider,0;analyserStyleSlider,0;analyserFftValueSlider,12;lineWidth,100;spinBaseSpeed,2;spinScaleSpeed,6;colorLightness,50;colorDimSettings,2;colorFade,0;colorRange,0;colorShift,89;minHz,5;maxHz,1;compressFactor,3`animationStyleSlider,1;colorStyleSlider,0;analyserStyleSlider,0;analyserFftValueSlider,12;colorLightness,50;colorDimSettings,0;colorFade,0;colorRange,5;colorShift,25;minHz,5;maxHz,1;compressFactor,3`animationStyleSlider,0;colorStyleSlider,1;analyserStyleSlider,0;analyserFftValueSlider,12;colorLightness,80;colorDimSettings,1;colorFade,0;colorRange,-25;colorBaseSpeed,4;colorScaleSpeed,6;minHz,5;maxHz,1;compressFactor,3`animationStyleSlider,2;colorStyleSlider,1;analyserStyleSlider,0;analyserFftValueSlider,12;lineWidth,100;spinBaseSpeed,2;spinScaleSpeed,6;colorLightness,50;colorDimSettings,0;colorFade,0;colorRange,-25;colorBaseSpeed,4;colorScaleSpeed,6;minHz,5;maxHz,1;compressFactor,-1"
@@ -254,6 +245,12 @@ function savePreset(preset, presetName) {
 }
 
 presetSaver.addEventListener('click', () => {
+    if (blacklistedCharCheck(presetNameInput.value)) {
+        // spacing is completely broken for symbols for some reason. I can't get '; , = `' to display as, e.g. ';   ,   =   `', no matter how hard I try. 
+        customAlert('Error: Preset name may not include the following: \r\n ; , = `')
+        return
+    }
+    
     const preset = getCurrentPreset()
     const name = presetNameInput.value
     presetNameInput.value = ""
@@ -261,6 +258,12 @@ presetSaver.addEventListener('click', () => {
 })
 
 presetReplacer.addEventListener('click', () => {
+    if (blacklistedCharCheck(presetNameInput.value)) {
+        // spacing is completely broken for symbols for some reason. I can't get ';,=`' to display as, e.g. ';   ,   =   `', no matter how hard I try. 
+        customAlert('Error: Preset name may not include the following: \r\n ; , = `')
+        return
+    }
+
     if (presets) {
         const pendingPresetStr = getCurrentPreset()
 

@@ -15,8 +15,8 @@ window.addEventListener('blur', () => {
 
 window.addEventListener('focus', () => {
     if (alertPauseableTimeout !== null){
-        alertPauseableTimeout.continue()
-        alertPauseableTimeoutHalfTime.continue()
+        alertPauseableTimeout.resume()
+        alertPauseableTimeoutHalfTime.resume()
     }
     setTimeout(() => {
         delayedFocusState = true
@@ -25,27 +25,30 @@ window.addEventListener('focus', () => {
 
 // alert with custom css. It dims (50% opacity) and then hides. However, timers pause if unfocused. 
 async function customAlert(text){
-    const date = new Date
     function getPauseableTimeout(callback, delay){
+        function pause() {
+            remaining -= Date.now() - lastStart
+            clearTimeout(timeoutID)
+        }
+        function resume() {
+            if (!timeoutCleared){
+                lastStart = Date.now()
+                timeoutID = setTimeout(callback, remaining)
+            }
+        }
+        function clear () {
+            timeoutCleared = true
+            clearTimeout(timeoutID)
+        }
+
         let remaining = delay
-        let lastStart = date.getDate()
+        let lastStart = Date.now()
         let timeoutID = setTimeout(callback, delay)
         let timeoutCleared = false
         return {
-            pause: () => {
-                remaining -= date.getDate() - lastStart
-                clearTimeout(timeoutID)
-            },
-            continue: () => {
-                if (!timeoutCleared){
-                    lastStart = date.getDate()
-                    timeoutID = setTimeout(callback, delay)
-                }
-            },
-            clear: () => {
-                timeoutCleared = true
-                clearTimeout(timeoutID)
-            }
+            pause,
+            resume,
+            clear
         }
     }
     

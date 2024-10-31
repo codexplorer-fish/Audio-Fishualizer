@@ -19,6 +19,9 @@
 }
 
 #alertDiv {
+    z-index: 1000;
+
+    white-space: pre-line;
     opacity: 80%;
     font-size: larger;
     margin: auto;
