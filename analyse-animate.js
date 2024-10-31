@@ -10,22 +10,20 @@ about me and bmac page <- pages open on click, pages close on clicking out, scro
 switch to <select>
 "are you sure you want to delete?" page, shift to bypass, with undo functionality
 popup/alert for saving and replacing too. say: ctrl-z to undo
-
-
-
 exporting presets page, preset version attached! this will be complicated
 - scrollable focus div, text inputs: copy save, load save, copy preset, load preset. Use same functions already used.
 - change format, v1 as last value. append to copy inputs, and splice out and read when loading. then modify save as necessary.
 
 
-fix denied permissions handling, possibly even unsupported error handling
+fix denied permissions handling, possibly even unsupported error handling - user input, user permission denial, application permission denial
+
+scroll when overflow
 
 way more sliders per style
 style for analysing (20-20k, log style)
 circle cone, long triangles in a circle, no or constant gap throughout
 
-time offset function for files
-scroll when overflow
+time offset function for files... playlist system too?
 
 move local storage handlers to own file
 add/remove from background, basically lets you stack styles
@@ -112,77 +110,127 @@ function initAnalyseAnimate(){
     })
 
     async function useSourceSelectValue(){
-        async function setupRecStream() {
+        async function recStreamSetup() {
             const constraints = { audio: {
                 autoGainControl: false,
                 echoCancellation: false,
                 noiseSuppression: true,
                 deviceId: {exact: 'default'}
-            } };
-            await navigator.mediaDevices.getUserMedia(constraints).then((_stream) => { 
-                audioRecSource = audioCtx.createMediaStreamSource(_stream)
-                stream = _stream
-            })
+            } }
+            try {
+                await navigator.mediaDevices.getUserMedia(constraints).then((_stream) => { 
+                    audioRecSource = audioCtx.createMediaStreamSource(_stream)
+                    stream = _stream
+                })
+            } catch (e) {
+                if (e.name == "NotAllowedError"){
+                    return "NotAllowedError"
+                } else {
+                    throw e
+                }
+            }
         }
 
-        async function setupShareStream() {
+        async function shareStreamSetup() {
             const constraints = {
                 audio: {
                     autoGainControl: false,
                     echoCancellation: false,
                     noiseSuppression: true,
                 }
-            };
-            await navigator.mediaDevices.getDisplayMedia(constraints).then((_stream) => { 
-                audioShareSource = audioCtx.createMediaStreamSource(_stream)
-                stream = _stream
-            })
-
+            }
+            try {
+                await navigator.mediaDevices.getDisplayMedia(constraints).then((_stream) => { 
+                    audioShareSource = audioCtx.createMediaStreamSource(_stream)
+                    stream = _stream
+                })
+            } catch (e) {
+                if (e.name == "NotAllowedError"){
+                    return "NotAllowedError"
+                } else if (e.name == "InvalidStateError"){
+                    return "InvalidStateError"
+                } else {
+                    throw e
+                }
+            }
         }
 
-        // don't listen to sourceSelect while processing the source change
-        sourceSelect.removeEventListener('change', useSourceSelectValue)
-        const previousSourceValue = sourceSelect.value
-
-        // disconnect all tracks to end any existing streams 
-        if (stream !== null) {
-            stream.getTracks().forEach(function(track) {
-                track.stop();
-            });
-        }
-
-        // disconnect current analyser source if it exists
-        if (analyserSource !== null) {
-            analyserSource.disconnect(analyser)
-        }
-
-        // connect new analyser source
-        if (sourceSelect.value == 0){ // FILE
+        function fileSourceSetup(){
             audioFileSource.connect(analyser)
             analyserSource = audioFileSource
             audioElement.style.display = "block"
             audioFileInput.style.display = "inline"
             muteButton.value = 'false'
-        } else if (sourceSelect.value == 1){ // MIC
-            await setupRecStream()
+        }
+
+        function micSourceSetup(){
             audioRecSource.connect(analyser)
             analyserSource = audioRecSource
             audioElement.style.display = "none"
             audioFileInput.style.display = "none"
             muteButton.value = 'true'
-        } else if (sourceSelect.value == 2){ // WINDOW
-            await setupShareStream()
+        }
+
+        function shareSourceSetup(){
             audioShareSource.connect(analyser)
             analyserSource = audioShareSource
             audioElement.style.display = "none"
             audioFileInput.style.display = "none"
             muteButton.value = 'true'
-        } else {
-            throw new Error('invalid sourceSelect value: ' + sourceSelect.value)
         }
+
+        function disconnectSource(){
+            // don't listen to sourceSelect while processing the source change
+            sourceSelect.removeEventListener('change', useSourceSelectValue)
+
+            // disconnect all tracks to end any existing streams 
+            if (stream !== null) {
+                stream.getTracks().forEach(function(track) {
+                    track.stop();
+                });
+            }
+
+            // disconnect current analyser source if it exists. it won't exist on the first run
+            if (analyserSource !== null) {
+                analyserSource.disconnect(analyser)
+            }
+        }
+
+        async function reconnectSource(){
+            // connect new analyser source
+            if (sourceSelect.value == 0){ // FILE
+                fileSourceSetup()
+            } else if (sourceSelect.value == 1){ // MIC
+                const error = await recStreamSetup()
+                if (error == "NotAllowedError"){
+                    customAlert("Error: Microphone permission denied")
+                    fileSourceSetup() // set up as file source instead
+                    sourceSelect.value = 0
+                } else {
+                    micSourceSetup()
+                }
+            } else if (sourceSelect.value == 2){ // WINDOW
+                const error = await shareStreamSetup()
+                if (error == "NotAllowedError"){
+                    customAlert("Error: Screen share permission denied")
+                    fileSourceSetup() // set up as file source instead
+                    sourceSelect.value = 0
+                } else if (error == "InvalidStateError") {
+                    customAlert("Error: Audio not enabled in share")
+                    fileSourceSetup() // set up as file source instead
+                    sourceSelect.value = 0
+                } else {
+                    shareSourceSetup()
+                }
+            } else {
+                throw new Error('invalid sourceSelect value: ' + sourceSelect.value)
+            }
+        }
+        disconnectSource()
+        await reconnectSource()
+
         useMuteValue()
 
-        sourceSelect.value = previousSourceValue
         updateDynamicText()
         sourceSelect.addEventListener('change', useSourceSelectValue)
     }
