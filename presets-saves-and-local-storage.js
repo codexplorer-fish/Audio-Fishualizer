@@ -245,7 +245,7 @@ function savePreset(preset, presetName) {
 }
 
 presetSaver.addEventListener('click', () => {
-    if (blacklistedCharCheck(presetNameInput.value)) {
+    if (savesCharCheck(presetNameInput.value)) {
         // spacing is completely broken for symbols for some reason. I can't get '; , = `' to display as, e.g. ';   ,   =   `', no matter how hard I try. 
         customAlert('Error: Preset name may not include the following: \r\n ; , = `')
         return
@@ -258,7 +258,7 @@ presetSaver.addEventListener('click', () => {
 })
 
 presetReplacer.addEventListener('click', () => {
-    if (blacklistedCharCheck(presetNameInput.value)) {
+    if (savesCharCheck(presetNameInput.value)) {
         // spacing is completely broken for symbols for some reason. I can't get ';,=`' to display as, e.g. ';   ,   =   `', no matter how hard I try. 
         customAlert('Error: Preset name may not include the following: \r\n ; , = `')
         return
