@@ -1,7 +1,7 @@
 
 let alertPauseableTimeout = null
 let alertPauseableTimeoutHalfTime = null
-let delayedFocusState = false // tracks focus state, delayed by a little bit
+let delayedFocusState = true // tracks focus state, delayed by a little bit
 
 window.addEventListener('blur', () => {
     if (alertPauseableTimeout !== null){

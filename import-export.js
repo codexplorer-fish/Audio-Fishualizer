@@ -24,8 +24,15 @@ function initImportExport(){
     exportPresetButton.addEventListener('click', () => {    
         const text = addPresetMetadata(getCurrentPreset(), presetSlider.value)
         const name = text.split(';').at(-2)
-        navigator.clipboard.writeText(text).then(() => {
-            customAlert("Copied: " + name)
+
+        navigator.permissions.query({name:'clipboard-write'}).then((result) => {
+            if (result.state == 'denied'){
+                customAlert("Error: Clipboard-write permissions denied")
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    customAlert("Copied: " + name)
+                })
+            }
         })
     })
 
@@ -40,8 +47,15 @@ function initImportExport(){
     exportSaveButton.addEventListener('click', () => {
         const presetsStr = getPresets()
         const saveStr = addSaveMetadata(presetsStr)
-        navigator.clipboard.writeText(saveStr).then(() => {
-            customAlert("Save Copied")
+
+        navigator.permissions.query({name:'clipboard-write'}).then((result) => {
+            if (result.state == 'denied'){
+                customAlert("Error: Clipboard-write permissions denied")
+            } else {
+                navigator.clipboard.writeText(saveStr).then(() => {
+                    customAlert("Save Copied")
+                })
+            }
         })
     })
     

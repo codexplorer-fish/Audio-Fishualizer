@@ -104,19 +104,29 @@ function initPopupHandler(){
         if (pipWindow) { // if already picture-in-picture
             handlePipClose()
         } else {
-            pipWindow = await documentPictureInPicture.requestWindow({
-                disallowReturnToOpener: true,
-                perferInitialWindowPlacement: true,
-            })
-            pipWindow.name = "pipWindow"
+            try {
+                pipWindow = await documentPictureInPicture.requestWindow({
+                    disallowReturnToOpener: true,
+                    perferInitialWindowPlacement: true,
+                })
 
-            pipWindow.addEventListener("pagehide", handlePipClose)
-            pipWindow.addEventListener("resize", handlePipResize)        
+                // else, if documentPictureInPicture doesn't throw:
+                pipWindow.name = "pipWindow"
 
-            canvasEscapeContainer.append(canvas)
-            pipWindow.document.body.append(canvasEscapeContainer)
+                pipWindow.addEventListener("pagehide", handlePipClose)
+                pipWindow.addEventListener("resize", handlePipResize)        
 
-            canvasEscapeContainer.style.display = "inline"
+                canvasEscapeContainer.append(canvas)
+                pipWindow.document.body.append(canvasEscapeContainer)
+
+                canvasEscapeContainer.style.display = "inline"
+            } catch (e) {
+                if (e.name == "NotAllowedError") {
+                    customAlert("Error: picture-in-picture permissions denied")
+                } else {
+                    throw e
+                }
+            }
         }
     })
 }
