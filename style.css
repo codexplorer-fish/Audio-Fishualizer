@@ -19,6 +19,7 @@
 }
 
 #alertDiv {
+    position: absolute;
     z-index: 1000;
 
     white-space: pre-line;
