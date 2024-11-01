@@ -134,7 +134,7 @@ initPopupHandler()
 
 function initWindowResizeHandler() {
     window.addEventListener('resize', () => {
-        canvasWin = canvas.ownerDocument.defaultView
+        const canvasWin = canvas.ownerDocument.defaultView
         if (canvasWin.name != "pipWindow") { // only resize if canvas is not in the pip window
             canvas.width = window.innerWidth
             canvas.height = window.innerHeight

@@ -13,11 +13,14 @@ popup/alert for saving and replacing too. say: ctrl-z to undo
 exporting presets page, preset version attached! this will be complicated
 - scrollable focus div, text inputs: copy save, load save, copy preset, load preset. Use same functions already used.
 - change format, v1 as last value. append to copy inputs, and splice out and read when loading. then modify save as necessary.
-
-
 fix denied permissions handling, possibly even unsupported error handling - user input, user permission denial, application permission denial
 
-scroll when overflow
+
+
+scroll when overflow - resize main sidebar, then scroll; snap to floor sidebar (bottom = 0), then scroll
+
+crop focus divs and remove audio controls margins
+if mobile mode, toggle hiddeness if only doc is clicked
 
 way more sliders per style
 style for analysing (20-20k, log style)
@@ -33,8 +36,8 @@ add/remove from background, basically lets you stack styles
 - outline for styles? OR JUST MAKE SLIGHTLY BIGGER OUTLINE
 ... then BACKGROUND PRESET SAVE/LOAD :,)
 
-keyboard mode
-mobile mode
+keyboard mode - a way to open the sidebars
+mobile mode - only clicks are registered, not mousemove. think about it. Also, focusdiv margins need to be cropped
 
 maybe:
 label tag for accessibility purposes

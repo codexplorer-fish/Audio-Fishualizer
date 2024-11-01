@@ -36,36 +36,6 @@
     color: rgb(255, 255, 255);
 }
 
-.focusDiv {
-    opacity: 80%;
-
-    position: absolute;
-    left: 10%;
-    right: 10%;
-    top: 10%;
-    bottom: 10%;
-    z-index: 500;
-
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    overflow-y: scroll;
-
-    border: 2px solid rgb(189, 189, 189);
-    background-color: rgb(32, 32, 32);
-    color: rgb(255, 255, 255);
-}
-
-.focusCloser{
-    position: fixed;
-    top: 10%;
-    right: 10%;
-    transform: translateX(calc(-120%)) translateY(2px);
-    border-radius: 0;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border: none;
-}
-
 .sidebar {
     padding: 15px;
     border-radius: 20px;
@@ -132,15 +102,6 @@
 }
 
 
-#audioElement {
-    position: absolute;
-    width: 50%;
-    left: 25%;
-    bottom: 3%;
-
-    z-index: 200;
-}
-
 header {
     font-size: large;
 }
@@ -183,4 +144,83 @@ header {
 
 .hyperlikeButton:active {
     color: darkblue;
+}
+
+@media screen and (min-width: 0px) {
+    #audioElement {
+        width: 90%;
+        left: 5%;
+        bottom: 3%;
+    }
+    
+    .focusDivShell {
+        inset: 1%;
+    }
+    
+    .focusCloser{
+        top: 1%;
+        right: 1%;
+    }
+
+    .focusDiv {
+        margin: 20px 20px;
+    }
+}
+
+@media screen and (min-width: 700px) {
+    #audioElement {
+        width: 50%;
+        left: 25%;
+        bottom: 3%;
+    }
+    
+    .focusDivShell {
+        inset: 10%;
+    }
+
+    .focusCloser{
+        top: 10%;
+        right: 10%;
+    }
+
+    .focusDiv {
+        margin: 20px 100px;
+    }
+}
+
+#audioElement {
+    position: absolute;
+    bottom: 3%;
+
+    z-index: 200;
+}
+
+.focusDiv {
+    white-space: pre-line;
+    font-family: Lucida Console;
+    line-height: 1;
+}
+
+.focusDivShell {
+    opacity: 80%;
+
+    position: absolute;
+    z-index: 500;
+
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    overflow-y: scroll;
+
+    border: 2px solid rgb(189, 189, 189);
+    background-color: rgb(32, 32, 32);
+    color: rgb(255, 255, 255);
+}
+
+.focusCloser{
+    position: fixed;
+    transform: translateX(calc(-120%)) translateY(2px);
+    border-radius: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: none;
 }

@@ -109,9 +109,9 @@
         <audio id="audioElement" controls></audio>
     </div>
 
-    <div id="focusImportExport" class="focusDiv hidingVis">
+    <div id="focusImportExport" class="focusDivShell hidingVis">
         <button id="focusImportExportCloser" class="focusCloser hyperlikeButton"><h1>x</h1></button>
-        <div style="margin: 20px 100px; white-space: pre-line; font-family: Lucida Console; line-height: 1;">
+        <div class="focusDiv">
             
             <div style="white-space: normal;">
                 <h1>Presets</h1>
@@ -149,9 +149,9 @@
         </div>
     </div>
 
-    <div id="focusAboutMe" class="focusDiv hidingVis">
+    <div id="focusAboutMe" class="focusDivShell hidingVis">
         <button id="focusAboutMeCloser" class="focusCloser hyperlikeButton"><h1>x</h1></button>
-        <div style="margin: 20px 100px; white-space: pre-line; font-family: Lucida Console; line-height: 1.5;">
+        <div class="focusDiv">
             <h1>About</h1>
             This is a powerful little audio visualizer program developed in my spare time.
             
@@ -207,6 +207,7 @@
         width: 100%;
         height: 100%;">
     </div>
+    <script src="sidebar-positioning.js"></script>
 
     <script src="elements-init.js"></script>
     <script src="customAlert.js"></script>
