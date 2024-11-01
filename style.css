@@ -4,6 +4,12 @@
 
 }
 
+/*on mobile, page will scroll as long as divs exceed page dimensions, even if they individually have overflow-y:hidden; */
+html, body {
+    overflow-y:hidden;
+    height:100%;
+}
+
 #background {
     position: absolute;
     top: 0;
@@ -156,11 +162,6 @@ header {
     .focusDivShell {
         inset: 1%;
     }
-    
-    .focusCloser{
-        top: 1%;
-        right: 1%;
-    }
 
     .focusDiv {
         margin: 20px 20px;
@@ -176,11 +177,6 @@ header {
     
     .focusDivShell {
         inset: 10%;
-    }
-
-    .focusCloser{
-        top: 10%;
-        right: 10%;
     }
 
     .focusDiv {
@@ -210,6 +206,7 @@ header {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     overflow-y: scroll;
+    overflow-x: hidden;
 
     border: 2px solid rgb(189, 189, 189);
     background-color: rgb(32, 32, 32);
@@ -217,8 +214,12 @@ header {
 }
 
 .focusCloser{
-    position: fixed;
-    transform: translateX(calc(-120%)) translateY(2px);
+    /*position at top right corner. for some reason right:0; doesn't work*/
+    top: 0;
+    margin-left: 100%;
+    transform: translateX(-100%);
+
+    position: sticky;
     border-radius: 0;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
