@@ -22,9 +22,6 @@
 
             <div id="animationSidebarImg" class="sidebarImg">
                 <div class="sidebarImgHoverExtension"></div>
-                <div id="animationSidebar" class="sidebar collapsingSidebar hidingVis">
-                    <div id="dynamicAnimationSlidersContainer"></div>
-                </div>
             </div>
 
             <div id="mainAnimation" class="dynamicTextContainer sidebarSliderLabel">
@@ -34,9 +31,6 @@
 
             <div id="colorSidebarImg" class="sidebarImg">
                 <div class="sidebarImgHoverExtension"></div>
-                <div id="colorSidebar" class="sidebar collapsingSidebar hidingVis">
-                    <div id="dynamicColorSlidersContainer"></div>
-                </div>
             </div>
 
             <div id="mainColor" class="dynamicTextContainer sidebarSliderLabel">
@@ -46,25 +40,6 @@
 
             <div id="analyserSidebarImg" class="sidebarImg">
                 <div class="sidebarImgHoverExtension"></div>
-                <div id="analyserSidebar" class="sidebar collapsingSidebar hidingVis">
-                    <div id="dynamicAnalyserSlidersContainer"></div>
-                    <div class="dynamicTextContainer sidebarSliderLabel">
-                        <div class="dynamicText">Data Values</div>
-                        <input type="range" min="5" max="15" value="12" class="slider" id="analyserFftValueSlider" data-dynamicTextLabel="Data Values">
-                    </div>
-                    <div class="dynamicTextContainer sidebarSliderLabel">
-                        <div class="dynamicText">Db Range Min</div>
-                        <input type="range" min="-130" max="0" value="-100" class="slider" id="analyserDbMinSlider" data-dynamicTextLabel="Db Range Min">
-                    </div>
-                    <div class="dynamicTextContainer sidebarSliderLabel">
-                        <div class="dynamicText">Db Range Max</div>
-                        <input type="range" min="-100" max="30" value="-30" class="slider" id="analyserDbMaxSlider" data-dynamicTextLabel="Db Range Max">
-                    </div>
-                    <div class="dynamicTextContainer sidebarSliderLabel">
-                        <div class="dynamicText">Animation Smoothness</div>
-                        <input type="range" min="0" max="100" value="64" class="slider" id="analyserSmoothnessSlider" data-dynamicTextLabel="Animation Smoothness">
-                    </div>
-                </div>
             </div>
 
             <div id="mainAnalyser" class="dynamicTextContainer sidebarSliderLabel">
@@ -107,6 +82,37 @@
         </div>
 
         <audio id="audioElement" controls></audio>
+
+        <div id="animationSidebar" class="sidebar collapsingSidebar hidingVis">
+            <div id="dynamicAnimationSlidersContainer"></div>
+        </div>
+
+        <div id="colorSidebar" class="sidebar collapsingSidebar hidingVis">
+            <div id="dynamicColorSlidersContainer"></div>
+        </div>
+
+        <div id="analyserSidebar" class="sidebar collapsingSidebar hidingVis">
+            <div id="dynamicAnalyserSlidersContainer"></div>
+            <div class="dynamicTextContainer sidebarSliderLabel">
+                <div class="dynamicText">Data Values</div>
+                <input type="range" min="5" max="15" value="12" class="slider" id="analyserFftValueSlider" data-dynamicTextLabel="Data Values">
+            </div>
+            <br>
+            <div class="dynamicTextContainer sidebarSliderLabel">
+                <div class="dynamicText">Db Range Min</div>
+                <input type="range" min="-130" max="0" value="-100" class="slider" id="analyserDbMinSlider" data-dynamicTextLabel="Db Range Min">
+            </div>
+            <br>
+            <div class="dynamicTextContainer sidebarSliderLabel">
+                <div class="dynamicText">Db Range Max</div>
+                <input type="range" min="-100" max="30" value="-30" class="slider" id="analyserDbMaxSlider" data-dynamicTextLabel="Db Range Max">
+            </div>
+            <br>
+            <div class="dynamicTextContainer sidebarSliderLabel">
+                <div class="dynamicText">Animation Smoothness</div>
+                <input type="range" min="0" max="100" value="64" class="slider" id="analyserSmoothnessSlider" data-dynamicTextLabel="Animation Smoothness">
+            </div>
+        </div>
     </div>
 
     <div id="focusImportExport" class="focusDivShell hidingVis">
@@ -207,8 +213,6 @@
         width: 100%;
         height: 100%;">
     </div>
-    <script src="sidebar-positioning.js"></script>
-
     <script src="elements-init.js"></script>
     <script src="customAlert.js"></script>
     <script src="independent-elements.js"></script>
@@ -218,5 +222,8 @@
     <script src="import-export-metadata-wrappers.js"></script>
     <script src="presets-saves-and-local-storage.js"></script>
     <script src="import-export.js"></script>
+
+    <!-- dynamically position sidebars after dynamic sliders are set up and loaded from save-->
+    <script src="sidebar-positioning.js"></script>
 </body>
 </html>

@@ -49,6 +49,10 @@ html, body {
     box-sizing: border-box;
     border: 2px solid rgb(100, 100, 100);
 
+    z-index: 300;
+    font-family: Lucida Console;
+    color: white;
+
     opacity: 80%;
     display: inline-grid;
     grid-auto-flow: row;
@@ -73,8 +77,8 @@ html, body {
     background: rgb(50, 50, 50);
     grid-template-columns: auto;
 
-    position: relative;
-    transform: translateX(calc(-100%));
+    position: absolute;
+    /* positioned in sidebar-positioning.js */
 }
 
 .sidebarImgHoverExtension {
@@ -98,13 +102,10 @@ html, body {
     background: rgb(31, 31, 31);
 
     grid-template-columns: 50px auto;
-    z-index: 300;
     position: absolute;
-    font-family: Lucida Console;
-    color: white;
     top: 15%;
+    bottom: 15%;
     right: 0px;
-    height: 70%;
 }
 
 

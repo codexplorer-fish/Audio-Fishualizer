@@ -43,6 +43,7 @@ function getSliderRequestsReader() {
                 const label = document.createTextNode(slider.id)
 
                 htmlContainer.appendChild(label)
+                htmlContainer.appendChild(document.createElement("br"))
                 htmlContainer.appendChild(slider)
                 htmlContainer.appendChild(document.createElement("br"))
                 htmlContainer.appendChild(document.createElement("br"))

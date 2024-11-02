@@ -21,10 +21,8 @@ scroll when overflow - resize main sidebar, then scroll; snap to floor sidebar (
 - if overflow, snap or resize
 - if still overflow, scroll.
 
-if mobile mode, toggle hiddeness if only doc is clicked
-keyboard mode - a way to open the sidebars
-
-"click anywhere to start"
+if mobile mode, toggle hiddeness if only doc is clicked. extra settings with checkbox and local save for toggle. Auto detect if can't find in local save
+keyboard mode - a way to open the sidebars, esc for focusdivs
 
 way more sliders per style
 style for analysing (20-20k, log style)
@@ -40,7 +38,12 @@ add/remove from background, basically lets you stack styles
 - outline for styles? OR JUST MAKE SLIGHTLY BIGGER OUTLINE
 ... then BACKGROUND PRESET SAVE/LOAD :,)
 
+db adjust helper
+
+change window source btn
+
 maybe:
+"click anywhere to start"
 label tags for accessibility purposes
 save last unset preset for refresh
 

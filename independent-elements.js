@@ -38,18 +38,30 @@ initWindowHandler()
 
 function initAnimationSidebarHandler(){
     animationSidebarImg.addEventListener("mouseleave", () => {
+        if (!animationSidebar.matches(':hover')){
+            animationSidebar.style.visibility = "hidden"
+        }
+    })
+     animationSidebar.addEventListener('mouseleave', () => {
         animationSidebar.style.visibility = "hidden"
-     })
+    })
+
      animationSidebarImg.addEventListener("mouseenter", () => {
         animationSidebar.style.visibility = "visible"
-     })
+    })
 }
 initAnimationSidebarHandler()
 
 function initColorSidebarHandler(){
     colorSidebarImg.addEventListener("mouseleave", () => {
+        if (!colorSidebar.matches(':hover')){
+            colorSidebar.style.visibility = "hidden"
+        }
+    })
+    colorSidebar.addEventListener('mouseleave', () => {
         colorSidebar.style.visibility = "hidden"
     })
+
     colorSidebarImg.addEventListener("mouseenter", () => {
         colorSidebar.style.visibility = "visible"
     })
@@ -58,8 +70,14 @@ initColorSidebarHandler()
 
 function initAnalyserSidebarHandler(){
     analyserSidebarImg.addEventListener("mouseleave", () => {
+        if (!analyserSidebar.matches(':hover')){
+            analyserSidebar.style.visibility = "hidden"
+        }
+    })
+    analyserSidebar.addEventListener('mouseleave', () => {
         analyserSidebar.style.visibility = "hidden"
     })
+
     analyserSidebarImg.addEventListener("mouseenter", () => {
         analyserSidebar.style.visibility = "visible"
     })
