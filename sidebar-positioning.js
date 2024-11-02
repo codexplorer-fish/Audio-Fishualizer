@@ -140,3 +140,4 @@ document.getElementById("mainSidebar").addEventListener('scroll', checkCollapsin
 Array.from(document.getElementsByClassName('styleSlider')).forEach((slider) => {
     slider.addEventListener('input', checkCollapsing)
 })
+document.getElementById('presetSlider').addEventListener('input', checkCollapsing)

@@ -27,10 +27,6 @@ db adjust helper
 
 change window source btn
 
-preset version control
-version control format check
-refactor so that presets already include version and name
-
 way more sliders per style
 style for analysing (20-20k, log style)
 circle cone, long triangles in a circle, no or constant gap throughout
@@ -44,6 +40,8 @@ add/remove from background, basically lets you stack styles
 - background image, video?, or color.
 - outline for styles? OR JUST MAKE SLIGHTLY BIGGER OUTLINE
 ... then BACKGROUND PRESET SAVE/LOAD :,)
+
+refactor so that presets already include version and name
 
 maybe:
 "click anywhere to start"
