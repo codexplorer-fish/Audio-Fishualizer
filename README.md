@@ -13,10 +13,12 @@ Features:
 
 - Option to animate in popup
 
+- Tested on mobile
+
 Limitations:
-- Completely untested on mobile
-- Audio from tab sharing is unsupported on non-chromium browsers
+- Mobile and keyboard mode need polish
+- Audio from tab sharing is unsupported on non-chromium browsers and mobile browsers
 
 To Do:
-- Run multiple presets on top of each other
+- Run multiple presets on top of each other (this will take a long time)
 - Way more styles
