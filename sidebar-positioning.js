@@ -101,6 +101,7 @@ function checkCollapsing(){
 
 
     collapsingSidebars.forEach((sidebar) => {
+        
         if (isClippingWindowY(sidebar)){
             sidebar.style.setProperty('top', 'auto')
             sidebar.style.setProperty('bottom', '0')
@@ -119,9 +120,7 @@ function checkCollapsing(){
             sidebar.style.setProperty('left', '0')
             sidebar.style.setProperty('width', width + 'px')
 
-            if (isOverflowing(sidebar)){
-                sidebar.style.setProperty('overflow-x', 'scroll')
-            }
+            sidebar.style.setProperty('overflow-x', 'scroll')
         }
     })
 }

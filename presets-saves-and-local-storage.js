@@ -363,7 +363,10 @@ function checkPresetsVersion(presetsStr) {
 
     if (version === null) { version = defaultPresetVersion }
 
-    return versionControl(presetsStr, version)
+    updatedPresetStr = versionControl(presetsStr, version)
+    localStorage.setItem('version', PRESETVERSION)
+
+    return updatedPresetStr
 }
 
 function init(){

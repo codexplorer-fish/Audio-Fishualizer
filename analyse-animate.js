@@ -20,10 +20,9 @@ scroll when overflow - resize main sidebar, then scroll; snap to floor sidebar (
 - if still overflow, scroll.
 
 
-if mobile mode, toggle hiddeness if only doc is clicked. extra settings with checkbox and local save for toggle. Auto detect if can't find in local save
-keyboard mode - a way to open the sidebars, esc for focusdivs
+prevent click-through to ui when ui is hidden
 
-db adjust helper
+keyboard mode - a way to open the sidebars, esc for focusdivs
 
 change window source btn
 
@@ -42,6 +41,10 @@ add/remove from background, basically lets you stack styles
 ... then BACKGROUND PRESET SAVE/LOAD :,)
 
 refactor so that presets already include version and name
+
+bug: getBoundingClientRect() not accounting for word wrap. clipping issues if screen is narrow enough (however, not a big deal for practically all devices. only 'Mobile S' might have an issue at specific heights)
+
+db adjust helper
 
 maybe:
 "click anywhere to start"

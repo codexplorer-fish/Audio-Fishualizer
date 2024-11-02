@@ -8,7 +8,7 @@ const staticValueElements = [ // all static elements with a .value attribute tha
     analyserSmoothnessSlider
 ]
 
-const presetVersion = 'v1'
+const PRESETVERSION = 'v1'
 
 function getPossiblePresets () {
     let possiblePresets = [] // [id, id, ...]
@@ -93,7 +93,7 @@ function addPresetMetadata(presetStr, index){
     const flag = flagsArr[index]
     const name = flag.split('=')[1]
 
-    presetStr += ';' + name + ';' + presetVersion
+    presetStr += ';' + name + ';' + PRESETVERSION
     return presetStr
 }
 
