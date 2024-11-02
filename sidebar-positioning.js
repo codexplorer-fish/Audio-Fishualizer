@@ -136,3 +136,7 @@ checkAll()
 window.addEventListener('resize', checkAll)
 
 document.getElementById("mainSidebar").addEventListener('scroll', checkCollapsing)
+
+Array.from(document.getElementsByClassName('styleSlider')).forEach((slider) => {
+    slider.addEventListener('input', checkCollapsing)
+})

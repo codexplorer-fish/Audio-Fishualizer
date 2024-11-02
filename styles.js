@@ -241,7 +241,7 @@ function getColorStyles() {
             const colorRange = (Math.pow(customVals.colorRange/5, 2)/25) // square function to smooth out the slider input's potency
             const colorShift = customVals.colorShift
             const fade = customVals.colorFade
-            const dimSettings = customVals.colorDimSettings
+            const dimSettings = customVals.colorDim
 
 
             const percentVolume = dataValue // 0 to 1
@@ -273,7 +273,7 @@ function getColorStyles() {
 
             canvasContext.fillStyle = 'hsl(' + hue + ',' + sat + '%,' + lit + '%)'
             return [permObject, frameObject]
-        }, "colorLightness.Lightness.0.100.70;colorDimSettings.Dim Settings.0.2.1.0=No Dim,1=Dim Low,2=Dim High;colorFade.Fade.0.100.0;colorRange.Color Range.-50.50.-25;colorShift.Color Shift.0.360.0"]
+        }, "colorLightness.Lightness.0.100.70;colorDim.Dim.0.2.1.0=None,1=Low,2=High;colorFade.Fade.0.100.0;colorRange.Color Range.-50.50.-25;colorShift.Color Shift.0.360.0"]
 
     colorStyles[1] = ['Auto Color Shift', 
         (canvasContext, data, storage, calls, timestamp, customVals) => {
@@ -296,7 +296,7 @@ function getColorStyles() {
             const lightness = customVals.colorLightness
             const colorRange = (Math.pow(customVals.colorRange/5, 2)/25) // square function to smooth out the slider input's potency
             const fade = customVals.colorFade
-            const dimSettings = customVals.colorDimSettings
+            const dimSettings = customVals.colorDim
 
 
             const percentVolume = dataValue // 0 to 1
@@ -351,7 +351,7 @@ function getColorStyles() {
             }
             canvasContext.fillStyle = 'hsl(' + hue + ',' + sat + '%,' + lit + '%)'
             return [permObject, frameObject]
-        }, "colorLightness.Lightness.0.100.70;colorDimSettings.Dim Settings.0.2.1.0=No Dim,1=Dim Low,2=Dim High;colorFade.Fade.0.100.0;colorRange.Color Range.-50.50.-25;colorBaseSpeed.Auto Shift Speed.-15.15.4;colorScaleSpeed.Auto Shift Jumpiness.0.15.6"]
+        }, "colorLightness.Lightness.0.100.70;colorDim.Dim.0.2.1.0=None,1=Low,2=High;colorFade.Fade.0.100.0;colorRange.Color Range.-50.50.-25;colorBaseSpeed.Color Speed.-15.15.4;colorScaleSpeed.Color Jumpiness.0.15.6"]
 
 
     return colorStyles

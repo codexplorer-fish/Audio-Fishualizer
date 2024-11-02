@@ -15,14 +15,21 @@ exporting presets page, preset version attached! this will be complicated
 - change format, v1 as last value. append to copy inputs, and splice out and read when loading. then modify save as necessary.
 fix denied permissions handling, possibly even unsupported error handling - user input, user permission denial, application permission denial
 crop focus divs and remove audio controls margins
-
-
 scroll when overflow - resize main sidebar, then scroll; snap to floor sidebar (bottom = 0), then scroll
 - if overflow, snap or resize
 - if still overflow, scroll.
 
+
 if mobile mode, toggle hiddeness if only doc is clicked. extra settings with checkbox and local save for toggle. Auto detect if can't find in local save
 keyboard mode - a way to open the sidebars, esc for focusdivs
+
+db adjust helper
+
+change window source btn
+
+preset version control
+version control format check
+refactor so that presets already include version and name
 
 way more sliders per style
 style for analysing (20-20k, log style)
@@ -37,10 +44,6 @@ add/remove from background, basically lets you stack styles
 - background image, video?, or color.
 - outline for styles? OR JUST MAKE SLIGHTLY BIGGER OUTLINE
 ... then BACKGROUND PRESET SAVE/LOAD :,)
-
-db adjust helper
-
-change window source btn
 
 maybe:
 "click anywhere to start"

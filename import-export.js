@@ -44,8 +44,6 @@ function initImportExport(){
         } else if (flagsCharCheck(presetName)) {
             customAlert("Error: Invalid preset name")
         } else {
-            // >version control here<. check if valid version syntax, convert outdated versions
-
             importPresetTextarea.value = ""
             savePreset(preset, presetName)
             customAlert("\u2713 Added: " + presetName)

@@ -122,6 +122,8 @@ function extractPresetMetadata(presetStr){
         }
     });
 
+    newPresetStr = versionControl(newPresetStr, version)
+
     return [newPresetStr, presetName, version]
 } 
 
