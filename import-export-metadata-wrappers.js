@@ -53,13 +53,25 @@ function flagsCharCheck(str){ // presetSlider's dynamicTextFlags
 function presetFormatCheck(presetStr, possiblePresets = getPossiblePresets()){
     const presetArr = presetStr.split(';')
 
+    // ensure presetArr includes these elements:
+    const scavenger = [animationStyleSlider.id, colorStyleSlider.id, analyserStyleSlider.id]
+
     for (let i = 0; i < presetArr.length; i++){
         const [id, value] = presetArr[i].split(',')
         if (!possiblePresets.includes(id) || isNaN(value)){
             return false
         }
+        for (let i = 0; i < scavenger.length; i++){
+            if (id == scavenger[i]){
+                scavenger.splice(i, 1)
+            }
+        }
     }
-    return true
+    if (scavenger.length == 0){
+        return true
+    } else {
+        return false
+    }
 }
 
 function saveFormatCheck(saveStr){
