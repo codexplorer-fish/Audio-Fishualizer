@@ -101,17 +101,9 @@ function checkCollapsing(){
 
 
     collapsingSidebars.forEach((sidebar) => {
-        
-        if (isClippingWindowY(sidebar)){
-            sidebar.style.setProperty('top', 'auto')
-            sidebar.style.setProperty('bottom', '0')
-
-            if (isClippingWindowY(sidebar)){
-                sidebar.style.setProperty('top', '0')
-                sidebar.style.setProperty('overflow-y', 'scroll')
-            }
-        }
-
+        // for some reason, checking and adjusting x clipping first will prevent word-wrapping from breaking the check.
+        // the other way around, it seems like checking the x will adjust the height too, if the div is narrow enough to start word-wrapping
+        // thus, y needs to be check after to account for how the word-wrapping changes the y after x is checked
         if (isClippingWindowX(sidebar)){
             let width = mainSidebar.getBoundingClientRect().left
             width -= calcBorderWidth(mainSidebar)
@@ -121,6 +113,16 @@ function checkCollapsing(){
             sidebar.style.setProperty('width', width + 'px')
 
             sidebar.style.setProperty('overflow-x', 'scroll')
+        }
+        
+        if (isClippingWindowY(sidebar)){
+            sidebar.style.setProperty('top', 'auto')
+            sidebar.style.setProperty('bottom', '0')
+
+            if (isClippingWindowY(sidebar)){
+                sidebar.style.setProperty('top', '0')
+                sidebar.style.setProperty('overflow-y', 'scroll')
+            }
         }
     })
 }
