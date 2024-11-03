@@ -17,6 +17,7 @@ crop focus divs and remove audio controls margins
 scroll when overflow - resize main sidebar, then scroll; snap to floor sidebar (bottom = 0), then scroll
 - if overflow, snap or resize
 - if still overflow, scroll.
+change window source btn
 
 mobile mode, settings focusdiv with radio, save to local, auto detect if not in local
 in mobile mode, only hide/show document if document is clicked on its own
@@ -24,8 +25,6 @@ in mobile mode, only hide/show document if document is clicked on its own
 prevent click-through to ui when ui is hidden
 
 keyboard mode - a way to open the sidebars, esc for focusdivs
-
-change window source btn
 
 way more sliders per style
 style for analysing (20-20k, log style)
@@ -167,6 +166,7 @@ function initAnalyseAnimate(){
             analyserSource = audioFileSource
             audioElement.style.display = "block"
             audioFileInput.style.display = "inline"
+            reshareMediaButton.style.display = 'none'
             muteButton.value = 'false'
         }
 
@@ -175,6 +175,7 @@ function initAnalyseAnimate(){
             analyserSource = audioRecSource
             audioElement.style.display = "none"
             audioFileInput.style.display = "none"
+            reshareMediaButton.style.display = 'none'
             muteButton.value = 'true'
         }
 
@@ -183,6 +184,7 @@ function initAnalyseAnimate(){
             analyserSource = audioShareSource
             audioElement.style.display = "none"
             audioFileInput.style.display = "none"
+            reshareMediaButton.style.display = 'inline'
             muteButton.value = 'true'
         }
 
@@ -251,6 +253,8 @@ function initAnalyseAnimate(){
         audioElement.load() // updates the element
         audioElement.play()
     })
+
+    reshareMediaButton.addEventListener('click', useSourceSelectValue) // useSourceSelectValue should only be visible when media is the source
     // END OF AUDIO SOURCE HANDLERS
 
 

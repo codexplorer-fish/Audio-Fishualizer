@@ -21,6 +21,8 @@ const sourceSelect = document.getElementById('sourceSelect')
 const channelButton = 0
 const audioElement = document.getElementById('audioElement')
 const audioFileInput = document.getElementById('audioUpload')
+const reshareMediaButton = document.getElementById('reshareMediaButton')
+  
 const popupButton = document.getElementById('popup')
 const aboutMeButton = document.getElementById('aboutMeButton')
 
