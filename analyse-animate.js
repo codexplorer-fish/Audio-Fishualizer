@@ -18,13 +18,13 @@ scroll when overflow - resize main sidebar, then scroll; snap to floor sidebar (
 - if overflow, snap or resize
 - if still overflow, scroll.
 change window source btn
+esc bind for focusdivs
 
 mobile mode, settings focusdiv with radio, save to local, auto detect if not in local
 in mobile mode, only hide/show document if document is clicked on its own
 
 prevent click-through to ui when ui is hidden
 
-keyboard mode - a way to open the sidebars, esc for focusdivs
 
 way more sliders per style
 style for analysing (20-20k, log style)
@@ -42,14 +42,13 @@ add/remove from background, basically lets you stack styles
 
 refactor so that presets already include version and name
 
-bug: getBoundingClientRect() not accounting for word wrap. clipping issues if screen is narrow enough (however, not a big deal for practically all devices. only 'Mobile S' might have an issue at specific heights)
-
 db adjust helper
 
 maybe:
 "click anywhere to start"
 label tags for accessibility purposes
 save last unset preset for refresh
+keyboard mode - a way to open the sidebars
 
 
 DONE!

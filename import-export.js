@@ -13,6 +13,12 @@ function initImportExport(){
         focusImportExport.style.visibility = "hidden"
     })
 
+    document.addEventListener('keydown', (event) => {
+        if (event.code == 'Escape') {
+            focusImportExport.style.visibility = "hidden"
+        }
+    })
+
     // preset controls
     importExportPresetSlider.addEventListener('input', () => {
         presetSlider.value = importExportPresetSlider.value

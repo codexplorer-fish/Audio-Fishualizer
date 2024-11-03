@@ -92,6 +92,12 @@ function initAboutMeHandler(){
     focusAboutMeCloser.addEventListener('click', () => {
         focusAboutMe.style.visibility = "hidden"
     })
+
+    document.addEventListener('keydown', (event) => {
+        if (event.code == 'Escape') {
+            focusAboutMe.style.visibility = "hidden"
+        }
+    })
 }
 initAboutMeHandler()
 
