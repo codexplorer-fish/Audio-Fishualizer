@@ -8,7 +8,6 @@ hide dynamic sliders after 2s too (use same functions) < reverted. now only hide
 increase max potency of spin scale, for when db range creates generally low values <- ez, just watch out for backwards compatability: just decrease min db lol
 about me and bmac page <- pages open on click, pages close on clicking out, scrollable
 switch to <select>
-"are you sure you want to delete?" page, shift to bypass, with undo functionality
 popup/alert for saving and replacing too. say: ctrl-z to undo
 exporting presets page, preset version attached! this will be complicated
 - scrollable focus div, text inputs: copy save, load save, copy preset, load preset. Use same functions already used.
@@ -19,6 +18,8 @@ scroll when overflow - resize main sidebar, then scroll; snap to floor sidebar (
 - if overflow, snap or resize
 - if still overflow, scroll.
 
+mobile mode, settings focusdiv with radio, save to local, auto detect if not in local
+in mobile mode, only hide/show document if document is clicked on its own
 
 prevent click-through to ui when ui is hidden
 
@@ -60,11 +61,6 @@ playlist feature?
 fade in/out ui: issues implementing, seems like a low priority issue
 prevent screen sleep checkbox <- ez if know how: only relavent for mic & no feedback audio, other souces already suppress sleep because audio will be playing on the system anyway.
 info popup per preset <- something in dynamic text, somewhat complicated... use <title>: if important enough, should convey in label.
-
-...
-upload as extension?
-upload as website? 
-github pages?
 */
 
 

@@ -24,24 +24,6 @@ html, body {
     word-break: break-word;
 }
 
-#alertDiv {
-    position: relative;
-    z-index: 1000;
-
-    white-space: pre-line;
-    opacity: 80%;
-    font-size: larger;
-    margin: auto;
-    padding: 5px;
-    width: 500px;
-    text-align: center;
-
-    border-radius: 5px;
-    border: 2px solid rgb(189, 189, 189);
-    background-color: rgb(58, 58, 58);
-    color: rgb(255, 255, 255);
-}
-
 .sidebar {
     padding: 15px;
     border-radius: 20px;
@@ -156,8 +138,6 @@ header {
 @media screen and (min-width: 0px) {
     #audioElement {
         width: 90%;
-        left: 5%;
-        bottom: 3%;
     }
     
     .focusDivShell {
@@ -167,13 +147,21 @@ header {
     .focusDiv {
         margin: 20px 20px;
     }
+
+    #alertDiv {
+        width: auto;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    #alertDiv {
+        width: 500px;
+    }
 }
 
 @media screen and (min-width: 700px) {
     #audioElement {
-        width: 50%;
-        left: 25%;
-        bottom: 3%;
+        width: 650px;
     }
     
     .focusDivShell {
@@ -188,6 +176,9 @@ header {
 #audioElement {
     position: absolute;
     bottom: 3%;
+
+    left: 50%;
+    transform: translate(-50%, 0);
 
     z-index: 200;
 }
@@ -225,4 +216,21 @@ header {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     border: none;
+}
+
+#alertDiv {
+    position: relative;
+    z-index: 1000;
+
+    white-space: pre-line;
+    opacity: 80%;
+    font-size: larger;
+    margin: auto;
+    padding: 5px;
+    text-align: center;
+
+    border-radius: 5px;
+    border: 2px solid rgb(189, 189, 189);
+    background-color: rgb(58, 58, 58);
+    color: rgb(255, 255, 255);
 }
