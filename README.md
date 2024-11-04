@@ -13,12 +13,16 @@ Features:
 
 - Option to animate in popup
 
-- Tested on mobile
+- Ctrl-Z and Ctrl-Shift-Z
+
+- Works on mobile (the built-in chrome emulator, at the very least)
 
 Limitations:
-- Mobile and keyboard mode need polish
+- Limited keyboard-only support
 - Audio from tab sharing is unsupported on non-chromium browsers and mobile browsers
 
 To Do:
+- Way more styles!
+- Image pipeline as a style type too
 - Run multiple presets on top of each other (this will take a long time)
-- Way more styles
+- Time offset function for file play, to get that perfect sync
