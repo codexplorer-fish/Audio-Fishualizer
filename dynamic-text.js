@@ -52,22 +52,20 @@ dynamicTextContainersArray.forEach(dtc => {
     sliderNode.addEventListener('input', curriedSetText(sliderNode, dynamicTextNode))
 });
 
-function setupDynamicSliderText(slidersArr){
-    for (const i in slidersArr) {
-        const slider = slidersArr[i][0]
-        const text = slidersArr[i][1]
+function setupDynamicSliderText(sliderTextArr){
+    for (const i in sliderTextArr) {
+        const slider = sliderTextArr[i][0]
+        const text = sliderTextArr[i][1]
 
         setText(slider, text)
         slider.addEventListener('input', curriedSetText(slider, text))
     }
 }
 
-function deleteDynamicSliderTextListeners(slidersArr){
-    for (const i in slidersArr) {
-        const slider = slidersArr[i][0]
-
+function deleteDynamicSliderListeners(slidersArr){
+    slidersArr.forEach((slider) => {
         slider.removeEventListener('input', curriedSetText)
-    }
+    })
 }
 
 

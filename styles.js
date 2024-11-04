@@ -1,18 +1,23 @@
 function getSliderRequestsReader() {
     function readSliderRequests(requests, htmlContainer) {
-        // save slider values in <allLastSettingsPreset>
-        function saveSliderValues() {
-            const slidersArr = Array.from(htmlContainer.children)
-            for (const i in slidersArr) {
-                slider = slidersArr[i]
-                if (slider.id) {
-                    allLastSettingsPreset[String(slider.id)] = slider.value
+        function getContainerSliders(container) {
+            let elementsArr = Array.from(container.children)
+            let slidersArr = []
+            elementsArr.forEach((element) => {
+                if (element.tagName == 'INPUT'){
+                    slidersArr.push(element)
                 }
-            }
+            })
+            return slidersArr
         }
-        saveSliderValues()
 
-        deleteDynamicSliderTextListeners()
+        // save slider values in <lastPresetSettings>
+        getContainerSliders(htmlContainer).forEach((slider) => {
+            lastPresetSettings[String(slider.id)] = slider.value
+        })
+
+        deleteDynamicSliderListeners(getContainerSliders(htmlContainer))
+
         let slidersArr = [] 
         // can't just loop through dynamicAnimationSliders to remove sliders, must access parent and call removeChild
         while (htmlContainer.firstChild) {
@@ -33,9 +38,9 @@ function getSliderRequestsReader() {
                     slider.setAttribute("data-dynamicTextFlags", flags[5])
                 }
             
-                // try to match slider id with one from allLastSettingsPreset. If found, use the preset for slider value. Otherwise, use default value, flags[4]
-                if (allLastSettingsPreset[String(slider.id)]){
-                    slider.value = allLastSettingsPreset[String(slider.id)]
+                // try to match slider id with one from lastPresetSettings. If found, use the preset for slider value. Otherwise, use default value, flags[4]
+                if (lastPresetSettings[String(slider.id)]){
+                    slider.value = lastPresetSettings[String(slider.id)]
                 } else {
                     slider.value = flags[4]
                 }

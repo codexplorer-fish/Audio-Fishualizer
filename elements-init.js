@@ -64,7 +64,7 @@ let dynamicColorSliders = []
 let dynamicAnalyserSliders = []
 let animationResetStyle = true
 let colorResetStyle = true
-let allLastSettingsPreset = {} // Is the last set values of every setting set during the session. Used to auto-fill style values when style changes
+let lastPresetSettings = {} // Is the last set values of every setting set during the session. Used to auto-fill style values when style changes
 
 const presetSaver = document.getElementById('presetSaver')
 const presetReplacer = document.getElementById('presetReplacer')
