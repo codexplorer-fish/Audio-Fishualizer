@@ -21,8 +21,6 @@ change window source btn
 esc bind for focusdivs
 <mobile mode, settings focusdiv with radio, save to local, auto detect if not in local - not used, just fixed window not detecting slider interaction on mobile
 <in mobile mode, only hide/show document if document is clicked on its own
-
-
 prevent click-through to ui when ui is hidden
 
 hyperlike buttons for alerts

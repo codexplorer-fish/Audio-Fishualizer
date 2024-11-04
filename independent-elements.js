@@ -1,4 +1,9 @@
 function initSidebarTimedVisibilityHandler(){
+    /*
+    click-through: When a button becomes visible off of a touch event, and the button happens to be right under the touch event,
+    the user will end up unintentionally clicking a button they didn't see before the click.
+    */
+
     function hideScreen() {
         if (!presetNameInput.matches(':focus')){ // only hide if text input is not selected (don't want to hide the ui while user is typing)
             uiContainer.style.visibility = "hidden"
@@ -20,7 +25,7 @@ function initSidebarTimedVisibilityHandler(){
             hideTimeout = setTimeout(hideScreen, 2000)
 
             /*
-            Prevent this click from triggering any other event if document was hidden prior. This prevents 'click through', 
+            Prevent this click from triggering any other event if document was hidden prior. This prevents click-through, 
             where if a button appears under the click location when the uiContainer appears, it gets clicked
             */
             if (uiContainer.style.visibility == 'hidden'){
@@ -52,7 +57,7 @@ function initSidebarTimedVisibilityHandler(){
 
     // upon any of these events, show and (maybe) reset the timeout.
 
-    document.addEventListener('touchstart', clickInteraction, {capture: true, passive: false}) // for mobile. stops click event if uiContainer is hidden to prevent 'click through'
+    document.addEventListener('touchstart', clickInteraction, {capture: true, passive: false}) // for mobile. stops click event if uiContainer is hidden to prevent click-through
     document.addEventListener('mousemove', mousemoveInteraction)
     // interacting with sliders does not trigger mousemove on mobile
     // just listen to all sliders in the mainSidebar:
