@@ -28,8 +28,8 @@ function isRightClippingX(slider, x) {
     }
 }
 
-function isOverflowing ({ clientWidth, clientHeight, scrollWidth, scrollHeight }) { // yoinked from stackoverflow
-    return scrollHeight > clientHeight || scrollWidth > clientWidth;
+function isOverflowingY ({ clientHeight, scrollHeight }) { // yoinked (and modified) from stackoverflow
+    return scrollHeight > clientHeight
 }
 
 function checkMain(){
@@ -39,11 +39,12 @@ function checkMain(){
     mainSidebar.style.setProperty('bottom', '15%')
     mainSidebar.style.setProperty('overflow-y', 'visible')
 
-    if (isOverflowing(mainSidebar)) {
+    if (isOverflowingY(mainSidebar)) {
+        console.log(mainSidebar.clientWidth, mainSidebar.clientHeight, mainSidebar.scrollWidth, mainSidebar.scrollHeight)
         mainSidebar.style.setProperty('top', '0')
         mainSidebar.style.setProperty('bottom', '0')
 
-        if (isOverflowing(mainSidebar)) {
+        if (isOverflowingY(mainSidebar)) {
             mainSidebar.style.setProperty('overflow-y', 'scroll')
         }
     }
