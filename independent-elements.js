@@ -1,9 +1,8 @@
 function initSidebarTimedVisibilityHandler(){
-    let hideTimeout
     function hideScreen() {
         if (!presetNameInput.matches(':focus')){ // only hide if text input is not selected (don't want to hide the ui while user is typing)
             uiContainer.style.visibility = "hidden"
-            /* hides any active sidebars along with uiContainer. if sidebar is being hovered over, why hide it?
+            /* hides any active sidebars along with uiContainer. !!! -> if sidebar is being hovered over, why hide it?
             animationSidebar.style.visibility = "hidden"
             colorSidebar.style.visibility = "hidden"
             analyserSidebar.style.visibility = "hidden"
@@ -11,22 +10,55 @@ function initSidebarTimedVisibilityHandler(){
         }
     }
 
-    function handleInteraction() {
-        uiContainer.style.visibility = "visible"
+    function clickInteraction(event) {
         clearTimeout(hideTimeout)
+
         if (uiContainer.matches(":hover")) {
-            // Mouse is inside element
+            // uiContainer is visible and hovered
         } else {
-            // set up timout if outside of uiContainer
+            // uiContainer was either hidden before this event, or is not hovered.
+            hideTimeout = setTimeout(hideScreen, 2000)
+
+            /*
+            Prevent this click from triggering any other event if document was hidden prior. This prevents 'click through', 
+            where if a button appears under the click location when the uiContainer appears, it gets clicked
+            */
+            if (uiContainer.style.visibility == 'hidden'){
+                uiContainer.style.visibility = "visible"
+                event.stopPropagation()
+                event.preventDefault()
+            }
+        }
+    }
+
+    function mousemoveInteraction(event) {
+        clearTimeout(hideTimeout)
+
+        if (uiContainer.matches(":hover")) {
+            // uiContainer is visible and hovered
+        } else {
+            // uiContainer was either hidden before this event, or is not hovered.
+            uiContainer.style.visibility = "visible"
             hideTimeout = setTimeout(hideScreen, 2000)
         }
     }
 
-    document.addEventListener('mousemove', handleInteraction)
-    // interacting with sliders does not trigger mousemove (at least on mobile):
-    // just listen to all sliders in the mainSidebar. they should be classed 'sidebarSliderLabel':
-    Array.from(document.getElementsByClassName('sidebarSliderLabel')).forEach((slider) => {
-            slider.addEventListener('input', handleInteraction)
+    function sliderInteraction() {
+        uiContainer.style.visibility = "visible"
+        clearTimeout(hideTimeout)
+        // must be inside uiContainer because a uiContainer slider triggered this function. therefore, don't reset timeout
+    }
+    let hideTimeout
+
+    // upon any of these events, show and (maybe) reset the timeout.
+
+    document.addEventListener('touchstart', clickInteraction, {capture: true, passive: false}) // for mobile. stops click event if uiContainer is hidden to prevent 'click through'
+    document.addEventListener('mousemove', mousemoveInteraction)
+    // interacting with sliders does not trigger mousemove on mobile
+    // just listen to all sliders in the mainSidebar:
+    document.getElementById('presetSlider').addEventListener('input', sliderInteraction)
+    Array.from(document.getElementsByClassName('styleSlider')).forEach((slider) => {
+        slider.addEventListener('input', sliderInteraction)
     });
 }
 initSidebarTimedVisibilityHandler()
@@ -38,7 +70,6 @@ function initWindowHandler(){
         }
     })
     document.addEventListener("mouseenter", () => {
-        
         uiContainer.style.visibility = "visible"
     })
 }
