@@ -31,6 +31,9 @@ fractals?
 
 completely different pipeline style for images
 
+db adjust helper - overrides db sliders, helps you find the best range... remove db sliders for redundancy?
++ preset hint for preferred db range: any, or full (for full: top is highest, bottom is minimum)
+
 time offset function for files... playlist system too?
 
 move local storage handlers to own file
@@ -42,8 +45,6 @@ add/remove from background, basically lets you stack styles
 ... then BACKGROUND PRESET SAVE/LOAD :,)
 
 refactor so that presets already include version and name
-
-db adjust helper
 
 maybe:
 "click anywhere to start"
