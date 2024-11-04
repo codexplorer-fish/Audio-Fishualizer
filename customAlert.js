@@ -23,8 +23,8 @@ window.addEventListener('focus', () => {
     }, 500);
 })
 
-// alert with custom css. It dims (50% opacity) and then hides. However, timers pause if unfocused. 
-async function customAlert(text){
+// alert with custom css. It dims (50% opacity) and then hides. However, timers pause if tab unfocuses.
+async function customAlert(text, button=undefined){
     function getPauseableTimeout(callback, delay){
         function pause() {
             remaining -= Date.now() - lastStart
@@ -52,10 +52,29 @@ async function customAlert(text){
         }
     }
     
+    function calcDuration() {
+        if (button !== undefined) {
+            return 5000
+        } else {
+            return 3000
+        }
+    }
+    const duration = calcDuration()
 
-    alertDiv.textContent = text
     alertDiv.style.opacity = "80%"
     alertDiv.style.visibility = "visible"
+
+    // set up text
+    while (alertDiv.firstChild) {
+        alertDiv.removeChild(alertDiv.lastChild);
+    }
+    alertDiv.textContent = text
+    if (button !== undefined) {
+        alertDiv.appendChild(button)
+        button.style.visibility = 'inherit'
+    }
+
+    // reset timeouts
     if (alertPauseableTimeout !== null){
         alertPauseableTimeout.clear()
         alertPauseableTimeoutHalfTime.clear()
@@ -68,26 +87,26 @@ async function customAlert(text){
     alertDiv.classList.add('fade-out'); // start animation
     */
     
-    function hide () {
-        alertDiv.style.opacity = "0%"
-        alertDiv.style.visibility = "hidden"
-        document.removeEventListener('mousedown', clickHide)
-    }
     function clickHide () {
-        if (delayedFocusState == true){
-            alertDiv.style.opacity = "0%"
-            alertDiv.style.visibility = "hidden"
-            document.removeEventListener('mousedown', clickHide)
+        if (delayedFocusState == true){ // prevent clicking on the window to focus from hiding the alert
+            if (button === undefined || !button.matches(':hover')){
+                alertDiv.style.opacity = "0%"
+                alertDiv.style.visibility = "hidden"
+                document.removeEventListener('mousedown', clickHide)
+            }
         }
     }
     
-    const duration = 3000
 
     alertPauseableTimeoutHalfTime = getPauseableTimeout(() => { // fade a bit at half time
         alertDiv.style.opacity = "50%"
     }, duration/2)
 
-    alertPauseableTimeout = getPauseableTimeout(hide, duration)
+    alertPauseableTimeout = getPauseableTimeout(() => {
+        alertDiv.style.opacity = "0%"
+        alertDiv.style.visibility = "hidden"
+        document.removeEventListener('mousedown', clickHide)
+    }, duration)
 
     document.addEventListener('mousedown', clickHide)
 }

@@ -3,6 +3,7 @@ const canvasEscapeContainer = document.getElementById('canvasEscapeContainer')
 const canvas = document.getElementById('canvas1')
 
 const alertDiv = document.getElementById('alertDiv')
+const undoSaveButton = document.getElementById('undoSaveButton')
 
 const animationSidebarImg = document.getElementById('animationSidebarImg')
 const colorSidebarImg = document.getElementById('colorSidebarImg')

@@ -107,6 +107,7 @@ header {
 
 
 .defaultButton {
+    position: relative;
     z-index: 300;
     border-radius: 5px;
 }
@@ -121,6 +122,7 @@ header {
 }
 
 .hyperlikeButton {
+    position: relative;
     z-index: 300;
     background: none;
     border: none;
@@ -133,6 +135,19 @@ header {
 
 .hyperlikeButton:active {
     color: darkblue;
+}
+
+.alertDivButton {
+    position: relative;
+    z-index: 1000;
+    background: none;
+    border: none;
+    color:skyblue;
+    font: inherit;
+}
+
+.alertDivButton:hover {
+    color:lightblue;
 }
 
 @media screen and (min-width: 0px) {

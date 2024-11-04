@@ -167,30 +167,42 @@ function useHistory(savesHistory, flagsHistory, presetIndexHistory, index){
 
     handlePresetChange()
 
-    customAlert("\u2713 rolled to capture #" + index)
+    customAlert("\u2713 rolled to capture #" + index + "/" + (savesHistory.length - 1))
+}
+
+function undoHistory() {
+    if (savesHistory.length == flagsHistory.length && flagsHistory.length == presetIndexHistory.length) {
+        if (historyIndex != 0) {
+            historyIndex--
+            useHistory(savesHistory, flagsHistory, presetIndexHistory, historyIndex)
+            presetNameInput.value == "" // preset input auto focuses and rolls back on its own. undo this.
+        } else {
+            customAlert("Already at first capture!")
+        }
+    } else {
+        throw new Error("history array lengths are not synced: " + savesHistory.length + ", " + flagsHistory.length + ", " + presetIndexHistory.length)
+    }
+}
+
+function redoHistory() {
+    if (savesHistory.length == flagsHistory.length && flagsHistory.length == presetIndexHistory.length) {
+        if (savesHistory.length - 1 != historyIndex) {
+            historyIndex++
+            useHistory(savesHistory, flagsHistory, presetIndexHistory, historyIndex)
+            presetNameInput.value == "" // preset input auto focuses and rolls back on its own. undo this.
+        } else {
+            customAlert("Already at last capture!")
+        }
+    } else {
+        throw new Error("history array lengths are not synced: " + savesHistory.length + ", " + flagsHistory.length + ", " + presetIndexHistory.length)
+    }
 }
 
 document.addEventListener('keydown', (event) => {
     if (event.code == 'KeyZ' && event.ctrlKey && !event.shiftKey) { // rollback from history
-        if (savesHistory.length == flagsHistory.length && flagsHistory.length == presetIndexHistory.length) {
-            if (historyIndex != 0) {
-                historyIndex--
-                useHistory(savesHistory, flagsHistory, presetIndexHistory, historyIndex)
-                presetNameInput.value == "" // preset input auto focuses and rolls back on its own. undo this.
-            }
-        } else {
-            throw new Error("history array lengths are not synced: " + savesHistory.length + ", " + flagsHistory.length + ", " + presetIndexHistory.length)
-        }
+        undoHistory()
     } else if ((event.code == 'KeyY' && event.ctrlKey) || (event.code == 'KeyZ' && event.ctrlKey && event.shiftKey)) { // redo from history
-        if (savesHistory.length == flagsHistory.length && flagsHistory.length == presetIndexHistory.length) {
-            if (savesHistory.length - 1 != historyIndex) {
-                historyIndex++
-                useHistory(savesHistory, flagsHistory, presetIndexHistory, historyIndex)
-                presetNameInput.value == "" // preset input auto focuses and rolls back on its own. undo this.
-            }
-        } else {
-            throw new Error("history array lengths are not synced: " + savesHistory.length + ", " + flagsHistory.length + ", " + presetIndexHistory.length)
-        }
+        redoHistory()
     }
 })
 
@@ -351,7 +363,7 @@ presetDeleter.addEventListener('click', () => {
         localStorage.setItem("presetLabels", newFlagsStr)
 
         handlePresetChange()
-        customAlert("\u2713 Deleted: " + String(deletedFlag).split("=")[1] + " (ctrl + z to undo)")
+        customAlert("\u2713 Deleted: " + String(deletedFlag).split("=")[1] + " ", undoSaveButton)
 
         truncateHistory()
         saveToHistory(presets, presetSlider.getAttribute("data-dynamicTextFlags"), presetSlider.value)
@@ -406,3 +418,5 @@ let historyIndex = 0
 // rolling back - 0 check, decrease index, apply  !set save index
 // rolling forwards - max check, increase index, apply !set save index
 // truncating - delete all in front when: saving, replacing, deleting
+
+undoSaveButton.addEventListener('click', undoHistory)
