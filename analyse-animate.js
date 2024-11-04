@@ -19,8 +19,8 @@ scroll when overflow - resize main sidebar, then scroll; snap to floor sidebar (
 - if still overflow, scroll.
 change window source btn
 esc bind for focusdivs
+<mobile mode, settings focusdiv with radio, save to local, auto detect if not in local - not used, just fixed window not detecting slider interaction on mobile
 
-mobile mode, settings focusdiv with radio, save to local, auto detect if not in local
 in mobile mode, only hide/show document if document is clicked on its own
 
 prevent click-through to ui when ui is hidden
@@ -29,6 +29,9 @@ prevent click-through to ui when ui is hidden
 way more sliders per style
 style for analysing (20-20k, log style)
 circle cone, long triangles in a circle, no or constant gap throughout
+fractals?
+
+completely different pipeline style for images
 
 time offset function for files... playlist system too?
 
@@ -49,6 +52,7 @@ maybe:
 label tags for accessibility purposes
 save last unset preset for refresh
 keyboard mode - a way to open the sidebars
+rgb lights support?
 
 
 DONE!

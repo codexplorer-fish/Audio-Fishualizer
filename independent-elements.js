@@ -10,7 +10,8 @@ function initSidebarTimedVisibilityHandler(){
             */
         }
     }
-    document.addEventListener("mousemove", () => {
+
+    function handleInteraction() {
         uiContainer.style.visibility = "visible"
         clearTimeout(hideTimeout)
         if (uiContainer.matches(":hover")) {
@@ -19,7 +20,14 @@ function initSidebarTimedVisibilityHandler(){
             // set up timout if outside of uiContainer
             hideTimeout = setTimeout(hideScreen, 2000)
         }
-    })
+    }
+
+    document.addEventListener('mousemove', handleInteraction)
+    // interacting with sliders does not trigger mousemove (at least on mobile):
+    // just listen to all sliders in the mainSidebar. they should be classed 'sidebarSliderLabel':
+    Array.from(document.getElementsByClassName('sidebarSliderLabel')).forEach((slider) => {
+            slider.addEventListener('input', handleInteraction)
+    });
 }
 initSidebarTimedVisibilityHandler()
 
