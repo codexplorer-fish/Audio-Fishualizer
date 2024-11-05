@@ -15,7 +15,9 @@ Features:
 
 - Ctrl-Z and Ctrl-Shift-Z
 
-- Works on mobile (the built-in chrome emulator, at the very least)
+- Tested on mobile (the built-in chrome emulator, at the very least)
+
+- Timing offset for file sources for the perfect sync
 
 Limitations:
 - Limited keyboard-only support
@@ -25,4 +27,3 @@ To Do:
 - Way more styles!
 - Image pipeline as a style type too
 - Run multiple presets on top of each other (this will take a long time)
-- Time offset function for file play, to get that perfect sync
