@@ -15,7 +15,7 @@ Features:
 
 - Ctrl-Z and Ctrl-Shift-Z
 
-- Works on mobile (the built-in chrome emulator, at the very least)
+- Tested on mobile (the built-in chrome emulator, at the very least)
 
 - Timing offset for file sources for the perfect sync
 
