@@ -37,7 +37,7 @@ completely different pipeline style for images
 db adjust helper - overrides db sliders, helps you find the best range... remove db sliders for redundancy?
 + preset hint for preferred db range: any, or full (for full: top is highest, bottom is minimum)
 
-time offset function for files... playlist system too?
+playlist system for files
 
 move local storage handlers to own file
 add/remove from background, basically lets you stack styles
@@ -108,9 +108,11 @@ function initAnalyseAnimate(){
         if (muteButton.value == 'true' && muteButton.textContent == "Mute"){ // check textContent to know if already muted or not. attempting to disconnect analyser when already disconnected will generate error
             muteButton.textContent = "Muted"
             delayNode.disconnect(audioCtx.destination)
+            analyser.disconnect(delayNode)
         } else if (muteButton.value == 'false' && muteButton.textContent == "Muted") {
             muteButton.textContent = "Mute"
             delayNode.connect(audioCtx.destination)
+            analyser.connect(delayNode)
         }
     }
 
@@ -206,9 +208,6 @@ function initAnalyseAnimate(){
         }
 
         function disconnectSource(){
-            // don't listen to sourceSelect while processing the source change
-            sourceSelect.removeEventListener('change', useSourceSelectValue)
-
             // disconnect all tracks to end any existing streams 
             if (stream !== null) {
                 stream.getTracks().forEach(function(track) {
@@ -252,6 +251,9 @@ function initAnalyseAnimate(){
                 throw new Error('invalid sourceSelect value: ' + sourceSelect.value)
             }
         }
+        // don't listen to sourceSelect while processing the source change
+        sourceSelect.removeEventListener('change', useSourceSelectValue)
+
         disconnectSource()
         await reconnectSource()
 
@@ -344,7 +346,6 @@ function initAnalyseAnimate(){
     // default source for file, preloaded sample mp3. RESTRICTED CROSS ORIGIN, MUST HOST ON SERVER TO WORK
     audioElement.src = "lazy-day-stylish-futuristic-chill-by-penguinmusic-pixabay.mp3"
     audioElement.load()
-    
     
     analyser.connect(delayNode)
     delayNode.connect(audioCtx.destination)
