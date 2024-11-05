@@ -173,7 +173,14 @@ function initAnalyseAnimate(){
             audioFileInput.style.display = "inline"
             reshareMediaButton.style.display = 'none'
             muteButton.value = 'false'
-            changeDelay(sourceDelaySlider.value)
+            if (sourceDelaySlider.value < 0){
+                changeDelay(0)
+                sourceDelaySlider.value = 0
+                updateDynamicText()
+            } else {
+                changeDelay(sourceDelaySlider.value)
+            }
+            
         }
 
         function micSourceSetup(){
