@@ -23,6 +23,12 @@ esc bind for focusdivs
 <in mobile mode, only hide/show document if document is clicked on its own
 prevent click-through to ui when ui is hidden
 hyperlike buttons for alerts
+Error handling on file select cancel
+
+
+violation animation time warning?
+
+auto delay adjust setting
 
 way more sliders per style
 style for analysing (20-20k, log style)
@@ -86,6 +92,7 @@ function initAnalyseAnimate(){
     let audioShareSource = null
     const audioFileSource = audioCtx.createMediaElementSource(audioElement)
     let analyserSource = null
+    let delayNode = audioCtx.createDelay(1)
 
     const analyser = audioCtx.createAnalyser()
 
@@ -96,26 +103,23 @@ function initAnalyseAnimate(){
     let previousDataArray = dataArray.slice()
     let previousStyledDataArray = [0]
     let previousAnimationTimestamp = 0
+    let animateDelay = 0
 
     // AUDIO SOURCE HANDLERS
     function useMuteValue(){ // reads mute value and updates based on it
         if (muteButton.value == 'true' && muteButton.textContent == "Mute"){ // check textContent to know if already muted or not. attempting to disconnect analyser when already disconnected will generate error
             muteButton.textContent = "Muted"
-            analyser.disconnect(audioCtx.destination)
+            delayNode.disconnect(audioCtx.destination)
         } else if (muteButton.value == 'false' && muteButton.textContent == "Muted") {
             muteButton.textContent = "Mute"
-            analyser.connect(audioCtx.destination)
+            delayNode.connect(audioCtx.destination)
         }
-    }    
+    }
 
-    muteButton.addEventListener('click', function(){
-        if (muteButton.value == 'true'){
-            muteButton.value = 'false'
-        } else {
-            muteButton.value = 'true'
-        }
-        useMuteValue()
-    })
+    function changeDelay(ms){
+        const delay = ms/1000
+        delayNode.delayTime.value = delay
+    }
 
     async function useSourceSelectValue(){
         async function recStreamSetup() {
@@ -167,27 +171,33 @@ function initAnalyseAnimate(){
             audioFileSource.connect(analyser)
             analyserSource = audioFileSource
             audioElement.style.display = "block"
+            sourceDelayContainer.style.display = 'inline'
             audioFileInput.style.display = "inline"
             reshareMediaButton.style.display = 'none'
             muteButton.value = 'false'
+            changeDelay(sourceDelaySlider.value)
         }
 
         function micSourceSetup(){
             audioRecSource.connect(analyser)
             analyserSource = audioRecSource
             audioElement.style.display = "none"
+            sourceDelayContainer.style.display = 'none'
             audioFileInput.style.display = "none"
             reshareMediaButton.style.display = 'none'
             muteButton.value = 'true'
+            changeDelay(0)
         }
 
         function shareSourceSetup(){
             audioShareSource.connect(analyser)
             analyserSource = audioShareSource
             audioElement.style.display = "none"
+            sourceDelayContainer.style.display = 'none'
             audioFileInput.style.display = "none"
             reshareMediaButton.style.display = 'inline'
             muteButton.value = 'true'
+            changeDelay(0)
         }
 
         function disconnectSource(){
@@ -250,10 +260,41 @@ function initAnalyseAnimate(){
 
     audioFileInput.addEventListener('change', function(){
         // "this" refers to audioFileInput in this function
-        const audioFile = this.files
-        audioElement.src = URL.createObjectURL(audioFile[0])
-        audioElement.load() // updates the element
-        audioElement.play()
+        const audioFiles = this.files
+        if (audioFiles.length != 0) {
+            audioElement.src = URL.createObjectURL(audioFiles[0])
+            audioElement.load() // updates the element
+            audioElement.play()
+        }
+    })
+
+    muteButton.addEventListener('click', function(){
+        if (muteButton.value == 'true'){
+            muteButton.value = 'false'
+        } else {
+            muteButton.value = 'true'
+        }
+        useMuteValue()
+    })
+
+    sourceDelaySlider.addEventListener('input', () => {
+        if (sourceDelaySlider.value != -1) { // will be handled by 'change' event listener instead
+            changeDelay(sourceDelaySlider.value)
+        }
+    })
+
+    sourceDelaySlider.addEventListener('change', () => {
+        if (sourceDelaySlider.value == -1){
+            console.log(animateDelay)
+            if (animateDelay <= sourceDelaySlider.max) {    
+                sourceDelaySlider.value = Math.round(animateDelay)
+            } else {
+                sourceDelaySlider.value = sourceDelaySlider.max
+                customAlert("Alert: Detected delay:" + animateDelay + "ms Is greater than max delay: " + sourceDelaySlider.max + "ms")
+            }
+            changeDelay(sourceDelaySlider.value)
+            updateDynamicText()
+        }
     })
 
     reshareMediaButton.addEventListener('click', useSourceSelectValue) // useSourceSelectValue should only be visible when media is the source
@@ -301,7 +342,8 @@ function initAnalyseAnimate(){
     audioElement.load()
     
     
-    analyser.connect(audioCtx.destination)
+    analyser.connect(delayNode)
+    delayNode.connect(audioCtx.destination)
 
     // animating loop
     function animate(animationTimestamp){
@@ -391,6 +433,7 @@ function initAnalyseAnimate(){
         }
 
         // prev trackers
+        animateDelay = document.timeline.currentTime - previousAnimationTimestamp // calc delay right before updating relevant variable
         previousAnimationTimestamp = animationTimestamp
         previousDataArray = dataArray.slice()
         previousStyledDataArray = styledDataArray.slice()

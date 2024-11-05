@@ -23,6 +23,8 @@ const channelButton = 0
 const audioElement = document.getElementById('audioElement')
 const audioFileInput = document.getElementById('audioUpload')
 const reshareMediaButton = document.getElementById('reshareMediaButton')
+const sourceDelaySlider = document.getElementById('sourceDelaySlider')
+const sourceDelayContainer = document.getElementById('sourceDelayContainer')
   
 const popupButton = document.getElementById('popup')
 const aboutMeButton = document.getElementById('aboutMeButton')

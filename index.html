@@ -66,6 +66,12 @@
                 <button id="mute" value="false" class="defaultButton">Mute</button>
                 <br>
                 <input type="file" id="audioUpload" accept="audio/*" style="width: 150px;">
+                <br>
+                <div id="sourceDelayContainer" class="dynamicTextContainer sidebarSliderLabel" style="grid-column: span 2; margin: auto;">
+                    <br>
+                    <div class="dynamicText" style="font-size: small;">Timing Offset</div>
+                    <input type="range" min="-1" max="500" value="0" class="slider" id="sourceDelaySlider" data-dynamicTextLabel="Timing Offset" data-dynamicTextFlags="-1=auto">
+                </div>
                 <button id="reshareMediaButton" class="defaultButton" style="display: none;">Change Share</button>
             </div>
 

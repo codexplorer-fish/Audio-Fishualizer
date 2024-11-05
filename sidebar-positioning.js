@@ -40,7 +40,7 @@ function checkMain(){
     mainSidebar.style.setProperty('overflow-y', 'visible')
 
     if (isOverflowingY(mainSidebar)) {
-        console.log(mainSidebar.clientWidth, mainSidebar.clientHeight, mainSidebar.scrollWidth, mainSidebar.scrollHeight)
+        // console.log(mainSidebar.clientWidth, mainSidebar.clientHeight, mainSidebar.scrollWidth, mainSidebar.scrollHeight)
         mainSidebar.style.setProperty('top', '0')
         mainSidebar.style.setProperty('bottom', '0')
 
