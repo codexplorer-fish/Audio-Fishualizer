@@ -24,11 +24,8 @@ esc bind for focusdivs
 prevent click-through to ui when ui is hidden
 hyperlike buttons for alerts
 Error handling on file select cancel
-
-
-violation animation time warning?
-
 auto delay adjust setting
+
 
 way more sliders per style
 style for analysing (20-20k, log style)
@@ -58,6 +55,7 @@ label tags for accessibility purposes
 save last unset preset for refresh
 keyboard mode - a way to open the sidebars
 rgb lights support?
+violation animation time warning? (or just an fps option in settings)
 
 
 DONE!
@@ -285,7 +283,6 @@ function initAnalyseAnimate(){
 
     sourceDelaySlider.addEventListener('change', () => {
         if (sourceDelaySlider.value == -1){
-            console.log(animateDelay)
             if (animateDelay <= sourceDelaySlider.max) {    
                 sourceDelaySlider.value = Math.round(animateDelay)
             } else {
