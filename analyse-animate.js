@@ -30,9 +30,9 @@ auto delay adjust setting
 way more sliders per style
 style for analysing (20-20k, log style)
 circle cone, long triangles in a circle, no or constant gap throughout
-fractals?
 
 completely different pipeline style for images
+fractals (pipeline style)
 
 db adjust helper - overrides db sliders, helps you find the best range... remove db sliders for redundancy?
 + preset hint for preferred db range: any, or full (for full: top is highest, bottom is minimum)
