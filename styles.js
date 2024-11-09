@@ -203,13 +203,16 @@ function getAnimationStyles() {
             }
             frameObject.totalDataValues += dataValue
 
-            const x = (canvas.width * 0.5) 
-            const y = (canvas.height * 0.5) 
+            let x = (canvas.width * 0.5) 
+            let y = (canvas.height * 0.5)
 
             canvasContext.save()
             canvasContext.translate(x, y)
             canvasContext.rotate(dataNum * Math.PI * 2 / numDatas)
             canvasContext.rotate(permObject.rotation * Math.PI * 2)
+            if (customVals.lineFlip == 1){
+                canvasContext.translate(0, 0 - (innerRadius*2))
+            }
 
             if (customVals.lineShape == 0){
                 const barWidth = 0.3 * canvas.width/numDatas * (Math.pow(customVals.lineWidth/100, 4))
@@ -261,7 +264,7 @@ function getAnimationStyles() {
             }
             return [permObject, frameObject]
         }, 
-        "lineShape.Line Shape.0.2.0.0=Rect,1=Wedge,2=Spike;lineWidth.Line Width.1.200.100;lineHeight.Line Height.0.200.80;innerRadius.Inner Radius.0.100.0;spinBaseSpeed.Spin Base Speed.-15.15.2;spinScaleSpeed.Spin Jumpiness.0.15.6"]
+        "lineShape.Shape.0.2.0.0=Rect,1=Wedge,2=Spike;lineFlip.Flip?.0.1.0.0=No,1=Yes;lineWidth.Width.1.200.100;lineHeight.Height.0.200.80;innerRadius.Inner Radius.0.100.0;spinBaseSpeed.Spin Base Speed.-15.15.2;spinScaleSpeed.Spin Jumpiness.0.15.6"]
 
 
     return animationStyles

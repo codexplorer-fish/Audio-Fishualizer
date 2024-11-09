@@ -29,7 +29,7 @@ auto delay adjust setting
 
 way more sliders per style
 style for analysing (20-20k, log style)
-circle cone, long triangles in a circle, no or constant gap throughout
+
 
 completely different pipeline style for images
 fractals (pipeline style)
