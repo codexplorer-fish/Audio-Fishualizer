@@ -362,7 +362,7 @@ function getColorStyles() {
             if (dimSettings == 1) {
                 // change lit with a square function
                 // lit = Math.pow(Math.sqrt(100 * (lightness/100)) * percentVolume, 2)
-                lit = lightness - lightness * percentVolume
+                lit = lightness * percentVolume
             } else if (dimSettings == 2) {
                 // lit = lightness - Math.pow(Math.sqrt(100 * (lightness/100)) * percentVolume, 2)
                 lit = lightness - lightness * percentVolume
