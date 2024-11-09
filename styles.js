@@ -159,6 +159,23 @@ function getAnimationStyles() {
 
     animationStyles[2] = ['Circle', 
         (canvas, canvasContext, data, storage, calls, timestamp, customVals) => {
+            function sideLengthFromRegularPolygonInradius(inradius, sides){
+                function toDegrees (angle) {
+                    return angle * (180 / Math.PI);
+                }
+                function toRadians (angle) {
+                    return angle * (Math.PI / 180);
+                }
+                function degSin(degree){
+                    return toDegrees(Math.sin(toRadians(degree)))
+                }
+                function degCos(degree){
+                    return toDegrees(Math.cos(toRadians(degree)))
+                }
+                const radius = inradius/degCos(180/sides)
+                const sideLength =  radius * 2 * degSin(180/sides)
+                return sideLength
+            }
             const [dataValue, dataNum, numDatas] = data
             const [permObject, frameObject] = storage
             const [firstCallEver, firstCallInFrame, lastCallInFrame] = calls
@@ -175,13 +192,14 @@ function getAnimationStyles() {
                 permObject.timestamp = timestamp
             }
 
-            const barWidth = 0.3 * canvas.width/numDatas * (Math.pow(customVals.lineWidth/100, 4))
-            // use the lower of width or height to calculate bar height
             let barHeight
+            let innerRadius
             if (canvas.height < canvas.width){
-                barHeight = canvas.height * dataValue * 0.5 * 0.8
+                barHeight = canvas.height * dataValue * 0.5 * (customVals.lineHeight/100)
+                innerRadius = canvas.height * (customVals.innerRadius/100)
             } else {
-                barHeight = canvas.width * dataValue * 0.5 * 0.8
+                barHeight = canvas.width * dataValue * 0.5 * (customVals.lineHeight/100)
+                innerRadius = canvas.width * (customVals.innerRadius/100)
             }
             frameObject.totalDataValues += dataValue
 
@@ -192,7 +210,32 @@ function getAnimationStyles() {
             canvasContext.translate(x, y)
             canvasContext.rotate(dataNum * Math.PI * 2 / numDatas)
             canvasContext.rotate(permObject.rotation * Math.PI * 2)
-            canvasContext.fillRect(-1 * barWidth / 2, 5, barWidth, barHeight)
+
+            if (customVals.lineShape == 0){
+                const barWidth = 0.3 * canvas.width/numDatas * (Math.pow(customVals.lineWidth/100, 4))
+                canvasContext.fillRect(-1 * barWidth / 2, innerRadius, barWidth, barHeight)
+            } else if (customVals.lineShape == 1){
+                canvasContext.beginPath()
+                canvasContext.moveTo(0, innerRadius)
+                const inradius = barHeight + innerRadius
+                const sideLength = sideLengthFromRegularPolygonInradius(inradius, numDatas)
+                const wedgeWidth = (sideLength/2)*customVals.lineWidth/100
+                canvasContext.lineTo(0 - wedgeWidth, inradius)
+                canvasContext.lineTo(wedgeWidth, inradius)
+                canvasContext.closePath()
+                canvasContext.fill()
+            } else if (customVals.lineShape == 2){
+                canvasContext.beginPath()
+                canvasContext.moveTo(0, barHeight + innerRadius)
+                const inradius = innerRadius
+                const sideLength = sideLengthFromRegularPolygonInradius(inradius, numDatas)
+                const wedgeWidth = (sideLength/2)*customVals.lineWidth/100
+                canvasContext.lineTo(0 - wedgeWidth, innerRadius)
+                canvasContext.lineTo(wedgeWidth, innerRadius)
+                canvasContext.closePath()
+                canvasContext.fill()
+            }
+
             canvasContext.restore()
 
             if (lastCallInFrame) {
@@ -218,7 +261,7 @@ function getAnimationStyles() {
             }
             return [permObject, frameObject]
         }, 
-        "lineWidth.Line Width.1.200.100;spinBaseSpeed.Spin Base Speed.-15.15.2;spinScaleSpeed.Spin Jumpiness.0.15.6"]
+        "lineShape.Line Shape.0.2.0.0=Rect,1=Wedge,2=Spike;lineWidth.Line Width.1.200.100;lineHeight.Line Height.0.200.80;innerRadius.Inner Radius.0.100.0;spinBaseSpeed.Spin Base Speed.-15.15.2;spinScaleSpeed.Spin Jumpiness.0.15.6"]
 
 
     return animationStyles

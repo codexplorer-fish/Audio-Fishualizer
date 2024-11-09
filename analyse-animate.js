@@ -37,6 +37,8 @@ fractals (pipeline style)
 db adjust helper - overrides db sliders, helps you find the best range... remove db sliders for redundancy?
 + preset hint for preferred db range: any, or full (for full: top is highest, bottom is minimum)
 
+tooltip as a hyperlinked alert div
+
 playlist system for files
 
 move local storage handlers to own file
@@ -46,6 +48,11 @@ add/remove from background, basically lets you stack styles
 - background image, video?, or color.
 - outline for styles? OR JUST MAKE SLIGHTLY BIGGER OUTLINE
 ... then BACKGROUND PRESET SAVE/LOAD :,)
+- different sources per layer possible
+- non-mono source !! :O
+- source: screen except selected tab, run a subtract function?
+    - try -1 audio gain node & channel merger
+    - audio param functions, linearRampToValueAtTime, etc. to fix 'clicks' when instantly set
 
 refactor so that presets already include version and name
 
