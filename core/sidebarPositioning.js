@@ -38,7 +38,7 @@ class SidebarPositioning {
     checkMain(){
         const mainSidebar = this.mainSidebar
         
-        function isOverflowingY ({ clientHeight, scrollHeight }) { // yoinked (and modified) from stackoverflow
+        function isOverflowingY ({ clientHeight, scrollHeight }) {
             return scrollHeight > clientHeight
         }
 

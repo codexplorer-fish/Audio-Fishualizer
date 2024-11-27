@@ -19,6 +19,8 @@
                 <input type="range" min="0" max="0" class="slider" id="presetSlider" data-dynamicTextLabel="Preset" data-dynamicTextFlags='{"0":"None"}'>
             </div>
 
+            <div id="stagesContainer" style="display: grid; grid-template-columns: 50px auto; grid-column: span 2; margin: auto;"></div>
+
             <div id="contextSidebarImgArea" class="sidebarImg">
                 <div class="sidebarImgDisplay"></div>
                 <div class="sidebarImgHoverExtension"></div>
@@ -28,8 +30,6 @@
                 <div class="dynamicText" >Pipeline</div>
                 <input type="range" min="0" max="0" value="0" class="slider" id="pipelineSlider" data-dynamicTextLabel="Pipeline" data-dynamicTextFlags='{"0":"Data","1":"Shape","2":"Image"}'>
             </div>
-
-            <div id="stagesContainer" style="display: grid; grid-template-columns: 50px auto; grid-column: span 2; margin: auto;"></div>
 
             <div style="grid-column: span 2">
                 <input type="text" id="presetNameInput" size="12" placeholder="new preset name">

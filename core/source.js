@@ -31,8 +31,13 @@ merge analyse animate with pipeline function, sort into folders and dynamically 
 refactor so that localsave presets already include version and name
 each pipeline style has a sidebar attached
 keyboard enter adds preset
-
 add back presets and saves
+
+proper typing check?
+
+saving and dynamic-text as classes
+zen mode: sliders labels only show name until interacted with (dynamic-text becomes class, register zen slider-labels and adjust global update accordingly)
+saving: update latency time function (fix time offset), sliderRequests: stereo, left, right
 
 fractals (pipeline style)
 pipeline for analysing (20-20k, log style)
@@ -40,14 +45,14 @@ pipeline for analysing (20-20k, log style)
 gradient color style
 particle animation style
 
-zen mode: sliders labels only show name until interacted with (dynamic-text becomes class, register zen slider-labels and adjust global update accordingly)
-
 db adjust helper - overrides db sliders, helps you find the best range... remove db sliders for redundancy?
 + preset hint for preferred db range: any, or full (for full: top is highest, bottom is minimum)
 
 tooltip as a hyperlinked alert div
 
 playlist system for files
+
+abstract pipeline handler (draw context?)
 
 add/remove from background, basically lets you stack styles
 + opacity setting, blend setting
