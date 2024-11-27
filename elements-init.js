@@ -1,18 +1,21 @@
 const uiContainer = document.getElementById('uiContainer')
 const canvasEscapeContainer = document.getElementById('canvasEscapeContainer')
-const canvas = document.getElementById('canvas1')
+const canvas = document.getElementById('CANVAS')
 
 const alertDiv = document.getElementById('alertDiv')
 const undoSaveButton = document.getElementById('undoSaveButton')
 
+const pipelineSidebarImg = document.getElementById('pipelineSidebarImg')
 const animationSidebarImg = document.getElementById('animationSidebarImg')
 const colorSidebarImg = document.getElementById('colorSidebarImg')
 const analyserSidebarImg = document.getElementById('analyserSidebarImg')
+const pipelineSidebar = document.getElementById('mainPipeline')
 const animationSidebar = document.getElementById('animationSidebar')
 const colorSidebar = document.getElementById('colorSidebar')
 const analyserSidebar = document.getElementById('analyserSidebar')
 const mainSidebar = document.getElementById('mainSidebar')
 
+const dynamicPipelineSlidersContainer = document.getElementById('dynamicPipelineSlidersContainer')
 const dynamicAnimationSlidersContainer = document.getElementById('dynamicAnimationSlidersContainer')
 const dynamicColorSlidersContainer = document.getElementById('dynamicColorSlidersContainer')
 const dynamicAnalyserSlidersContainer = document.getElementById('dynamicAnalyserSlidersContainer')
@@ -61,7 +64,7 @@ const analyserDbMinSlider = document.getElementById('analyserDbMinSlider')
 const analyserDbMaxSlider = document.getElementById('analyserDbMaxSlider')
 const analyserSmoothnessSlider = document.getElementById('analyserSmoothnessSlider')
 
-const dynamicTextContainers = document.getElementsByClassName('dynamicTextContainer')
+let dynamicPipelineSliders = []
 let dynamicAnimationSliders = []
 let dynamicColorSliders = []
 let dynamicAnalyserSliders = []

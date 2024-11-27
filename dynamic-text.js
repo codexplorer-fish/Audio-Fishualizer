@@ -1,88 +1,34 @@
 
 
-
 function setText(_slider, _textNode){
-    const flagsStr = _slider.getAttribute("data-dynamicTextFlags")
-    if (flagsStr !== null) {
-        const flags = flagsStr.split(",")
-        for (i in flags) {
-            const flag = flags[i]
-            const [value, extraText] = flag.split("=")
-            if (_slider.value == value) {
-                _textNode.textContent = _slider.getAttribute("data-dynamicTextLabel") + ": " + extraText
-                return // match found, finished setting text
-            }
+    const flagsJson = _slider.getAttribute("data-dynamicTextFlags")
+    if (flagsJson !== null) {
+        const flagsObj = JSON.parse(flagsJson)
+        const extraText = flagsObj[_slider.value]
+        if (extraText !== undefined) {
+            _textNode.textContent = _slider.getAttribute("data-dynamicTextLabel") + ": " + extraText
+            return
         }
     }
+    // fallback if matching flag cannot be found for slider
     _textNode.textContent = _slider.getAttribute("data-dynamicTextLabel") + ": " + _slider.value
 }
 
-
-// curry the setText function for the event listeners so that I can pass arguments into the function
-const curriedSetText = function(_slider, _textNode){
-    return function curriedFunction(e){
-        setText(_slider, _textNode)
-    }
-}
-
-
-const dynamicTextContainersArray = Array.from(dynamicTextContainers)
-dynamicTextContainersArray.forEach(dtc => {
-    // search children to find dynamic text and slider elements
-    const nodes = dtc.children
-    const arrayNodes = Array.from(nodes)
-    
-    let dynamicTextNode
-    for (const i in arrayNodes){
-        if (arrayNodes[i].className.includes("dynamicText")){
-            dynamicTextNode = arrayNodes[i]
-            break
-        }
-    }
-    let sliderNode
-    for (const i in arrayNodes){
-        if (arrayNodes[i].className.includes("slider")){
-            sliderNode = arrayNodes[i]
-            break
-        }
-    }
-
-    // then, set up listener to update dynamic text with slider
-    setText(sliderNode, dynamicTextNode)
-    sliderNode.addEventListener('input', curriedSetText(sliderNode, dynamicTextNode))
-});
-
-function setupDynamicSliderText(sliderTextArr){
-    for (const i in sliderTextArr) {
-        const slider = sliderTextArr[i][0]
-        const text = sliderTextArr[i][1]
-
-        setText(slider, text)
-        slider.addEventListener('input', curriedSetText(slider, text))
-    }
-}
-
-function deleteDynamicSliderListeners(slidersArr){
-    slidersArr.forEach((slider) => {
-        slider.removeEventListener('input', curriedSetText)
-    })
-}
-
-
 function updateDynamicText(){
-    // essentially <dynamic text containers loop (dynamicTextContainersArray.forEach)> and setupDynamicSliderText, just without the event listener. used to manually update slider text
+    const dynamicTextContainersArray = Array.from(document.getElementsByClassName('dynamicTextContainer'))
     dynamicTextContainersArray.forEach(dtc => {
+        // search children to find slider and text, and call setText on them.
         const nodes = dtc.children
         const arrayNodes = Array.from(nodes)
         
-        let dynamicTextNode
+        let dynamicTextNode = undefined
         for (const i in arrayNodes){
             if (arrayNodes[i].className.includes("dynamicText")){
                 dynamicTextNode = arrayNodes[i]
                 break
             }
         }
-        let sliderNode
+        let sliderNode = undefined
         for (const i in arrayNodes){
             if (arrayNodes[i].className.includes("slider")){
                 sliderNode = arrayNodes[i]
@@ -90,32 +36,13 @@ function updateDynamicText(){
             }
         }
 
+        if (dynamicTextNode === undefined) {
+            throw new Error("could not find dynamic text node within container: " + nodes)
+        } else if (sliderNode === undefined) {
+            throw new Error("could not find slider node within container: " + nodes)
+        }
+
         setText(sliderNode, dynamicTextNode)
     });
-
-    function setTextForSliderTextArr(sliderTextArr){
-        for (const i in sliderTextArr) {
-            const slider = sliderTextArr[i][0]
-            const text = sliderTextArr[i][1]
-    
-            setText(slider, text)
-        }
-    }
-    setTextForSliderTextArr(dynamicAnimationSliders)
-    setTextForSliderTextArr(dynamicColorSliders)
-    setTextForSliderTextArr(dynamicAnalyserSliders)
 }
-
-function initStyleSliderFlags(styleSlider, styles){
-    let flags = ""
-    const analyserStyles = styles
-    analyserStyles.forEach((style, index) => {
-        flags += index + "=" + style[0] + ","
-    })
-    flags = flags.slice(0, -1) // remove trailing semicolon
-    styleSlider.setAttribute("data-dynamicTextFlags", flags)
-}
-
-initStyleSliderFlags(animationStyleSlider, getAnimationStyles())
-initStyleSliderFlags(colorStyleSlider, getColorStyles())
-initStyleSliderFlags(analyserStyleSlider, getAnalyserStyles())
+updateDynamicText()

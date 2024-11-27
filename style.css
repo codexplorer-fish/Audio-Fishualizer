@@ -22,6 +22,7 @@ html, body {
 .sidebarSliderLabel {
     max-width: 150px;
     word-break: break-word;
+    margin: auto;
 }
 
 .sidebar {
@@ -50,10 +51,28 @@ html, body {
     display: block;
     width: 50px;
     height: 50px;
-    background-image:url('images/sidebarIndicator.png');
-    background-size: 100% 100%;
     mix-blend-mode: lighten;
 }
+
+.sidebarImgDisplay {
+    display: block;
+    position: absolute;
+    z-index: 350;
+    left: 20px;
+    width: 30px;
+    height: 50px;
+    background-image:url('images/sidebarIndicator.png');
+    background-size: 100% 100%;
+}
+
+.sidebarImgHoverExtension {
+    z-index: 340;
+    padding-bottom: 100px;
+    padding-right: 100px;
+    left: -50px;
+    position: absolute;
+}
+
 
 .collapsingSidebar {
     background: rgb(50, 50, 50);
@@ -61,12 +80,6 @@ html, body {
 
     position: absolute;
     /* positioned in sidebar-positioning.js */
-}
-
-.sidebarImgHoverExtension {
-    padding-bottom: 100px;
-    padding-right: 50px;
-    position: absolute;
 }
 
 #uiContainer {
@@ -108,7 +121,7 @@ header {
 
 .defaultButton {
     position: relative;
-    z-index: 300;
+    z-index: 350;
     border-radius: 5px;
 }
 
@@ -123,7 +136,7 @@ header {
 
 .hyperlikeButton {
     position: relative;
-    z-index: 300;
+    z-index: 350;
     background: none;
     border: none;
     color:lightgray;

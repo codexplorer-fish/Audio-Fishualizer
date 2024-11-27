@@ -9,43 +9,27 @@
     
 </head>
 <body>
-    <canvas id="canvas1" style="z-index:100; position:absolute; width:100%; height:100%; top:0"></canvas> <!-- top:0 or canvas can be physically placed lower when appended to the dom (from picture-in-picture)-->
+    <canvas id="CANVAS" style="z-index:100; position:absolute; width:100%; height:100%; top:0"></canvas> <!-- top:0 or canvas can be physically placed lower when appended to the dom (from picture-in-picture)-->
     <div id="background"></div>
     <div id="uiContainer">
         <div id="mainSidebar" class="sidebar">
 
             <div id="mainPreset" class="dynamicTextContainer sidebarSliderLabel" style="grid-column: span 2; margin: auto;">
-                <!--- ^^^margin auto for center align--->
                 <header class="dynamicText">Preset</header>
-                <input type="range" min="0" max="0" class="slider" id="presetSlider" data-dynamicTextLabel="Preset" data-dynamicTextFlags="0=None">
+                <input type="range" min="0" max="0" class="slider" id="presetSlider" data-dynamicTextLabel="Preset" data-dynamicTextFlags='{"0":"None"}'>
             </div>
 
-            <div id="animationSidebarImg" class="sidebarImg">
+            <div id="contextSidebarImgArea" class="sidebarImg">
+                <div class="sidebarImgDisplay"></div>
                 <div class="sidebarImgHoverExtension"></div>
             </div>
 
-            <div id="mainAnimation" class="dynamicTextContainer sidebarSliderLabel">
-                <div class="dynamicText" >Animation</div>
-                <input type="range" min="0" max="2" value="0" class="slider styleSlider" id="animationStyleSlider" data-dynamicTextLabel="Animation">
+            <div id="mainPipeline" class="dynamicTextContainer sidebarSliderLabel">
+                <div class="dynamicText" >Pipeline</div>
+                <input type="range" min="0" max="0" value="0" class="slider" id="pipelineSlider" data-dynamicTextLabel="Pipeline" data-dynamicTextFlags='{"0":"Data","1":"Shape","2":"Image"}'>
             </div>
 
-            <div id="colorSidebarImg" class="sidebarImg">
-                <div class="sidebarImgHoverExtension"></div>
-            </div>
-
-            <div id="mainColor" class="dynamicTextContainer sidebarSliderLabel">
-                <div class="dynamicText" >Color</div>
-                <input type="range" min="0" max="1" value="0" class="slider styleSlider" id="colorStyleSlider" data-dynamicTextLabel="Color">
-            </div>
-
-            <div id="analyserSidebarImg" class="sidebarImg">
-                <div class="sidebarImgHoverExtension"></div>
-            </div>
-
-            <div id="mainAnalyser" class="dynamicTextContainer sidebarSliderLabel">
-                <div class="dynamicText">Analyser</div>
-                <input type="range" min="0" max="0" value="0" class="slider styleSlider" id="analyserStyleSlider" data-dynamicTextLabel="Analyser">
-            </div>
+            <div id="stagesContainer" style="display: grid; grid-template-columns: 50px auto; grid-column: span 2; margin: auto;"></div>
 
             <div style="grid-column: span 2">
                 <input type="text" id="presetNameInput" size="12" placeholder="new preset name">
@@ -63,14 +47,14 @@
                     <option value=1>Mic</option>
                     <option value=2>Window Share</option>
                 </select>
-                <button id="mute" value="false" class="defaultButton">Mute</button>
+                <button id="muteButton" value="false" class="defaultButton">Mute</button>
                 <br>
-                <input type="file" id="audioUpload" accept="audio/*" style="width: 150px;">
+                <input type="file" id="audioFileInput" accept="audio/*" style="width: 150px;">
                 <br>
                 <div id="sourceDelayContainer" class="dynamicTextContainer sidebarSliderLabel" style="grid-column: span 2; margin: auto;">
                     <br>
                     <div class="dynamicText" style="font-size: small;">Timing Offset</div>
-                    <input type="range" min="-1" max="500" value="0" class="slider" id="sourceDelaySlider" data-dynamicTextLabel="Timing Offset" data-dynamicTextFlags="-1=auto">
+                    <input type="range" min="-1" max="500" value="0" class="slider" id="sourceDelaySlider" data-dynamicTextLabel="Timing Offset" data-dynamicTextFlags='{"-1":"auto"}'>
                 </div>
                 <button id="reshareMediaButton" class="defaultButton" style="display: none;">Change Share</button>
             </div>
@@ -80,7 +64,7 @@
             </div>
 
             <div style="grid-column: span 2">
-                <button id="importExportButton" class="hyperlikeButton">import/export</button>
+                <button id="iEFocusOpener" class="hyperlikeButton">import/export</button>
             </div>
 
             <div style="grid-column: span 2">
@@ -90,40 +74,13 @@
 
         <audio id="audioElement" controls></audio>
 
-        <div id="animationSidebar" class="sidebar collapsingSidebar hidingVis">
-            <div id="dynamicAnimationSlidersContainer"></div>
-        </div>
-
-        <div id="colorSidebar" class="sidebar collapsingSidebar hidingVis">
-            <div id="dynamicColorSlidersContainer"></div>
-        </div>
-
-        <div id="analyserSidebar" class="sidebar collapsingSidebar hidingVis">
-            <div id="dynamicAnalyserSlidersContainer"></div>
-            <div class="dynamicTextContainer sidebarSliderLabel">
-                <div class="dynamicText">Data Values</div>
-                <input type="range" min="5" max="15" value="12" class="slider" id="analyserFftValueSlider" data-dynamicTextLabel="Data Values">
-            </div>
-            <br>
-            <div class="dynamicTextContainer sidebarSliderLabel">
-                <div class="dynamicText">Db Range Min</div>
-                <input type="range" min="-130" max="0" value="-100" class="slider" id="analyserDbMinSlider" data-dynamicTextLabel="Db Range Min">
-            </div>
-            <br>
-            <div class="dynamicTextContainer sidebarSliderLabel">
-                <div class="dynamicText">Db Range Max</div>
-                <input type="range" min="-100" max="30" value="-30" class="slider" id="analyserDbMaxSlider" data-dynamicTextLabel="Db Range Max">
-            </div>
-            <br>
-            <div class="dynamicTextContainer sidebarSliderLabel">
-                <div class="dynamicText">Animation Smoothness</div>
-                <input type="range" min="0" max="100" value="64" class="slider" id="analyserSmoothnessSlider" data-dynamicTextLabel="Animation Smoothness">
-            </div>
+        <div id="contextSidebar" class="sidebar collapsingSidebar hidingVis">
+            
         </div>
     </div>
 
     <div id="focusImportExport" class="focusDivShell hidingVis">
-        <button id="focusImportExportCloser" class="focusCloser hyperlikeButton"><h1>x</h1></button>
+        <button id="iEFocusCloser" class="focusCloser hyperlikeButton"><h1>x</h1></button>
         <div class="focusDiv">
             
             <div style="white-space: normal;">
@@ -131,19 +88,19 @@
                 <br>
                 <div id="importExportPreset" class="dynamicTextContainer">
                     <header class="dynamicText">Selected Preset</header>
-                    <input type="range" min="0" max="0" class="slider" id="importExportPresetSlider" data-dynamicTextLabel="Select Preset" data-dynamicTextFlags="0=None">
+                    <input type="range" min="0" max="0" class="slider" id="iEPresetSlider" data-dynamicTextLabel="Select Preset" data-dynamicTextFlags='{"0":"None"}'>
                 </div>
             </div>
 
             <div style="font-size: larger;">Export Preset</div>
-            <div id="exportPresetDiv" style="font-size: smaller; overflow-x: scroll;"></div>
-            <button id="exportPresetButton" class="defaultButton">Copy Text</button>
+            <div id="iEPresetExporterDiv" style="font-size: smaller; overflow-x: scroll; white-space: nowrap;"></div>
+            <button id="iEPresetExporter" class="defaultButton">Copy Text</button>
 
 
 
             <div style="font-size: larger;">Import Preset</div>
-            <textarea id="importPresetTextarea" size="12" placeholder="preset code"></textarea>
-            <button id="importPresetButton" class="defaultButton">Save New</button>
+            <textarea id="iEPresetImporterTextarea" spellcheck="false" size="12" placeholder="preset code" style="width: 100%; height: 100px;"></textarea>
+            <button id="iEPresetImporter" class="defaultButton">Save New</button>
 
             <br><br><br>
 
@@ -151,11 +108,11 @@
             <div style="font-size: larger;">Import/Export Save</div>
             <div style="font-size: small;">Current Save. Replace and click Apply to save:</div>
             <div style="white-space: normal;">
-                <textarea id="importExportSaveTextarea" size="12" placeholder="save code" style="width: 100%; height: 200px;"></textarea>
+                <textarea id="iESaveTextarea" spellcheck="false" size="12" placeholder="save code" style="width: 100%; height: 200px;"></textarea>
                 <br>
-                <button id="exportSaveButton" class="defaultButton">Copy Text</button>
-                <button id="importSaveButton" class="defaultButton">Apply</button>
-                <button id="exportClearTextarea" class="defaultButton">Clear</button>
+                <button id="iESaveExporter" class="defaultButton">Copy Text</button>
+                <button id="iESaveImporter" class="defaultButton">Apply</button>
+                <button id="iESaveTextareaClearer" class="defaultButton">Clear</button>
             </div>
 
             <br><br><br>
@@ -221,18 +178,28 @@
         width: 100%;
         height: 100%;">
     </div>
+
     <script src="elements-init.js"></script>
     <script src="customAlert.js"></script>
     <script src="independent-elements.js"></script>
-    <script src="styles.js"></script>
+
+    <script src="core/pipelines/data/main.js"></script>
+    <script src="core/pipelines/data/analyse.js"></script>
+    <script src="core/pipelines/data/color.js"></script>
+    <script src="core/pipelines/data/animate.js"></script>
+
     <script src="dynamic-text.js"></script>
-    <script src="analyse-animate.js"></script>
-    <script src="preset-version-control.js"></script>
+    <script src="core/saving/main.js"></script>
+    <!--<script src="preset-version-control.js"></script>
     <script src="import-export-metadata-wrappers.js"></script>
     <script src="presets-saves-and-local-storage.js"></script>
-    <script src="import-export.js"></script>
+    <script src="import-export.js"></script>-->\
 
-    <!-- dynamically position sidebars after dynamic sliders are set up and loaded from save-->
-    <script src="sidebar-positioning.js"></script>
+    <script src="core/sidebarPositioning.js"></script>
+    <script src="core/contextStyleCanvas.js"></script>
+    <script src="core/contextStyleAnalyser.js"></script>
+    <script src="core/source.js"></script>
+    <script src="core/populator.js"></script>
+    <script src="core/main.js"></script>
 </body>
 </html>

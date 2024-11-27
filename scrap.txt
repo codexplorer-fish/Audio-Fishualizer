@@ -312,3 +312,44 @@ function compressUpperIndexes(fftArray, factor, sampleRate) {
 
     return Uint8Array.from(newArray)
 }
+
+
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1)
+}
+function splitAtCapitals(str) {
+    return str.split(/(?=[A-Z])/);
+}
+
+const sidebarIdentifier = splitAtCapitals(sidebar.id)[0]
+const myContainerId = 'dynamic' + capitalizeFirstLetter(sidebarIdentifier) + 'SlidersContainer'
+const myContainer = document.getElementById(myContainerId)
+
+
+// OLD STATIC STAGE SLIDERS
+            <div id="animationSidebarImg" class="sidebarImg">
+                <div class="sidebarImgHoverExtension"></div>
+            </div>
+
+            <div id="mainAnimation" class="dynamicTextContainer sidebarSliderLabel canvasPipeline">
+                <div class="dynamicText" >Animation</div>
+                <input type="range" min="0" max="2" value="0" class="slider styleSlider" id="animationStyleSlider" data-dynamicTextLabel="Animation">
+            </div>
+
+            <div id="colorSidebarImg" class="sidebarImg">
+                <div class="sidebarImgHoverExtension"></div>
+            </div>
+
+            <div id="mainColor" class="dynamicTextContainer sidebarSliderLabel canvasPipeline">
+                <div class="dynamicText" >Color</div>
+                <input type="range" min="0" max="1" value="0" class="slider styleSlider" id="colorStyleSlider" data-dynamicTextLabel="Color">
+            </div>
+
+            <div id="analyserSidebarImg" class="sidebarImg">
+                <div class="sidebarImgHoverExtension"></div>
+            </div>
+
+            <div id="mainAnalyser" class="dynamicTextContainer sidebarSliderLabel canvasPipeline">
+                <div class="dynamicText">Analyser</div>
+                <input type="range" min="0" max="0" value="0" class="slider styleSlider" id="analyserStyleSlider" data-dynamicTextLabel="Analyser">
+            </div>

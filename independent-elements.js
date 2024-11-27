@@ -7,11 +7,6 @@ function initSidebarTimedVisibilityHandler(){
     function hideScreen() {
         if (!presetNameInput.matches(':focus')){ // only hide if text input is not selected (don't want to hide the ui while user is typing)
             uiContainer.style.visibility = "hidden"
-            /* hides any active sidebars along with uiContainer. !!! -> if sidebar is being hovered over, why hide it?
-            animationSidebar.style.visibility = "hidden"
-            colorSidebar.style.visibility = "hidden"
-            analyserSidebar.style.visibility = "hidden"
-            */
         }
     }
 
@@ -80,53 +75,48 @@ function initWindowHandler(){
 }
 initWindowHandler()
 
-function initAnimationSidebarHandler(){
-    animationSidebarImg.addEventListener("mouseleave", () => {
-        if (!animationSidebar.matches(':hover')){
-            animationSidebar.style.visibility = "hidden"
-        }
-    })
-     animationSidebar.addEventListener('mouseleave', () => {
-        animationSidebar.style.visibility = "hidden"
-    })
+function initCollapsingSidebarHandlers(){
+    collapsingSidebars = Array.from(document.getElementsByClassName('collapsingSidebar'))
+    collapsingSidebars.forEach((sidebar) => {
+        const myImgAreaId = sidebar.id + 'ImgArea'
+        const imgArea = document.getElementById(myImgAreaId)
+        const imgDisplay = imgArea.querySelector(":scope > .sidebarImgDisplay")
 
-     animationSidebarImg.addEventListener("mouseenter", () => {
-        animationSidebar.style.visibility = "visible"
+        function hoveringExtension(){
+            const hovered = document.querySelector('.sidebarImgHoverExtension:hover')
+            if (hovered === null) {
+                return false
+            } else {
+                function ownTheSidebar(){ // now that hovered is the element keeping the sidebar alive, it must handle sidebar closing.
+                    if (!sidebar.matches(':hover') && !imgArea.matches(':hover')){
+                        sidebar.style.visibility = "hidden"
+                        hovered.removeEventListener("mouseleave", ownTheSidebar)
+                    }
+                }
+                hovered.addEventListener("mouseleave", ownTheSidebar)
+
+                return true
+            }
+        }
+
+        imgArea.addEventListener("mouseleave", () => {
+            if (!sidebar.matches(':hover') && !hoveringExtension()){ 
+                sidebar.style.visibility = "hidden"
+            }
+        })
+        sidebar.addEventListener('mouseleave', () => {
+            if (!imgArea.matches(':hover') && !hoveringExtension()){
+                sidebar.style.visibility = "hidden"
+            }
+        })
+
+        imgDisplay.addEventListener("mouseenter", () => {
+            sidebar.style.visibility = "visible"
+        })
     })
 }
-initAnimationSidebarHandler()
+initCollapsingSidebarHandlers()
 
-function initColorSidebarHandler(){
-    colorSidebarImg.addEventListener("mouseleave", () => {
-        if (!colorSidebar.matches(':hover')){
-            colorSidebar.style.visibility = "hidden"
-        }
-    })
-    colorSidebar.addEventListener('mouseleave', () => {
-        colorSidebar.style.visibility = "hidden"
-    })
-
-    colorSidebarImg.addEventListener("mouseenter", () => {
-        colorSidebar.style.visibility = "visible"
-    })
-}
-initColorSidebarHandler()
-
-function initAnalyserSidebarHandler(){
-    analyserSidebarImg.addEventListener("mouseleave", () => {
-        if (!analyserSidebar.matches(':hover')){
-            analyserSidebar.style.visibility = "hidden"
-        }
-    })
-    analyserSidebar.addEventListener('mouseleave', () => {
-        analyserSidebar.style.visibility = "hidden"
-    })
-
-    analyserSidebarImg.addEventListener("mouseenter", () => {
-        analyserSidebar.style.visibility = "visible"
-    })
-}
-initAnalyserSidebarHandler()
 
 function initAboutMeHandler(){
     aboutMeButton.addEventListener('click', () => {
