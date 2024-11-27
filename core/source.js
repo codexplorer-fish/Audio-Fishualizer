@@ -3,7 +3,7 @@
 Done!:
 ITS LIVE!
 
-New:
+Features added:
 hide dynamic sliders after 2s too (use same functions) < reverted. now only hides if ui container is not hovered
 increase max potency of spin scale, for when db range creates generally low values <- ez, just watch out for backwards compatability: just decrease min db lol
 about me and bmac page <- pages open on click, pages close on clicking out, scrollable
@@ -33,24 +33,21 @@ each pipeline style has a sidebar attached
 keyboard enter adds preset
 add back presets and saves
 
-proper typing check?
-
 saving and dynamic-text as classes
 zen mode: sliders labels only show name until interacted with (dynamic-text becomes class, register zen slider-labels and adjust global update accordingly)
-saving: update latency time function (fix time offset), sliderRequests: stereo, left, right
+saving: update latency time function (fix time offset), sliderRequests: stereo, left, right ++++ playlist system for files
+
 
 fractals (pipeline style)
 pipeline for analysing (20-20k, log style)
+pipeline for images, and media loading, with some emulated images which are just shapes
 
 gradient color style
 particle animation style
 
-db adjust helper - overrides db sliders, helps you find the best range... remove db sliders for redundancy?
-+ preset hint for preferred db range: any, or full (for full: top is highest, bottom is minimum)
-
-tooltip as a hyperlinked alert div
-
-playlist system for files
+Tooltips:
+    db adjust helper - adjusts or overrides db sliders, helps you find the best range
+    independent hyperlinked tip for each slider, by id
 
 abstract pipeline handler (draw context?)
 

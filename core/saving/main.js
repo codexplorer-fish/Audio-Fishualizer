@@ -366,13 +366,13 @@ class SavingMain {
         }
 
         try {
-            function checkIncludes(object, objectName, property, type=undefined){
+            function checkIncludes(object, objectName, property){
                 if (!Object.hasOwn(object, property)){
                     throw new FormatCheckFailed(objectName + " does not have property: " + property)
                 }
-                if (type !== undefined){ // TODO: proper typing system, accounting for type coercion
-                    if (typeof(object.property) !== type){
-                        throw new FormatCheckFailed(objectName + " is not type: " + type)
+                if (property === "value"){
+                    if (isNaN(object[property])){
+                        throw new FormatCheckFailed(objectName + "'s value '" + object[property] + "' is not numeric")
                     }
                 }
             }
@@ -406,7 +406,7 @@ class SavingMain {
             checkIncludes(preset, "preset", "name")
 
             checkIncludes(preset, "preset", "context")
-            checkIncludes(preset.context, "preset context", "value")
+            // checkIncludes(preset.context, "preset context", "value")
             checkIncludes(preset.context, "preset context", "branches")
             Object.keys(preset.context.branches).forEach((branchId) => {
                 const possibleSliders = this.populator.getDynamicTextContainerSliders(this.contextSidebar)
