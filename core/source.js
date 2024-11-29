@@ -37,21 +37,25 @@ saving and dynamic-text as classes
 zen mode: sliders labels only show name until interacted with (dynamic-text becomes class, register zen slider-labels and adjust global update accordingly)
 saving: update latency time function (fix time offset), sliderRequests: stereo, left, right ++++ playlist system for files
 
-
 fractals (pipeline style)
 pipeline for analysing (20-20k, log style)
 pipeline for images, and media loading, with some emulated images which are just shapes
 
 gradient color style
 particle animation style
+"floating ship" animation style
+electric arc style?
 
 Tooltips:
     db adjust helper - adjusts or overrides db sliders, helps you find the best range
     independent hyperlinked tip for each slider, by id
 
 abstract pipeline handler (draw context?)
+3d context with three.js :_)
 
+each layer has x, y, and scale, move around top layer with tap-in-focus and drag
 add/remove from background, basically lets you stack styles
++ distortion style??
 + opacity setting, blend setting
 - same as presets slider, but all are applied at the same time.
 - background image, video?, or color.
@@ -84,234 +88,246 @@ info popup per preset <- something in dynamic text, somewhat complicated... use 
 */
 
 
-function initSource(sourceSelect, muteButton, audioElement, audioFileInput, sourceDelaySlider, reshareMediaButton){
-    function useMuteValue(){ // reads mute value and updates based on it
-        if (muteButton.value == 'true' && muteButton.textContent == "Mute"){ // check textContent to know if already muted or not. attempting to disconnect analyser when already disconnected will generate error
-            muteButton.textContent = "Muted"
-            delayNode.disconnect(audioCtx.destination)
-            analyser.disconnect(delayNode)
-        } else if (muteButton.value == 'false' && muteButton.textContent == "Muted") {
-            muteButton.textContent = "Mute"
-            delayNode.connect(audioCtx.destination)
-            analyser.connect(delayNode)
-        }
-    }
+class Source{
+    constructor(sourceSelect, muteButton, audioElement, audioFileInput, sourceDelaySlider, reshareMediaButton){
+        // audio context
+        const audioCtx = new AudioContext()
+        
+        let stream = null
+        let audioRecSource = null
+        let audioShareSource = null
+        const audioFileSource = audioCtx.createMediaElementSource(audioElement)
+        let analyserSource = null
+        let delayNode = audioCtx.createDelay(1)
 
-    function changeDelay(ms){
-        const delay = ms/1000
-        delayNode.delayTime.value = delay
-    }
+        const analyser = audioCtx.createAnalyser()
 
-    async function useSourceSelectValue(){
-        async function recStreamSetup() {
-            const constraints = { audio: {
-                autoGainControl: false,
-                echoCancellation: false,
-                noiseSuppression: true,
-                deviceId: {exact: 'default'}
-            } }
-            try {
-                await navigator.mediaDevices.getUserMedia(constraints).then((_stream) => { 
-                    audioRecSource = audioCtx.createMediaStreamSource(_stream)
-                    stream = _stream
-                })
-            } catch (e) {
-                if (e.name == "NotAllowedError"){
-                    return "NotAllowedError"
-                } else {
-                    throw e
-                }
+
+        // set up initial source for analyser
+        useSourceSelectValue()
+
+        // default source for file, preloaded sample mp3. RESTRICTED CROSS ORIGIN, MUST HOST ON SERVER TO WORK
+        audioElement.src = "lazy-day-stylish-futuristic-chill-by-penguinmusic-pixabay.mp3"
+        audioElement.load()
+
+        analyser.connect(delayNode)
+        delayNode.connect(audioCtx.destination)
+
+        sourceSelect.addEventListener('change', useSourceSelectValue)
+        audioFileInput.addEventListener('change', loadAudioFileInput)
+        muteButton.addEventListener('click', flipMuteValue)
+        sourceDelaySlider.addEventListener('input', sourceDelayDefault)
+        this.animateDelay = 0
+        sourceDelaySlider.addEventListener('change', () => {sourceDelayAuto(this.animateDelay)})
+        reshareMediaButton.addEventListener('click', useSourceSelectValue) // useSourceSelectValue should only be visible when media is the source
+
+        this.analyser = analyser
+        this.audioCtx = audioCtx
+
+
+        function useMuteValue(){ // reads mute value and updates based on it
+            if (muteButton.value == 'true' && muteButton.textContent == "Mute"){ // check textContent to know if already muted or not. attempting to disconnect analyser when already disconnected will generate error
+                muteButton.textContent = "Muted"
+                delayNode.disconnect(audioCtx.destination)
+                analyser.disconnect(delayNode)
+            } else if (muteButton.value == 'false' && muteButton.textContent == "Muted") {
+                muteButton.textContent = "Mute"
+                delayNode.connect(audioCtx.destination)
+                analyser.connect(delayNode)
             }
         }
 
-        async function shareStreamSetup() {
-            const constraints = {
-                audio: {
+        function changeDelay(ms){
+            const delay = ms/1000
+            delayNode.delayTime.value = delay
+        }
+
+        async function useSourceSelectValue(){
+            async function recStreamSetup() {
+                const constraints = { audio: {
                     autoGainControl: false,
                     echoCancellation: false,
                     noiseSuppression: true,
+                    deviceId: {exact: 'default'}
+                } }
+                try {
+                    await navigator.mediaDevices.getUserMedia(constraints).then((_stream) => { 
+                        audioRecSource = audioCtx.createMediaStreamSource(_stream)
+                        stream = _stream
+                    })
+                } catch (e) {
+                    if (e.name == "NotAllowedError"){
+                        return "NotAllowedError"
+                    } else {
+                        throw e
+                    }
                 }
             }
-            try {
-                await navigator.mediaDevices.getDisplayMedia(constraints).then((_stream) => { 
-                    audioShareSource = audioCtx.createMediaStreamSource(_stream)
-                    stream = _stream
-                })
-            } catch (e) {
-                if (e.name == "NotAllowedError"){
-                    return "NotAllowedError"
-                } else if (e.name == "InvalidStateError"){
-                    return "InvalidStateError"
-                } else {
-                    throw e
+
+            async function shareStreamSetup() {
+                const constraints = {
+                    audio: {
+                        autoGainControl: false,
+                        echoCancellation: false,
+                        noiseSuppression: true,
+                    }
                 }
+                try {
+                    await navigator.mediaDevices.getDisplayMedia(constraints).then((_stream) => { 
+                        audioShareSource = audioCtx.createMediaStreamSource(_stream)
+                        stream = _stream
+                    })
+                } catch (e) {
+                    if (e.name == "NotAllowedError"){
+                        return "NotAllowedError"
+                    } else if (e.name == "InvalidStateError"){
+                        return "InvalidStateError"
+                    } else {
+                        throw e
+                    }
+                }
+            }
+
+            function fileSourceSetup(){
+                audioFileSource.connect(analyser)
+                analyserSource = audioFileSource
+                audioElement.style.display = "block"
+                sourceDelayContainer.style.display = 'inline'
+                audioFileInput.style.display = "inline"
+                reshareMediaButton.style.display = 'none'
+                muteButton.value = 'false'
+                if (sourceDelaySlider.value < 0){
+                    changeDelay(0)
+                    sourceDelaySlider.value = 0
+                    updateDynamicText()
+                } else {
+                    changeDelay(sourceDelaySlider.value)
+                }
+                
+            }
+
+            function micSourceSetup(){
+                audioRecSource.connect(analyser)
+                analyserSource = audioRecSource
+                audioElement.style.display = "none"
+                sourceDelayContainer.style.display = 'none'
+                audioFileInput.style.display = "none"
+                reshareMediaButton.style.display = 'none'
+                muteButton.value = 'true'
+                changeDelay(0)
+            }
+
+            function shareSourceSetup(){
+                audioShareSource.connect(analyser)
+                analyserSource = audioShareSource
+                audioElement.style.display = "none"
+                sourceDelayContainer.style.display = 'none'
+                audioFileInput.style.display = "none"
+                reshareMediaButton.style.display = 'inline'
+                muteButton.value = 'true'
+                changeDelay(0)
+            }
+
+            function disconnectSource(){
+                // disconnect all tracks to end any existing streams 
+                if (stream !== null) {
+                    stream.getTracks().forEach(function(track) {
+                        track.stop();
+                    });
+                }
+
+                // disconnect current analyser source if it exists. it won't exist on the first run
+                if (analyserSource !== null) {
+                    analyserSource.disconnect(analyser)
+                }
+            }
+
+            async function reconnectSource(){
+                // connect new analyser source
+                if (sourceSelect.value == 0){ // FILE
+                    fileSourceSetup()
+                } else if (sourceSelect.value == 1){ // MIC
+                    const error = await recStreamSetup()
+                    if (error == "NotAllowedError"){
+                        customAlert("Error: Microphone permission denied")
+                        fileSourceSetup() // set up as file source instead
+                        sourceSelect.value = 0
+                    } else {
+                        micSourceSetup()
+                    }
+                } else if (sourceSelect.value == 2){ // WINDOW
+                    const error = await shareStreamSetup()
+                    if (error == "NotAllowedError"){
+                        customAlert("Error: Screen share permission denied")
+                        fileSourceSetup() // set up as file source instead
+                        sourceSelect.value = 0
+                    } else if (error == "InvalidStateError") {
+                        customAlert("Error: Audio not enabled in share")
+                        fileSourceSetup() // set up as file source instead
+                        sourceSelect.value = 0
+                    } else {
+                        shareSourceSetup()
+                    }
+                } else {
+                    throw new Error('invalid sourceSelect value: ' + sourceSelect.value)
+                }
+            }
+            // don't listen to sourceSelect while processing the source change
+            sourceSelect.removeEventListener('change', useSourceSelectValue)
+
+            disconnectSource()
+            await reconnectSource()
+
+            useMuteValue()
+
+            updateDynamicText()
+            sourceSelect.addEventListener('change', useSourceSelectValue)
+        }
+
+        function loadAudioFileInput(){
+            // "this" refers to audioFileInput in this function
+            const audioFiles = this.files
+            if (audioFiles.length != 0) {
+                audioElement.src = URL.createObjectURL(audioFiles[0])
+                audioElement.load() // updates the element
+                audioElement.play()
             }
         }
 
-        function fileSourceSetup(){
-            audioFileSource.connect(analyser)
-            analyserSource = audioFileSource
-            audioElement.style.display = "block"
-            sourceDelayContainer.style.display = 'inline'
-            audioFileInput.style.display = "inline"
-            reshareMediaButton.style.display = 'none'
-            muteButton.value = 'false'
-            if (sourceDelaySlider.value < 0){
-                changeDelay(0)
-                sourceDelaySlider.value = 0
-                updateDynamicText()
+        function flipMuteValue(){
+            if (muteButton.value == 'true'){
+                muteButton.value = 'false'
             } else {
+                muteButton.value = 'true'
+            }
+            useMuteValue()
+        }
+
+        function sourceDelayDefault() {
+            if (sourceDelaySlider.value != -1) { // else will be handled by 'change' event listener instead
                 changeDelay(sourceDelaySlider.value)
             }
-            
-        }
-
-        function micSourceSetup(){
-            audioRecSource.connect(analyser)
-            analyserSource = audioRecSource
-            audioElement.style.display = "none"
-            sourceDelayContainer.style.display = 'none'
-            audioFileInput.style.display = "none"
-            reshareMediaButton.style.display = 'none'
-            muteButton.value = 'true'
-            changeDelay(0)
-        }
-
-        function shareSourceSetup(){
-            audioShareSource.connect(analyser)
-            analyserSource = audioShareSource
-            audioElement.style.display = "none"
-            sourceDelayContainer.style.display = 'none'
-            audioFileInput.style.display = "none"
-            reshareMediaButton.style.display = 'inline'
-            muteButton.value = 'true'
-            changeDelay(0)
-        }
-
-        function disconnectSource(){
-            // disconnect all tracks to end any existing streams 
-            if (stream !== null) {
-                stream.getTracks().forEach(function(track) {
-                    track.stop();
-                });
-            }
-
-            // disconnect current analyser source if it exists. it won't exist on the first run
-            if (analyserSource !== null) {
-                analyserSource.disconnect(analyser)
-            }
-        }
-
-        async function reconnectSource(){
-            // connect new analyser source
-            if (sourceSelect.value == 0){ // FILE
-                fileSourceSetup()
-            } else if (sourceSelect.value == 1){ // MIC
-                const error = await recStreamSetup()
-                if (error == "NotAllowedError"){
-                    customAlert("Error: Microphone permission denied")
-                    fileSourceSetup() // set up as file source instead
-                    sourceSelect.value = 0
-                } else {
-                    micSourceSetup()
-                }
-            } else if (sourceSelect.value == 2){ // WINDOW
-                const error = await shareStreamSetup()
-                if (error == "NotAllowedError"){
-                    customAlert("Error: Screen share permission denied")
-                    fileSourceSetup() // set up as file source instead
-                    sourceSelect.value = 0
-                } else if (error == "InvalidStateError") {
-                    customAlert("Error: Audio not enabled in share")
-                    fileSourceSetup() // set up as file source instead
-                    sourceSelect.value = 0
-                } else {
-                    shareSourceSetup()
-                }
-            } else {
-                throw new Error('invalid sourceSelect value: ' + sourceSelect.value)
-            }
-        }
-        // don't listen to sourceSelect while processing the source change
-        sourceSelect.removeEventListener('change', useSourceSelectValue)
-
-        disconnectSource()
-        await reconnectSource()
-
-        useMuteValue()
-
-        updateDynamicText()
-        sourceSelect.addEventListener('change', useSourceSelectValue)
-    }
-
-    sourceSelect.addEventListener('change', useSourceSelectValue)
-
-    function loadAudioFileInput(){
-        // "this" refers to audioFileInput in this function
-        const audioFiles = this.files
-        if (audioFiles.length != 0) {
-            audioElement.src = URL.createObjectURL(audioFiles[0])
-            audioElement.load() // updates the element
-            audioElement.play()
-        }
-    }
-    audioFileInput.addEventListener('change', loadAudioFileInput)
-
-    function flipMuteValue(){
-        if (muteButton.value == 'true'){
-            muteButton.value = 'false'
-        } else {
-            muteButton.value = 'true'
-        }
-        useMuteValue()
-    }
-    muteButton.addEventListener('click', flipMuteValue)
-
-    function sourceDelayDefault() {
-        if (sourceDelaySlider.value != -1) { // will be handled by 'change' event listener instead
-            changeDelay(sourceDelaySlider.value)
-        }
-    }
-    sourceDelaySlider.addEventListener('input', sourceDelayDefault)
-
-    function sourceDelayAuto() {
-        if (sourceDelaySlider.value == -1){
-            if (animateDelay <= sourceDelaySlider.max) {    
-                sourceDelaySlider.value = Math.round(animateDelay)
-            } else {
-                sourceDelaySlider.value = sourceDelaySlider.max
-                customAlert("Alert: Detected delay:" + animateDelay + "ms Is greater than max delay: " + sourceDelaySlider.max + "ms")
-            }
-            changeDelay(sourceDelaySlider.value)
             updateDynamicText()
         }
+
+        function sourceDelayAuto(animateDelay) {
+            if (sourceDelaySlider.value == -1){
+                if (animateDelay <= sourceDelaySlider.max) {    
+                    sourceDelaySlider.value = Math.round(animateDelay)
+                } else {
+                    sourceDelaySlider.value = sourceDelaySlider.max
+                    customAlert("Alert: Detected delay:" + animateDelay + "ms Is greater than max delay: " + sourceDelaySlider.max + "ms")
+                }
+                changeDelay(sourceDelaySlider.value)
+                updateDynamicText()
+            }
+        }
     }
-    sourceDelaySlider.addEventListener('change', sourceDelayAuto)
 
-    reshareMediaButton.addEventListener('click', useSourceSelectValue) // useSourceSelectValue should only be visible when media is the source
-    // END OF AUDIO SOURCE HANDLERS
-
-    // audio context
-    const audioCtx = new AudioContext()
-
-    let stream = null
-    let audioRecSource = null
-    let audioShareSource = null
-    const audioFileSource = audioCtx.createMediaElementSource(audioElement)
-    let analyserSource = null
-    let delayNode = audioCtx.createDelay(1)
-
-    const analyser = audioCtx.createAnalyser()
-
-    // set up initial source for analyser
-    useSourceSelectValue()
-
-    // default source for file, preloaded sample mp3. RESTRICTED CROSS ORIGIN, MUST HOST ON SERVER TO WORK
-    audioElement.src = "lazy-day-stylish-futuristic-chill-by-penguinmusic-pixabay.mp3"
-    audioElement.load()
-
-    analyser.connect(delayNode)
-    delayNode.connect(audioCtx.destination)
-
-    return [analyser, audioCtx]
+    setAnimateDelay(animateDelay){
+        this.animateDelay = animateDelay
+    }
+    getSource(){
+        return [this.analyser, this.audioCtx]
+    }
 }

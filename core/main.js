@@ -61,7 +61,7 @@ function initAnalyseAnimate() {
 
     function initInteractionDependent() {
         // source
-        const [analyser, audioCtx] = initSource(
+        const source = new Source(
             document.getElementById("sourceSelect"),
             document.getElementById("muteButton"),
             document.getElementById("audioElement"),
@@ -69,9 +69,14 @@ function initAnalyseAnimate() {
             document.getElementById("sourceDelaySlider"),
             document.getElementById("reshareMediaButton"),
         )
+        const [analyser, audioCtx] = source.getSource()
         let dataArray = new Uint8Array(analyser.frequencyBinCount)
 
+        let lastTimestamp = document.timeline.currentTime
         function animate(timestamp){
+            animateDelay = timestamp - lastTimestamp
+            source.setAnimateDelay(animateDelay)
+
             const [pipelineOptionsTree, contextOptionsTree] = savingMain.getCurrentValuesTree()
 
             function extractBranchesValues(branches){
@@ -98,6 +103,7 @@ function initAnalyseAnimate() {
             // draw
             dataMain.animate(timestamp, dataArray, audioCtx.sampleRate, pipelineOptionsTree, extractBranchesValues)
 
+            lastTimestamp = timestamp
             requestAnimationFrame(animate)
         }
         animate()
