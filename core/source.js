@@ -33,6 +33,10 @@ each pipeline style has a sidebar attached
 keyboard enter adds preset
 add back presets and saves
 
+detect drop-down hovering
+
+ui grace fade period before disappearing
+
 saving and dynamic-text as classes
 zen mode: sliders labels only show name until interacted with (dynamic-text becomes class, register zen slider-labels and adjust global update accordingly)
 saving: update latency time function (fix time offset), sliderRequests: stereo, left, right ++++ playlist system for files
@@ -49,8 +53,11 @@ electric arc style?
 Tooltips:
     db adjust helper - adjusts or overrides db sliders, helps you find the best range
     independent hyperlinked tip for each slider, by id
+    special color module for easy color selection, like image selection
+    special curve module for easy value-curves (for speed, lightness, etc.)
+    image selection module, + learn local file saving
 
-abstract pipeline handler (draw context?)
+abstract out pipeline handler (draw context?)
 3d context with three.js :_)
 
 each layer has x, y, and scale, move around top layer with tap-in-focus and drag
