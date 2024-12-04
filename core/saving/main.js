@@ -45,6 +45,8 @@ class SavingMain {
         this.presetNameInput = presetNameInput
         this.undoSaveButton = undoSaveButton
 
+        this.iEPresetSlider = iEPresetSlider
+
         this.save = [] // array of presets, see makePreset(...)
         this.history = [] // array of saves
         this.historyIndex = -1
@@ -135,6 +137,7 @@ class SavingMain {
 
                 if (this.presetFormatCheck(preset) === true){
                     this.addPreset(preset)
+                    iEPresetImporterTextarea.value = ""
                     customAlert("\u2713 Added: " + preset.name)
                 } else {
                     customAlert("Error loading preset: see console log")
@@ -202,7 +205,7 @@ class SavingMain {
                 this.save = []
                 customAlert("\u2713 Save deleted.", undoSaveButton)
                 this.saveToLocalStorage()
-                this.updatePresetSliderLabels()
+                this.updatePresetSlidersLabels()
                 this.loadSelectedPreset()
                 this.overwriteSubsequentHistory()
             } else {
@@ -217,7 +220,7 @@ class SavingMain {
                         this.save = newSave
                         customAlert("\u2713 Save loaded")
                         this.saveToLocalStorage()
-                        this.updatePresetSliderLabels()
+                        this.updatePresetSlidersLabels()
                         this.loadSelectedPreset()
                         this.overwriteSubsequentHistory()
                     }
@@ -232,19 +235,21 @@ class SavingMain {
         // END OF IMPORT EXPORT
 
         this.loadFromLocalStorage()
-        this.updatePresetSliderLabels()
+        this.updatePresetSlidersLabels()
         this.loadSelectedPreset()
 
         this.overwriteSubsequentHistory()
     }
 
-    updatePresetSliderLabels(){
+    updatePresetSlidersLabels(){
         const labels = {}
         if (this.save.length === 0){
             this.presetSlider.max = 0
+            this.iEPresetSlider.max = 0
             labels[0] = "None"
         } else {
-            presetSlider.max = this.save.length - 1
+            presetSlider.max = this.save.length - 1 // bug exploration
+            this.iEPresetSlider.max = this.save.length - 1
             this.save.forEach((preset, index) => {
                 labels[index] = preset.name
             })
@@ -252,6 +257,8 @@ class SavingMain {
 
         const dynamicTextFlags = JSON.stringify(labels)
         this.presetSlider.setAttribute("data-dynamicTextFlags", dynamicTextFlags)
+        this.iEPresetSlider.setAttribute("data-dynamicTextFlags", dynamicTextFlags)
+        this.iEPresetSlider.value = this.presetSlider.value
     }
 
     loadSelectedPreset(){
@@ -457,7 +464,7 @@ class SavingMain {
         }
 
         this.saveToLocalStorage()
-        this.updatePresetSliderLabels()
+        this.updatePresetSlidersLabels()
         this.loadSelectedPreset()
 
         customAlert("\u2713 Saved: " + preset.name)
@@ -472,7 +479,7 @@ class SavingMain {
             this.save.splice(this.presetSlider.value, 1)
 
             this.saveToLocalStorage()
-            this.updatePresetSliderLabels()
+            this.updatePresetSlidersLabels()
             this.loadSelectedPreset()
 
             customAlert("\u2713 Deleted: " + String(nameOfDeleted).split("=")[1] + " ", this.undoSaveButton)
@@ -492,7 +499,7 @@ class SavingMain {
             this.save[this.presetSlider.value] = preset
             
             this.saveToLocalStorage()
-            this.updatePresetSliderLabels()
+            this.updatePresetSlidersLabels()
             this.loadSelectedPreset()
 
             if (noNewName) {
@@ -546,7 +553,7 @@ class SavingMain {
             this.presetSlider.value = newPresetSliderValue
         
             this.saveToLocalStorage()
-            this.updatePresetSliderLabels()
+            this.updatePresetSlidersLabels()
             this.loadSelectedPreset()
         
             customAlert("\u2713 rolled to capture #" + this.historyIndex + "/" + (this.history.length - 1))
