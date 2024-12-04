@@ -252,9 +252,9 @@ function dataPipeline_getAnimationStyles() {
 
                 let speed
                 if (customVals.particleSpeedDynamics == 0){
-                    speed = percentOfSpeedRange(dataValue)
+                    speed = percentOfSpeedRange(dataNum/numDatas)
                 } else {
-                    speed = percentOfSpeedRange(1 - dataValue)
+                    speed = percentOfSpeedRange(1 - (dataNum/numDatas))
                 }
                 if (angle == 90){
                     particle.vector[0] = 0
