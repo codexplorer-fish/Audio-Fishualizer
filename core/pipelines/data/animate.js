@@ -485,7 +485,7 @@ function dataPipeline_getAnimationStyles() {
             // do particles HAVE to be static after being spawned? alligence, watch: index, volume? + fillstyle would ofc change! yoo
             // ... but kinda breaks the fillstyle -> draw structure. no for now
             {id: "particleSpawnLocation", name: "Sorting", min: 0, max: 2, default: 1, labels: {0: "Random", 1: "Index", 2: "Reverse Index"}},
-            {id: "particleSpawnAngle", name: "Angle", min: 0, max: 360, default: 270, labels: {360: "From Center"}},
+            {id: "particleSpawnAngle", name: "Angle", min: 0, max: 359, default: 270, labels: {360: "From Center"}},
             {id: "particleSpawnRate", name: "Spawn Rate", min: 1, max: 11, default: 5, labels: {11: "Volume Based"}},
 
             {id: "particleSizeMin", name: "Size Min", min: 1, max: 10, default: 3},
