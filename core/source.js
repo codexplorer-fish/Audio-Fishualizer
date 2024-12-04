@@ -33,11 +33,10 @@ each pipeline style has a sidebar attached
 keyboard enter adds preset
 add back presets and saves
 particle animation style
+ui grace fade period before disappearing
 
 
 detect drop-down hovering?
-
-ui grace fade period before disappearing
 
 global analyser style -> smoothness only on decreasing
 

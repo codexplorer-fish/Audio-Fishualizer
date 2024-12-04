@@ -112,7 +112,6 @@ function initCollapsingSidebarHandlers(){
         let hideTimeout
 
         sidebar.style.opacity = "100%" // as a child of uiContainer, start with 100% to have uiContainer's 80% opacity
-        console.log(sidebar.style.opacity)
 
         function show(){
             clearTimeout(fadeTimeout)

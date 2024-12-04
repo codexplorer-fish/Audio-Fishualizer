@@ -112,7 +112,7 @@ class SavingMain {
         iEPresetSlider.addEventListener('input', () => {
             this.presetSlider.value = iEPresetSlider.value
             this.loadSelectedPreset()
-            iEPresetExporterDiv.textContent = this.save[this.presetSlider.value]
+            iEPresetExporterDiv.textContent = JSON.stringify(this.save[this.presetSlider.value])
         })
         
         iEPresetExporter.addEventListener('click', () => {    
