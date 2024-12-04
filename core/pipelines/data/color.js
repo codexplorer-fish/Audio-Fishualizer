@@ -7,7 +7,7 @@ function dataPipeline_getColorStyles() {
     ]
     colorStyles['data_color_manualColorShift'] = {
         name: 'Static', 
-        function: (canvasContext, data, storage, calls, timestamp, customVals) => {
+        function: (canvasContext, data, storage, calls, frameDelay, customVals) => {
             const [dataValue, dataNum, numDatas] = data
             const [permObject, frameObject] = storage
             const [firstCallEver, firstCallInFrame, lastCallInFrame] = calls
@@ -62,21 +62,16 @@ function dataPipeline_getColorStyles() {
 
     colorStyles['data_color_autoColorShift'] = {
         name: 'Shifting', 
-        function: (canvasContext, data, storage, calls, timestamp, customVals) => {
+        function: (canvasContext, data, storage, calls, frameDelay, customVals) => {
             const [dataValue, dataNum, numDatas] = data
             const [permObject, frameObject] = storage
             const [firstCallEver, firstCallInFrame, lastCallInFrame] = calls
 
             if (firstCallEver){
                 permObject.colorShift = 0
-                permObject.timestamp = timestamp
-                permObject.prevTimestamp = timestamp
             }
             if (firstCallInFrame) {
                 frameObject.totalDataValues = 0
-
-                permObject.prevTimestamp = permObject.timestamp
-                permObject.timestamp = timestamp
             }
             const lightness = customVals.colorLightness
             const colorRange = (Math.pow(customVals.colorRange/5, 2)/25) // square function to smooth out the slider input's potency
@@ -117,7 +112,6 @@ function dataPipeline_getColorStyles() {
             if (lastCallInFrame) {
                 // change bar x offset variable by average volume of bars, arbitrary rotationScale and arbitrary rotationBase
                 // one full cycle per 1 barOffset is the standard scale for use
-                frameDelay = permObject.timestamp - permObject.prevTimestamp
 
                 const colorScaleSpeed = Number(customVals.colorScaleSpeed)
                 const colorBaseSpeed = Number(customVals.colorBaseSpeed)

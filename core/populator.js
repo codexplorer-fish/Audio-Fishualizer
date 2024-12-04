@@ -13,22 +13,10 @@ class Populator{
         }
     }
     getDynamicTextContainerSliders(container) {
-            function extractSliderFromDynamicTextContainer(dynamicTextContainer){
-                let elementsArr = Array.from(dynamicTextContainer.children)
-                for (const i in elementsArr){
-                    const element = elementsArr[i]
-                    if (element.tagName == 'INPUT'){
-                        return element
-                    }
-                }
-            }
             let slidersArr = []
-            Array.from(container.children).forEach((element) => {
-                if (element.tagName == 'DIV' && element.classList.contains('dynamicTextContainer') && element.classList.contains('sidebarSliderLabel')){
-                    const dynamicTextContainer = element
-                    const slider = extractSliderFromDynamicTextContainer(dynamicTextContainer)
-                    slidersArr.push(slider)
-                }
+            Array.from(container.querySelectorAll("div.dynamicTextContainer.sidebarSliderLabel")).forEach((dynamicTextContainer) => {
+                const slider = dynamicTextContainer.querySelector("input")
+                slidersArr.push(slider)
             })
             return slidersArr
         }

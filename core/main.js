@@ -73,8 +73,15 @@ function initAnalyseAnimate() {
         let dataArray = new Uint8Array(analyser.frequencyBinCount)
 
         let lastTimestamp = document.timeline.currentTime
+        
         function animate(timestamp){
-            animateDelay = timestamp - lastTimestamp
+            let animateDelay
+            if (timestamp === undefined || lastTimestamp === undefined){
+                animateDelay = 0
+            } else {
+                animateDelay = timestamp - lastTimestamp
+            }
+            
             source.setAnimateDelay(animateDelay)
 
             const [pipelineOptionsTree, contextOptionsTree] = savingMain.getCurrentValuesTree()
@@ -100,8 +107,8 @@ function initAnalyseAnimate() {
             }
             analyser.getByteFrequencyData(dataArray)
 
-            // draw
-            dataMain.animate(timestamp, dataArray, audioCtx.sampleRate, pipelineOptionsTree, extractBranchesValues)
+            // draw   
+            dataMain.animate(animateDelay, dataArray, audioCtx.sampleRate, pipelineOptionsTree, extractBranchesValues)
 
             lastTimestamp = timestamp
             requestAnimationFrame(animate)

@@ -40,7 +40,7 @@ class DataMain {
      
 
 
-    animate(animationTimestamp, dataArray, sampleRate, pipelineOptionsTree, extractBranchesValues) {
+    animate(frameDelay, dataArray, sampleRate, pipelineOptionsTree, extractBranchesValues) {
         const stageBranches = pipelineOptionsTree.branches
         const selectedStages = extractBranchesValues(stageBranches)
         
@@ -52,7 +52,7 @@ class DataMain {
             } else {
                 resetStyle[key] = true
             }
-        })        
+        })
         this.lastSelectedStages = selectedStages
 
         // style data
@@ -77,17 +77,14 @@ class DataMain {
             if (i + 1 == styledBufferLength) {
                 lastCallInFrame = true
             } 
-            let alwaysNumTimestamp = animationTimestamp
-            if (alwaysNumTimestamp == undefined) {
-                alwaysNumTimestamp = 0
-            }
+            
 
             const colorParams = [
                 this.canvasContext,
                 [fftValue / 255, i, styledBufferLength],
                 [this.permObjects['id_data_color'], frameObjects['id_data_color']],
                 [resetStyle['id_data_color'], firstCallInFrame, lastCallInFrame],
-                alwaysNumTimestamp,
+                frameDelay,
                 extractBranchesValues(stageBranches['id_data_color'].branches)
             ]
             styleIndex = this.stages['id_data_color'].referenceOrder[selectedStages['id_data_color']]
@@ -103,7 +100,7 @@ class DataMain {
                 [fftValue / 255, i, styledBufferLength],
                 [this.permObjects['id_data_animation'], frameObjects['id_data_animation']],
                 [resetStyle['id_data_animation'], firstCallInFrame, lastCallInFrame],
-                alwaysNumTimestamp,
+                frameDelay,
                 extractBranchesValues(stageBranches['id_data_animation'].branches)
             ]
             styleIndex = this.stages['id_data_animation'].referenceOrder[selectedStages['id_data_animation']]
