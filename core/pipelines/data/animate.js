@@ -490,7 +490,7 @@ function dataPipeline_getAnimationStyles() {
 
             {id: "particleSizeMin", name: "Size Min", min: 1, max: 10, default: 3},
             {id: "particleSizeRange", name: "Size Range", min: 1, max: 10, default: 5},
-            {id: "particleSizeDynamics", name: "Size Dynamics", min: 0, max: 3, default: 0, labels: {0: "Index", 1: "Reverse Index", 2: "Volume", 3: "Reverse Volume"}},
+            {id: "particleSizeDynamics", name: "Size Dynamics", min: 0, max: 3, default: 2, labels: {0: "Index", 1: "Reverse Index", 2: "Volume", 3: "Reverse Volume"}},
 
             {id: "particleSpeedMin", name: "Speed Min", min: 1, max: 5, default: 2},
             {id: "particleSpeedRange", name: "Speed Range", min: 1, max: 5, default: 4},
