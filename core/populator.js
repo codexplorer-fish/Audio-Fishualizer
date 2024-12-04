@@ -128,6 +128,38 @@ class Populator{
                 return allPossibleRequests
             }
             function linkCollapsingSidebar(sidebar, imgArea, imgDisplay){
+                let fadeTimeout
+                let hideTimeout
+
+                function show(){
+                    clearTimeout(fadeTimeout)
+                    clearTimeout(hideTimeout)
+
+                    sidebar.style.opacity = "80%"
+                    sidebar.style.visibility = "visible"
+                }
+
+                function startHidingProcess(){
+                    clearTimeout(fadeTimeout)
+                    clearTimeout(hideTimeout)
+                    
+                    if (!presetNameInput.matches(':focus')){ // only hide if text input is not selected (don't want to hide the ui while user is typing)
+                        fadeTimeout = setTimeout(() => {
+                            sidebar.style.opacity = "60%"
+                        }, 0);
+                        hideTimeout = setTimeout(() => {
+                            sidebar.style.visibility = "hidden"
+                        }, 500);
+                    }
+                }
+                
+                function instantHide(){
+                    clearTimeout(fadeTimeout)
+                    clearTimeout(hideTimeout)
+                    sidebar.style.visibility = "hidden"
+                }
+
+
                 function hoveringExtension(){
                     const hovered = document.querySelector('.sidebarImgHoverExtension:hover')
                     if (hovered === null) {
@@ -135,7 +167,7 @@ class Populator{
                     } else {
                         function ownTheSidebar(){ // now that hovered is the element keeping the sidebar alive, it must handle sidebar closing.
                             if (!sidebar.matches(':hover') && !imgArea.matches(':hover')){
-                                sidebar.style.visibility = "hidden"
+                                instantHide()
                                 hovered.removeEventListener("mouseleave", ownTheSidebar)
                             }
                         }
@@ -144,22 +176,20 @@ class Populator{
                         return true
                     }
                 }
-
+                
                 imgArea.addEventListener("mouseleave", () => {
                     if (!sidebar.matches(':hover') && !hoveringExtension()){ 
-                        sidebar.style.visibility = "hidden"
+                        instantHide()
                     }
                 })
                 sidebar.addEventListener('mouseleave', () => {
                     if (!imgArea.matches(':hover') && !hoveringExtension()){
-                        sidebar.style.visibility = "hidden"
+                        startHidingProcess()
                     }
                 })
+                sidebar.addEventListener('mouseenter', show)
 
-
-                imgDisplay.addEventListener("mouseenter", () => {
-                    sidebar.style.visibility = "visible"
-                })
+                imgDisplay.addEventListener("mouseenter", show)
             }
             function sortStageStyles(stage) {
                 const orderedIdArr = stage.referenceOrder

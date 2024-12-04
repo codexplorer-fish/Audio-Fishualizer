@@ -36,7 +36,6 @@ html, body {
     font-family: Lucida Console;
     color: white;
 
-    opacity: 80%;
     display: inline-grid;
     grid-auto-flow: row;
     align-content: space-around;
@@ -83,6 +82,7 @@ html, body {
 }
 
 #uiContainer {
+    z-index: 150;
     position: absolute;
     top: 0;
     left: 0;

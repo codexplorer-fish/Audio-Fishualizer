@@ -4,76 +4,102 @@ function initSidebarTimedVisibilityHandler(){
     the user will end up unintentionally clicking a button they didn't see before the click.
     */
 
-    function hideScreen() {
-        if (!presetNameInput.matches(':focus')){ // only hide if text input is not selected (don't want to hide the ui while user is typing)
-            uiContainer.style.visibility = "hidden"
-        }
-    }
+    let fadeTimeout
+    let hideTimeout
 
-    function clickInteraction(event) {
+    function show(){
+        clearTimeout(fadeTimeout)
         clearTimeout(hideTimeout)
 
-        if (uiContainer.matches(":hover")) {
-            // uiContainer is visible and hovered
-        } else {
+        uiContainer.style.opacity = "80%"
+        uiContainer.style.visibility = "visible"
+    }
+
+    function startHidingProcess(){
+        show()
+        
+        if (!presetNameInput.matches(':focus')){ // only hide if text input is not selected (don't want to hide the ui while user is typing)
+            fadeTimeout = setTimeout(() => {
+                uiContainer.style.opacity = "60%"
+            }, 0);
+            hideTimeout = setTimeout(() => {
+                uiContainer.style.visibility = "hidden"
+            }, 500);
+        }
+    }
+    
+    let hidingProcessTimeout
+
+    // upon any of these events, show and (maybe) reset the timeout.
+    document.addEventListener("mouseleave", () => {
+        clearTimeout(hidingProcessTimeout)
+        startHidingProcess()
+    })
+    document.addEventListener("mouseenter", () => {
+        clearTimeout(hidingProcessTimeout)
+        show()
+    })
+
+    document.addEventListener('touchstart', (event) => {
+        clearTimeout(hidingProcessTimeout)
+
+        const children = Array.from(uiContainer.children)
+        for (i in children){
+            if (children[i].matches(":hover")){
+                // uiContainer is visible and hovered
+                break
+            } else if (i == children.length - 1){
             // uiContainer was either hidden before this event, or is not hovered.
-            hideTimeout = setTimeout(hideScreen, 2000)
+            hidingProcessTimeout = setTimeout(startHidingProcess, 2000)
 
             /*
             Prevent this click from triggering any other event if document was hidden prior. This prevents click-through, 
             where if a button appears under the click location when the uiContainer appears, it gets clicked
             */
             if (uiContainer.style.visibility == 'hidden'){
-                uiContainer.style.visibility = "visible"
+                show()
                 event.stopPropagation()
                 event.preventDefault()
             }
+            }
         }
-    }
 
-    function mousemoveInteraction(event) {
-        clearTimeout(hideTimeout)
+    }, {capture: true, passive: false}) // for mobile. stops click event if uiContainer is hidden to prevent click-through
 
-        if (uiContainer.matches(":hover")) {
-            // uiContainer is visible and hovered
-        } else {
-            // uiContainer was either hidden before this event, or is not hovered.
-            uiContainer.style.visibility = "visible"
-            hideTimeout = setTimeout(hideScreen, 2000)
+    document.addEventListener('mousemove', () => {
+        clearTimeout(hidingProcessTimeout)
+
+        const children = Array.from(uiContainer.children)
+        for (i in children){
+            if (children[i].matches(":hover")){
+                // uiContainer is visible and hovered
+                break
+            } else if (i == children.length - 1){
+                // uiContainer was either hidden before this event, or is not hovered.
+                show()
+                hidingProcessTimeout = setTimeout(startHidingProcess, 2000)
+            }
         }
-    }
+    })
 
-    function sliderInteraction() {
-        uiContainer.style.visibility = "visible"
-        clearTimeout(hideTimeout)
-        // must be inside uiContainer because a uiContainer slider triggered this function. therefore, don't reset timeout
-    }
-    let hideTimeout
 
-    // upon any of these events, show and (maybe) reset the timeout.
+    // TODO this is broken
 
-    document.addEventListener('touchstart', clickInteraction, {capture: true, passive: false}) // for mobile. stops click event if uiContainer is hidden to prevent click-through
-    document.addEventListener('mousemove', mousemoveInteraction)
     // interacting with sliders does not trigger mousemove on mobile
     // just listen to all sliders in the mainSidebar:
     document.getElementById('presetSlider').addEventListener('input', sliderInteraction)
+    
     Array.from(document.getElementsByClassName('styleSlider')).forEach((slider) => {
         slider.addEventListener('input', sliderInteraction)
     });
+
+    function sliderInteraction() {
+        uiContainer.style.visibility = "visible"
+        clearTimeout(hidingProcessTimeout)
+        // must be inside uiContainer because a uiContainer slider triggered this function. therefore, don't reset timeout
+    }
 }
 initSidebarTimedVisibilityHandler()
-
-function initWindowHandler(){
-    document.addEventListener("mouseleave", () => {
-        if (!presetNameInput.matches(':focus')){ // only hide if text input is not selected (don't want to hide the ui while user is typing)
-            uiContainer.style.visibility = "hidden"
-        }
-    })
-    document.addEventListener("mouseenter", () => {
-        uiContainer.style.visibility = "visible"
-    })
-}
-initWindowHandler()
 
 function initCollapsingSidebarHandlers(){
     collapsingSidebars = Array.from(document.getElementsByClassName('collapsingSidebar'))
@@ -82,6 +108,41 @@ function initCollapsingSidebarHandlers(){
         const imgArea = document.getElementById(myImgAreaId)
         const imgDisplay = imgArea.querySelector(":scope > .sidebarImgDisplay")
 
+        let fadeTimeout
+        let hideTimeout
+
+        sidebar.style.opacity = "100%" // as a child of uiContainer, start with 100% to have uiContainer's 80% opacity
+        console.log(sidebar.style.opacity)
+
+        function show(){
+            clearTimeout(fadeTimeout)
+            clearTimeout(hideTimeout)
+
+            sidebar.style.opacity = "100%"
+            sidebar.style.visibility = "visible"
+        }
+
+        function startHidingProcess(){
+            clearTimeout(fadeTimeout)
+            clearTimeout(hideTimeout)
+            
+            if (!presetNameInput.matches(':focus')){ // only hide if text input is not selected (don't want to hide the ui while user is typing)
+                fadeTimeout = setTimeout(() => {
+                    sidebar.style.opacity = "80%"
+                }, 0);
+                hideTimeout = setTimeout(() => {
+                    sidebar.style.visibility = "hidden"
+                }, 500);
+            }
+        }
+        
+        function instantHide(){
+            clearTimeout(fadeTimeout)
+            clearTimeout(hideTimeout)
+            sidebar.style.visibility = "hidden"
+        }
+
+
         function hoveringExtension(){
             const hovered = document.querySelector('.sidebarImgHoverExtension:hover')
             if (hovered === null) {
@@ -89,7 +150,7 @@ function initCollapsingSidebarHandlers(){
             } else {
                 function ownTheSidebar(){ // now that hovered is the element keeping the sidebar alive, it must handle sidebar closing.
                     if (!sidebar.matches(':hover') && !imgArea.matches(':hover')){
-                        sidebar.style.visibility = "hidden"
+                        instantHide()
                         hovered.removeEventListener("mouseleave", ownTheSidebar)
                     }
                 }
@@ -98,21 +159,20 @@ function initCollapsingSidebarHandlers(){
                 return true
             }
         }
-
+        
         imgArea.addEventListener("mouseleave", () => {
             if (!sidebar.matches(':hover') && !hoveringExtension()){ 
-                sidebar.style.visibility = "hidden"
+                instantHide()
             }
         })
         sidebar.addEventListener('mouseleave', () => {
             if (!imgArea.matches(':hover') && !hoveringExtension()){
-                sidebar.style.visibility = "hidden"
+                startHidingProcess()
             }
         })
+        sidebar.addEventListener('mouseenter', show)
 
-        imgDisplay.addEventListener("mouseenter", () => {
-            sidebar.style.visibility = "visible"
-        })
+        imgDisplay.addEventListener("mouseenter", show)
     })
 }
 initCollapsingSidebarHandlers()
