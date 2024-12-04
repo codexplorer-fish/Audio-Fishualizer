@@ -52,7 +52,7 @@ class DataMain {
             } else {
                 resetStyle[key] = true
             }
-        })        
+        })
         this.lastSelectedStages = selectedStages
 
         // style data

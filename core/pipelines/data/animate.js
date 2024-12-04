@@ -216,44 +216,57 @@ function dataPipeline_getAnimationStyles() {
             // spawn em'
             let spawnChance = (frameDelay/1000)/numDatas
             if (customVals.particleSpawnRate == 11){
-                spawnChance *= dataValue * 5
+                spawnChance *= dataValue * 100
             } else {
-                spawnChance *= customVals.particleSpawnRate
+                spawnChance *= customVals.particleSpawnRate**2
             }
 
-            if (Math.random() < spawnChance || true) {
+            if (Math.random() < spawnChance) {
                 const particle = {
                     pos: [undefined, undefined],
                     radius: undefined,
                     vector: [undefined, undefined],
-                    start: [undefined, undefined],
-                    end: [undefined, undefined]
                 }
 
-                if (customVals.particleSpeedDynamics == 0){
-                    const speed = percentOfSpeedRange(dataValue)
-                    const radians = Math.atan(particle.vector[1]/particle.vector[0])
-
-                    particle.vector[0] = Math.sin(radians) * speed
-                    particle.vector[1] = Math.cos(radians) * speed
-                } else {
-                    const speed = percentOfSpeedRange(1 - dataValue)
-                    const radians = Math.atan(particle.vector[1]/particle.vector[0])
-
-                    particle.vector[0] = Math.sin(radians) * speed
-                    particle.vector[1] = Math.cos(radians) * speed
-                }
 
                 if (customVals.particleSizeDynamics == 0){
-                    particle.radius = percentOfSizeRange(dataValue)
+                    particle.radius = percentOfSizeRange(dataNum/numDatas)
                 } else {
-                    particle.radius = percentOfSizeRange(1 - dataValue)
+                    particle.radius = percentOfSizeRange(1 - (dataNum/numDatas))
                 }
 
 
-                const angle = Number(customVals.particleSpawnAngle) * 2
-                const perpSlope = Math.tan(((angle + 90) % 360) * Math.PI / 180) 
-                const slope = Math.tan(angle * Math.PI / 180)
+                const angle = Number(customVals.particleSpawnAngle)
+                let slope
+                let perpSlope
+                if (angle + 90 == 90 || angle + 90 == 270){
+                    perpSlope = "vertical"
+                } else {
+                    perpSlope = Math.tan(((angle + 90) % 360) * Math.PI / 180) 
+                }
+                if (angle == 90 || angle == 270){
+                    slope = "vertical"
+                } else {
+                    slope = Math.tan(angle * Math.PI / 180)
+                }
+
+                let speed
+                if (customVals.particleSpeedDynamics == 0){
+                    speed = percentOfSpeedRange(dataValue)
+                } else {
+                    speed = percentOfSpeedRange(1 - dataValue)
+                }
+                if (angle == 90){
+                    particle.vector[0] = 0
+                    particle.vector[1] = -speed
+                } else if (angle == 270){
+                    particle.vector[0] = 0
+                    particle.vector[1] = speed
+                } else {
+                    const radians = angle * Math.PI / 180
+                    particle.vector[0] = -Math.cos(radians) * speed
+                    particle.vector[1] = -Math.sin(radians) * speed
+                }
                 
                 const cornerLine = {s: perpSlope, xy: []}
                 const lowerIntersecting = {s: slope, xy: []}
@@ -280,73 +293,105 @@ function dataPipeline_getAnimationStyles() {
                     lowerIntersecting.xy = topLeft
                     upperIntersecting.xy = bottomRight
                 }
-                canvasContext.save()
-                canvasContext.scale(0.5, 0.5)
-                canvasContext.translate(200, 200)
 
-                // x markers
-                const lowerXLimit = intersectionOf(lowerIntersecting, cornerLine)
-                const upperXLimit = intersectionOf(upperIntersecting, cornerLine)
-
+                
                 // spawn
-                const xRange = upperXLimit - lowerXLimit
-                const cornerLineSelectedX = (Math.random() * xRange) + lowerXLimit
-                const cornerLineSelectedY = xForY(cornerLine, cornerLineSelectedX)
+                let spawnLocationPercent
+                if (customVals.particleSpawnLocation == 0){
+                    spawnLocationPercent = Math.random()
+                } else if (customVals.particleSpawnLocation == 1){
+                    spawnLocationPercent = dataNum/numDatas
+                } else if (customVals.particleSpawnLocation == 2){
+                    spawnLocationPercent = 1 - (dataNum/numDatas)
+                }
+
+                let cornerLineSelectedX
+                let cornerLineSelectedY
+                if (cornerLine.s == "vertical"){
+                    const yRange = window.innerHeight
+                    cornerLineSelectedY = (spawnLocationPercent * yRange)
+                    cornerLineSelectedX = yForX(cornerLine, cornerLineSelectedY)
+                } else {
+                    const lowerXLimit = intersectionOf(lowerIntersecting, cornerLine)
+                    const upperXLimit = intersectionOf(upperIntersecting, cornerLine)
+                    const xRange = upperXLimit - lowerXLimit
+                    cornerLineSelectedX = (spawnLocationPercent * xRange) + lowerXLimit
+                    cornerLineSelectedY = xForY(cornerLine, cornerLineSelectedX)
+                    // xForY will not return undefined because cornerLine.s vertical is handled in the previous if statement
+                }   
                 const particleLine = {s: slope, xy: [cornerLineSelectedX, cornerLineSelectedY]}
 
                 // path
                 const rectLines = [{s: 0, xy: topLeft}, {s: "vertical", xy: bottomRight}, {s: 0, xy: bottomRight}, {s: "vertical", xy: topLeft}]
                 let firstX
-                let lastX
-                console.log("e")
-                rectLines.forEach((line) => {
+                let firstY
+                for (i in rectLines){
+                    const line = rectLines[i]
                     let intersectX
-                    if (line.s == "vertical"){
+                    let intersectY
+                    if (line.s == 0){
+                        intersectY = line.xy[1]
+                        intersectX = yForX(particleLine, intersectY)
+                    } else if (line.s == "vertical"){
                         intersectX = line.xy[0]
-                    } else {
-                        intersectX = yForx(particleLine, line.xy[1])
+                        intersectY = xForY(particleLine, intersectX)
+                        if (intersectY == "undefined"){
+                            continue
+                        }
                     }
-                    const intersectY = xForY(particleLine, intersectX)
 
-                    console.log(intersectX, intersectY) // TODO broken :(
                     if (((intersectX == 0 || intersectX == window.innerWidth) && (intersectY >= 0 && intersectY <= window.innerHeight)) ||
                         ((intersectY == 0 || intersectY == window.innerHeight) && (intersectX >= 0 && intersectX <= window.innerWidth)))
                     {
-                        if (cornerLine.xy[0] == intersectX || cornerLine.xy[1] == intersectY){ // is intersect one of the lines in the corner that cornerLine is pivoting off of?
+                        if (cornerLine.xy[0] == intersectX || cornerLine.xy[1] == intersectY){ // intersecting one of the lines in the corner that cornerLine is pivoting off of?
                             firstX = intersectX
-                        } else {
-                            lastX = intersectX
+                            firstY = intersectY
+                            break
                         }
                     }
-                })
+                }
 
+                /*
                 const radians = angle * Math.PI / 180
                 const distance = particle.radius
                 firstX += Math.cos(radians) * distance
                 lastX -= Math.cos(radians) * distance
-                
-                particle.start = [firstX, xForY(particleLine, firstX)]
-                particle.end = [lastX, xForY(particleLine, lastX)]
-                particle.pos = particle.start
-                
+                */
+                particle.pos = [firstX, firstY]
+            
                 if (permObject.colorReferencedParticles.indexes[dataNum] === undefined){
                     permObject.colorReferencedParticles.indexes[dataNum] = [particle]
                 } else {
                     permObject.colorReferencedParticles.indexes[dataNum].push(particle)
                 }
 
-                canvasContext.beginPath()
-                canvasContext.rect(0, 0, window.innerWidth, window.innerHeight)
-                canvasContext.stroke()
-                canvasContext.restore()
-
                 function intersectionOf(l1, l2){
-                    return ((l1.xy[0]*l1.s) - (l2.xy[0]*l2.s) - l1.xy[1] + l2.xy[1]) / (l1.s - l2.s) // hopefully works. hot from the algebra oven
+                    if (l1.s == "vertical" && l2.s == "vertical"){
+                        if (l1.xy[0] == l2.xy[0]){
+                            return l1.xy[0]
+                        } else {
+                            console.error("Non-intersecting lines are not supposed to happen")
+                        }
+                    } else if (l1.s == "vertical"){
+                        return l1.xy[0]
+                    } else if (l2.s == "vertical"){
+                        return l2.xy[0]
+                    }
+                    return ((l1.xy[0]*l1.s) - (l2.xy[0]*l2.s) - l1.xy[1] + l2.xy[1]) / (l1.s - l2.s) // hot from the algebra oven
                 }
-                function yForx(l, y){
+                function yForX(l, y){
+                    if (l.s == "vertical"){
+                        return l.xy[0]
+                    }
                     return (y - l.xy[1])/l.s + l.xy[0]
                 }
                 function xForY(l, x){
+                    if (l.s == "vertical"){
+                        return "undefined"
+                    }
+                    if (l.s == 0){
+                        return l.xy[1]
+                    }
                     return l.s*(x - l.xy[0]) + l.xy[1]
                 }
 
@@ -359,19 +404,25 @@ function dataPipeline_getAnimationStyles() {
             // draw em'  
             if (permObject.colorReferencedParticles.indexes[dataNum] !== undefined) {
                 permObject.colorReferencedParticles.indexes[dataNum].forEach((particle) => {
-                    if (customVals.particleSpeedDynamics == 2){
-                        const speed = percentOfSpeedRange(dataValue)
-                        const radians = Math.atan(particle.vector[1]/particle.vector[0])
-
-                        particle.vector[0] = Math.sin(radians) * speed
-                        particle.vector[1] = Math.cos(radians) * speed
-                    }
-                    if (customVals.particleSpeedDynamics == 3){
-                        const speed = percentOfSpeedRange(1 - dataValue)
-                        const radians = Math.atan(particle.vector[1]/particle.vector[0])
-
-                        particle.vector[0] = Math.sin(radians) * speed
-                        particle.vector[1] = Math.cos(radians) * speed
+                    if (customVals.particleSpeedDynamics == 2 || customVals.particleSpeedDynamics == 3){
+                        let speed
+                        if (customVals.particleSpeedDynamics == 2){
+                            speed = percentOfSpeedRange(dataValue)
+                        } else if (customVals.particleSpeedDynamics == 3){
+                            speed = percentOfSpeedRange(1 - dataValue)
+                        }
+                        const angle = customVals.particleSpawnAngle
+                        if (angle == 90){
+                            particle.vector[0] = 0
+                            particle.vector[1] = -speed
+                        } else if (angle == 270){
+                            particle.vector[0] = 0
+                            particle.vector[1] = speed
+                        } else {
+                            const radians = angle * Math.PI / 180
+                            particle.vector[0] = -Math.cos(radians) * speed
+                            particle.vector[1] = -Math.sin(radians) * speed
+                        }
                     }
 
                     if (customVals.particleSizeDynamics == 2){
@@ -407,26 +458,10 @@ function dataPipeline_getAnimationStyles() {
                             return
                         }
 
-
-                        const SMOOTHING = 3
                         let adjustedVector = particle.vector
-                        const travelPercent = Math.abs(particle.pos[0] - particle.start[0])/Math.abs(particle.end[0] - particle.start[0])
-                        if (customVals.particleSpeedPath == 0){
-                            // linear is the default
-                        } else if (customVals.particleSpeedPath == 1 || customVals.particleSpeedPath == 3){
-                            if (travelPercent < 0.5){
-                                adjustedVector[0] = particle.vector[0] * Math.pow(travelPercent*2, 1/SMOOTHING)
-                                adjustedVector[1] = particle.vector[1] * Math.pow(travelPercent*2, 1/SMOOTHING)
-                            }
-                        } else if (customVals.particleSpeedPath == 2 || customVals.particleSpeedPath == 3){
-                            if (travelPercent > 0.5){
-                                adjustedVector[0] = particle.vector[0] * Math.pow(abs(travelPercent - 1)*2, 1/SMOOTHING)
-                                adjustedVector[1] = particle.vector[1] * Math.pow(abs(travelPercent - 1)*2, 1/SMOOTHING)
-                            }
-                        }
 
-                        particle.pos[0] += adjustedVector[0]
-                        particle.pos[1] += adjustedVector[1]
+                        permObject.colorReferencedParticles.indexes[key][index].pos[0] += adjustedVector[0] * (frameDelay/10)
+                        permObject.colorReferencedParticles.indexes[key][index].pos[1] += adjustedVector[1] * (frameDelay/10)
                     })
                 })
             }
@@ -436,8 +471,8 @@ function dataPipeline_getAnimationStyles() {
             return [permObject, frameObject]
 
             function percentOfSpeedRange(percent){
-                const min = Math.pow(customVals.particleSpeedMin, 2)
-                const range = Math.pow(customVals.particleSpeedRange, 2)
+                const min = Math.pow(customVals.particleSpeedMin, 2)/2
+                const range = Math.pow(customVals.particleSpeedRange, 2)/2
                 return min + (range * percent)
             }
             function percentOfSizeRange(percent){
@@ -449,17 +484,17 @@ function dataPipeline_getAnimationStyles() {
         sliderRequests: [
             // do particles HAVE to be static after being spawned? alligence, watch: index, volume? + fillstyle would ofc change! yoo
             // ... but kinda breaks the fillstyle -> draw structure. no for now
-            {id: "particleSpawnAngle", name: "Angle x2", min: 0, max: 180, default: 45, labels: {360: "From Center"}},
+            {id: "particleSpawnLocation", name: "Sorting", min: 0, max: 2, default: 1, labels: {0: "Random", 1: "Index", 2: "Reverse Index"}},
+            {id: "particleSpawnAngle", name: "Angle", min: 0, max: 360, default: 270, labels: {360: "From Center"}},
             {id: "particleSpawnRate", name: "Spawn Rate", min: 1, max: 11, default: 5, labels: {11: "Volume Based"}},
 
-            {id: "particleSizeMin", name: "Size Min", min: 0, max: 10, default: 0},
-            {id: "particleSizeRange", name: "Size Range", min: 0, max: 10, default: 0},
-            {id: "particleSizeDynamics", name: "Size Dynamics", min: 0, max: 3, default: 0, labels: {0: "Index", 1: "Inverse Index", 2: "Volume", 3: "Inverse Volume"}},
+            {id: "particleSizeMin", name: "Size Min", min: 1, max: 10, default: 3},
+            {id: "particleSizeRange", name: "Size Range", min: 1, max: 10, default: 5},
+            {id: "particleSizeDynamics", name: "Size Dynamics", min: 0, max: 3, default: 0, labels: {0: "Index", 1: "Reverse Index", 2: "Volume", 3: "Reverse Volume"}},
 
-            {id: "particleSpeedMin", name: "Speed Min", min: 0, max: 10, default: 0},
-            {id: "particleSpeedRange", name: "Speed Range", min: 0, max: 10, default: 0},
-            {id: "particleSpeedDynamics", name: "Speed Dynamics", min: 0, max: 3, default: 0, labels: {0: "Index", 1: "Inverse Index", 2: "Volume", 3: "Inverse Volume"}},
-            {id: "particleSpeedPath", name: "Ease", min: 0, max: 3, default: 0, labels: {0: "None", 1: "In", 2: "Out", 3: "In-Out"}},
+            {id: "particleSpeedMin", name: "Speed Min", min: 1, max: 5, default: 2},
+            {id: "particleSpeedRange", name: "Speed Range", min: 1, max: 5, default: 4},
+            {id: "particleSpeedDynamics", name: "Speed Dynamics", min: 0, max: 3, default: 1, labels: {0: "Index", 1: "Reverse Index", 2: "Volume", 3: "Reverse Volume"}},
         ]
     }
 
