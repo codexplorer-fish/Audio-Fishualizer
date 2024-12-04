@@ -32,10 +32,14 @@ refactor so that localsave presets already include version and name
 each pipeline style has a sidebar attached
 keyboard enter adds preset
 add back presets and saves
+particle animation style
 
-detect drop-down hovering
+
+detect drop-down hovering?
 
 ui grace fade period before disappearing
+
+global analyser style -> smoothness only on decreasing
 
 saving and dynamic-text as classes
 zen mode: sliders labels only show name until interacted with (dynamic-text becomes class, register zen slider-labels and adjust global update accordingly)
@@ -46,7 +50,6 @@ pipeline for analysing (20-20k, log style)
 pipeline for images, and media loading, with some emulated images which are just shapes
 
 gradient color style
-particle animation style
 "floating ship" animation style
 electric arc style?
 

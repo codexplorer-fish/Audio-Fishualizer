@@ -302,7 +302,7 @@ function dataPipeline_getAnimationStyles() {
                 } else if (customVals.particleSpawnLocation == 1){
                     spawnLocationPercent = dataNum/numDatas
                 } else if (customVals.particleSpawnLocation == 2){
-                    spawnLocationPercent = 1 - (dataNum/numDatas)
+                    spawnLocationPercent = (dataNum/numDatas) - (0.5/numDatas) + (Math.random()/numDatas)
                 }
 
                 let cornerLineSelectedX
@@ -484,7 +484,7 @@ function dataPipeline_getAnimationStyles() {
         sliderRequests: [
             // do particles HAVE to be static after being spawned? alligence, watch: index, volume? + fillstyle would ofc change! yoo
             // ... but kinda breaks the fillstyle -> draw structure. no for now
-            {id: "particleSpawnLocation", name: "Sorting", min: 0, max: 2, default: 1, labels: {0: "Random", 1: "Index", 2: "Reverse Index"}},
+            {id: "particleSpawnLocation", name: "Sorting", min: 0, max: 2, default: 1, labels: {0: "Random", 1: "Index Precise", 2: "Index Spread"}},
             {id: "particleSpawnAngle", name: "Angle", min: 0, max: 359, default: 270, labels: {360: "From Center"}},
             {id: "particleSpawnRate", name: "Spawn Rate", min: 1, max: 11, default: 5, labels: {11: "Volume Based"}},
 
